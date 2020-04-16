@@ -65,8 +65,8 @@ const config = {
   specs: hasPackages ? [
     path.join('packages', '*', 'test*', 'wdio', '**', '*-spec.js'),
   ] : [
-    path.join('test*', 'wdio', '**', '*-spec.js'),
-  ],
+      path.join('test*', 'wdio', '**', '*-spec.js'),
+    ],
 
   sync: true,
   logLevel: 'silent',
@@ -94,6 +94,11 @@ const config = {
 
   axe: {
     inject: true,
+    options: {
+      rules: [
+        { id: 'color-contrast', enabled: false },
+      ],
+    },
   },
 
   terra: {
