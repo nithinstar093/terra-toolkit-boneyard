@@ -76,7 +76,7 @@ class Logger {
    * @param {Object} options - The message options.
    * @param {string} options.context - The message context to prepend the message.
    */
-  static warn(message, options) {
+  static debug(message, options) {
     if (process.env.DEBUG) {
       /* eslint-disable-next-line no-console */
       console.log(Logger.format(message, {
