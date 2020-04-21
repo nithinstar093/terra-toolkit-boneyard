@@ -70,6 +70,23 @@ class Logger {
     console.warn(Logger.format(message, { ...options, decorations: ['yellow'] }));
   }
 
+    /**
+   * Logs a debug message.
+   * @param {string} message - The warning message.
+   * @param {Object} options - The message options.
+   * @param {string} options.context - The message context to prepend the message.
+   */
+  static warn(message, options) {
+    if (process.env.DEBUG) {
+      /* eslint-disable-next-line no-console */
+      console.log(Logger.format(message, {
+        ...options,
+        ...options.context && { context: `[DEBUG] ${options.context}` },
+        decorations: ['blue']
+      }));
+    }
+  }
+
   /**
    * Creates an error message with default decoration.
    * @param {string} message - The error message.

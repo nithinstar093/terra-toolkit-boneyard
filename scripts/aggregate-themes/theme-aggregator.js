@@ -234,8 +234,13 @@ class ThemeAggregator {
    */
   static findThemeVariableFilesForGeneration(themeName, options = {}) {
     const assets = ThemeAggregator.find(`**/themes/${themeName}/**/${themeName}.scss`, options);
+    Logger.debug('findThemeVariableFilesForGeneration - dependency assets\n\n${assets}', { context: LOG_CONTEXT });
+
+    const nodeModuleAssets = ThemeAggregator.find(`${NODE_MODULES}${themeName}/**/${themeName}.scss`, options);
+    Logger.debug('findThemeVariableFilesForGeneration - mode module dependency assets\n\n${nodeModuleAssets}', { context: LOG_CONTEXT });
+
     // Add the dependency import if it exists.
-    assets.unshift(...ThemeAggregator.find(`${NODE_MODULES}${themeName}/**/${themeName}.scss`, options));
+    assets.unshift(...nodeModuleAssets);
 
     if (!assets.length) {
       return null;
