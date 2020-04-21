@@ -35,6 +35,7 @@ const config = {
       'tests/wdio/i18n-spec.js',
       'tests/wdio/validateElement-spec.js',
       'tests/wdio/hideInputCaret-spec.js',
+      'tests/wdio/dispatchCustomEvent-spec.js',
     ],
     static: [
       'tests/wdio/axe-spec.js',

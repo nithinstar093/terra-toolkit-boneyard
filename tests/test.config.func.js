@@ -67,6 +67,12 @@ module.exports = (env = {}) => {
         chunks: ['index'],
         filename: './input.html',
       }),
+      new HtmlWebpackPlugin({
+        lang: defaultLocale,
+        template: path.join(__dirname, 'fixtures', 'dispatch-custom-event.html'),
+        chunks: ['index'],
+        filename: './dispatch-custom-event.html',
+      }),
     ],
     output: {
       path: path.join(process.cwd(), 'build'),
