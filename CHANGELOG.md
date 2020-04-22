@@ -3,6 +3,9 @@ Changelog
 
 Unreleased
 ----------
+
+6.0.0 - (April 21, 2020)
+----------
 ### Major Version Bump.
 
 ### Breaking Change
