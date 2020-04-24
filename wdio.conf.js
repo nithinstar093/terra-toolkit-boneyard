@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const wdioConf = require('./config/wdio/wdio.conf');
 const webpackConfigObject = require('./tests/test.config.js');
+const webpackConfigFunction = require('./tests/test.config.func.js');
 const WdioFileReporter = require('./src/wdio/WdioFileReporter');
 
 WdioFileReporter.reporterName = 'TT_WDIO_CR';

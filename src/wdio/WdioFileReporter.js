@@ -1,6 +1,8 @@
+/* eslint-disable prefer-rest-params */
+/* eslint-disable no-continue */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable guard-for-in */
 /* eslint-disable class-methods-use-this */
-// eslint-disable
-// eslint-disable-next-line import/no-unresolved
 const WDIOSpecReporter = require('wdio-spec-reporter/build/reporter');
 
 const stripAnsi = require('strip-ansi');
@@ -9,28 +11,29 @@ const path = require('path');
 
 // const filePath = path.resolve(__dirname, '../../tests/wdio/_snapshots_/WdioTestResults.txt');
 const filePath = path.resolve(__dirname, './WdioTestResults.txt');
+//  const jsonFilePath = path.resolve(__dirname, './result.json');
 
 class WdioCustomeReporter extends WDIOSpecReporter {
-  constructor(options) {
-    /*
-     * make reporter to write to the output stream by default
-     */
-    const newoptions = Object.assign(options, { stdout: true });
-    super(newoptions);
+  constructor(globalConfig, options) {
+    // console.log('GLOBAL CONFIG', process.env.FORM_FACTOR);
+    // console.log('OPTIONS: ', options);
+    super(globalConfig);
     this.isSpecStarted = false;
+    this.options = options;
   }
 
-  printSpecStart(start) {
+  printSpecStart(startDate) {
     let content = '=======================================\n';
-    content += start;
+    content += startDate;
     return content;
   }
 
   printSuiteResult(runner) {
-    //  console.log('*****', this.getSuiteResult(runner));
+    // console.log('RUNNER: ', this.options.formFactor);
     let content = '';
     if (!this.isSpecStarted) {
-      content += this.printSpecStart(this.baseReporter.stats.start);
+      const startDate = `Start Date: ${new Date(this.baseReporter.stats.start).toLocaleString()}\n`;
+      content += this.printSpecStart(startDate);
       this.isSpecStarted = true;
     }
     content += this.getSuiteResult(runner);
@@ -43,59 +46,65 @@ class WdioCustomeReporter extends WDIOSpecReporter {
 
   printSuitesSummary() {
     const specCount = Object.keys(this.baseReporter.stats.runners).length;
-    /**
-     * no need to print summary if only one runner was executed
-     */
     if (specCount === 1) {
       return;
     }
-    // eslint-disable-next-line prefer-destructuring
-    const epilogue = this.baseReporter.epilogue;
-    //  const startDate = this.WdioCustomeReporter.baseReporter.stats.start;
-    const endDate = this.baseReporter.stats.end;
-    console.log('end date', endDate);
-    const content = this.getSuitesSummary(specCount);
-    //  console.log('start', this, 'end');
+    const endDate = new Date(this.baseReporter.stats.end).toLocaleString();
+    let content = this.getSuitesSummary(specCount);
+    content += `\n\nEnd Date: ${endDate}\n`;
     fs.appendFileSync(filePath, `${content}\n\n`, (err) => {
       if (err) {
-        console.log('err', err);
+        console.log(`File Error -> ${err.message}`);
       }
     });
-    fs.appendFileSync(filePath, `\n ${endDate}\n\n`, (err1) => {
-      if (err1) {
-        console.log('err1', err1);
-      }
-    });
-    epilogue.call(this.baseReporter);
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  // getSuitesSummary(specCount) {
-  //   //  const output = '\n\n==================================================================\n';
-  //   //  cont output += 'Number of specs: ' + specCount;
-  //   console.log('specCount', specCount);
-  //   fs.appendFile(filePath, `${specCount}`, (err) => {
-  //     if (err) {
-  //       console.log('err', err);
+  // getResultList(cid, ...suites) {
+  //   const preface = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+
+  //   let output = '';
+
+  //   for (const specUid in suites) {
+  //     // Remove "before all" tests from the displayed results
+  //     if (specUid.indexOf('"before all"') === 0) {
+  //       continue;
   //     }
-  //     console.log('done');
-  //   });
-  // }
 
-  // printSuitesSummary() {
-  //   const specCount = Object.keys(this.baseReporter.stats.runners).length;
+  //     const spec = suites[specUid];
+  //     const indent = this.indent(cid, specUid);
+  //     const specTitle = suites[specUid].title;
 
-  //   /**
-  //    * no need to print summary if only one runner was executed
-  //    */
-  //   if (specCount === 1) {
-  //     return;
+  //     if (specUid.indexOf('"before all"') !== 0) {
+  //       // output += `${preface} ${indent}${specTitle}\n`;
+  //       output += `${specTitle}\n`;
+  //     }
+  //     for (const testUid in spec.tests) {
+  //       const test = spec.tests[testUid];
+  //       const testTitle = spec.tests[testUid].title;
+
+  //       if (test.state === '') {
+  //         continue;
+  //       }
+
+  //       // output += preface;
+  //       output += `   ${indent}`;
+  //       output += this.chalk[this.getColor(test.state)](this.getSymbol(test.state));
+  //       output += `  ${testTitle} \n`;
+  //     }
+  //     output += `${preface.trim()} \n`;
   //   }
+  //   const result = {
+  //     // eslint-disable-next-line object-shorthand
+  //     output: output.split('\n'),
+  //   };
+  //   console.log('Result: ', result);
+  //   fs.appendFileSync(jsonFilePath, `${JSON.stringify(stripAnsi(result))}\n`, (err) => {
+  //     if (err) {
+  //       throw err;
+  //     }
+  //   });
 
-  //   // eslint-disable-next-line prefer-destructuring
-  //   const epilogue = this.baseReporter.epilogue;
-  //   console.log('getSuitSummary', this.getSuitesSummary(specCount), this);
-  //   epilogue.call(this.baseReporter);
+  //   //  return output;
   // }
 }
 
