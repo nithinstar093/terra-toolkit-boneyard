@@ -33,7 +33,6 @@ const locale = process.env.LOCALE;
 
 /* Use to change the form factor (test viewport) used in the wdio run. */
 const formFactor = process.env.FORM_FACTOR;
-console.log('*** process.env', process.env);
 /* Use to disable running webpack in the ServeStatic Service, provide the packed site to serve directly. */
 const site = process.env.SITE;
 
