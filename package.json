@@ -1,6 +1,6 @@
 {
   "name": "terra-toolkit",
-  "version": "5.25.0",
+  "version": "6.0.0",
   "description": "Utilities to help when developing terra modules.",
   "main": "lib/index.js",
   "engines": {
@@ -49,6 +49,7 @@
     "lint": "eslint --ext .js .",
     "pack": "webpack --config tests/test.config.js -p",
     "postinstall": "node ./scripts/post-install/post-install.js",
+    "postpublish": "git push --follow-tags",
     "precompile": "rm -rf lib",
     "prepare": "npm run compile",
     "prepublishOnly": "npm whoami && check-installed-dependencies && npm test",
@@ -72,7 +73,7 @@
     "@cerner/duplicate-package-checker-webpack-plugin": "^1.0.0",
     "async": "^3.0.1",
     "autoprefixer": "^9.5.1",
-    "axe-core": "3.2.0",
+    "axe-core": "3.5.3",
     "babel-loader": "^8.0.5",
     "chai": "^4.2.0",
     "chalk": "^2.4.2",
