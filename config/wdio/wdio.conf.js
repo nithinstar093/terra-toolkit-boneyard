@@ -94,7 +94,7 @@ const config = {
     inject: true,
     options: {
       rules: [
-        // The lowlight theme adheres to a non-default color contrast ratio.
+        // The lowlight theme adheres to a non-default color contrast ratio and fails the default ratio check.
         // The color-contrast ratio check must be disabled for lowlight theme testing.
         { id: 'color-contrast', enabled: theme !== 'clinical-lowlight-theme' },
       ],
