@@ -62,11 +62,9 @@ const config = {
   ...webpackConfig && { webpackConfig },
   ...seleniumConfig,
 
-  specs: hasPackages ? [
-    path.join('packages', '*', 'test*', 'wdio', '**', '*-spec.js'),
-  ] : [
-      path.join('test*', 'wdio', '**', '*-spec.js'),
-    ],
+  specs: hasPackages
+    ? [path.join('packages', '*', 'test*', 'wdio', '**', '*-spec.js')]
+    : [path.join('test*', 'wdio', '**', '*-spec.js')],
 
   sync: true,
   logLevel: 'silent',
@@ -96,7 +94,9 @@ const config = {
     inject: true,
     options: {
       rules: [
-        { id: 'color-contrast', enabled: false },
+        // The lowlight theme adheres to a non-default color contrast ratio.
+        // The color-contrast ratio check must be disabled for lowlight theme testing.
+        { id: 'color-contrast', enabled: theme !== 'clinical-lowlight-theme' },
       ],
     },
   },
