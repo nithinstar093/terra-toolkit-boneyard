@@ -2,7 +2,7 @@
 
   
 
-Wdio File Reporter is a reporter that logs jest test output to a file
+Wdio File Reporter is a reporter that logs wdio test output to a file
 
   
 
@@ -58,86 +58,101 @@ This will use custom reporter in addition to default reporters that Wdio uses.
 
 **This is how the generated log file looks**
 ```
+{
+  "1bc5eee618183f0b4c7c142653650e45": [
+    {
+      "startDate": "4/27/2020, 10:50:51 AM",
+      "type": "wdio",
+      "theme": "default-theme",
+      "locale": "en",
+      "formFactor": "tiny",
+      "result": [
+        "------------------------------------------------------------------",
+        "[chrome #0-0] Session ID: eb1a741399afd9e49117c3fb99f35da0",
+        "[chrome #0-0] Spec: /Users/sn081183/Desktop/terra-toolkit-boneyard/tests/wdio/i18n-spec.js",
+        "[chrome #0-0] Running: chrome",
+        "[chrome #0-0]",
+        "[chrome #0-0] I18n Locale",
+        "[chrome #0-0]   ✓ Express correctly sets the application locale",
+        "[chrome #0-0]   ✓ [default] to be within the mismatch tolerance",
+        "[chrome #0-0]",
+        "[chrome #0-0]",
+        "[chrome #0-0] 2 passing (2s)",
+        "[chrome #0-0]",
+        ""
+      ],
+      "endDate": "4/27/2020, 10:51:11 AM"
+    },
+    {
+      "startDate": "4/27/2020, 10:51:15 AM",
+      "type": "wdio",
+      "theme": "default-theme",
+      "locale": "en",
+      "formFactor": "huge",
+      "result": [
+        "------------------------------------------------------------------",
+        "[chrome #0-0] Session ID: 3cff60e21589db20f8a909aee6465687",
+        "[chrome #0-0] Spec: /Users/sn081183/Desktop/terra-toolkit-boneyard/tests/wdio/i18n-spec.js",
+        "[chrome #0-0] Running: chrome",
+        "[chrome #0-0]",
+        "[chrome #0-0] I18n Locale",
+        "[chrome #0-0]   ✓ Express correctly sets the application locale",
+        "[chrome #0-0]   ✓ [default] to be within the mismatch tolerance",
+        "[chrome #0-0]",
+        "[chrome #0-0]",
+        "[chrome #0-0] 2 passing (2s)",
+        "[chrome #0-0]",
+        ""
+      ],
+      "endDate": "4/27/2020, 10:51:39 AM"
+    },
+    {
+      "startDate": "4/27/2020, 10:51:43 AM",
+      "type": "wdio",
+      "theme": "default-theme",
+      "locale": "fr",
+      "formFactor": "tiny",
+      "result": [
+        "------------------------------------------------------------------",
+        "[chrome #0-0] Session ID: 2e99dd016d4c41c0bffce36fd40c8981",
+        "[chrome #0-0] Spec: /Users/sn081183/Desktop/terra-toolkit-boneyard/tests/wdio/i18n-spec.js",
+        "[chrome #0-0] Running: chrome",
+        "[chrome #0-0]",
+        "[chrome #0-0] I18n Locale",
+        "[chrome #0-0]   ✓ Express correctly sets the application locale",
+        "[chrome #0-0]   ✓ [default] to be within the mismatch tolerance",
+        "[chrome #0-0]",
+        "[chrome #0-0]",
+        "[chrome #0-0] 2 passing (2s)",
+        "[chrome #0-0]",
+        ""
+      ],
+      "endDate": "4/27/2020, 10:52:06 AM"
+    },
+    {
+      "startDate": "4/27/2020, 10:52:10 AM",
+      "type": "wdio",
+      "theme": "default-theme",
+      "locale": "fr",
+      "formFactor": "huge",
+      "result": [
+        "------------------------------------------------------------------",
+        "[chrome #0-0] Session ID: 47f7e10bf4996b88e8c56109ee63c0f4",
+        "[chrome #0-0] Spec: /Users/sn081183/Desktop/terra-toolkit-boneyard/tests/wdio/i18n-spec.js",
+        "[chrome #0-0] Running: chrome",
+        "[chrome #0-0]",
+        "[chrome #0-0] I18n Locale",
+        "[chrome #0-0]   ✓ Express correctly sets the application locale",
+        "[chrome #0-0]   ✓ [default] to be within the mismatch tolerance",
+        "[chrome #0-0]",
+        "[chrome #0-0]",
+        "[chrome #0-0] 2 passing (2s)",
+        "[chrome #0-0]",
+        ""
+      ],
+      "endDate": "4/27/2020, 10:52:33 AM"
+    }
+  ],
+}
 
-=======================================
-Start Date: 4/23/2020, 6:15:36 PM
-------------------------------------------------------------------
-[chrome #0-0] Session ID: 01d96af9cb6dc50caeb2cfd99e0fa435
-[chrome #0-0] Spec: /opt/module/tests/wdio/axe-spec.js
-[chrome #0-0] Running: chrome
-[chrome #0-0]
-[chrome #0-0] axe
-[chrome #0-0]   ✓ checks accessibility
-[chrome #0-0]   ✓ checks inaccessibility
-[chrome #0-0]   ✓ ignores inaccessibility based on test rules
-[chrome #0-0]   ✓ ignores inaccessibility based on global rules
-[chrome #0-0]   ✓ ignores inaccessibility based on merged rules
-[chrome #0-0]
-[chrome #0-0]
-[chrome #0-0] 5 passing (4s)
-[chrome #0-0]
-
-------------------------------------------------------------------
-[chrome #0-1] Session ID: 8891d0a556609ab49f70315481b5130f
-[chrome #0-1] Spec: /opt/module/tests/wdio/beAccessible-spec.js
-[chrome #0-1] Running: chrome
-[chrome #0-1]
-[chrome #0-1] beAccessible
-[chrome #0-1]
-[chrome #0-1]     accessible
-[chrome #0-1]       ✓ is accessible
-[chrome #0-1]
-[chrome #0-1]     inaccessible contrast - test rules
-[chrome #0-1]       ✓ is accessible
-[chrome #0-1]
-[chrome #0-1] beAccessible with looping
-[chrome #0-1]
-[chrome #0-1]     accessible
-[chrome #0-1]       ✓ is accessible
-[chrome #0-1]
-[chrome #0-1]     inaccessible contrast
-[chrome #0-1]       ✓ is accessible
-[chrome #0-1]
-[chrome #0-1]     inaccessible contrast - global rules
-[chrome #0-1]       ✓ is accessible
-[chrome #0-1]
-[chrome #0-1]     inaccessible contrast - Merged rules
-[chrome #0-1]       ✓ is accessible
-[chrome #0-1]
-[chrome #0-1] beAccessible with looping
-[chrome #0-1]
-[chrome #0-1]     accessible
-[chrome #0-1]       ✓ is accessible
-[chrome #0-1]
-[chrome #0-1]     inaccessible contrast
-[chrome #0-1]       ✓ is accessible
-[chrome #0-1]
-[chrome #0-1]     inaccessible contrast - global rules
-[chrome #0-1]       ✓ is accessible
-[chrome #0-1]
-[chrome #0-1]     inaccessible contrast - Merged rules
-[chrome #0-1]       ✓ is accessible
-[chrome #0-1]
-[chrome #0-1]
-[chrome #0-1] 10 passing (4s)
-[chrome #0-1]
-
-------------------------------------------------------------------
-[chrome #0-2] Session ID: f3d4a1f5948b5c39237eb643c84b3075
-[chrome #0-2] Spec: /opt/module/tests/wdio/compare-spec.js
-[chrome #0-2] Running: chrome
-[chrome #0-2]
-[chrome #0-2] comparing screenshots
-[chrome #0-2]   ✓ [0] checks visual comparison with shortened id
-[chrome #0-2]   ✓ checks visual comparison with a [tag]
-[chrome #0-2]   ✓ checks visual comparison on document level
-[chrome #0-2]
-[chrome #0-2]
-[chrome #0-2] 3 passing (6s)
-[chrome #0-2]
-
-==================================================================
-Number of specs: 8
-
-End Date: 4/23/2020, 6:18:24 PM
 ```
