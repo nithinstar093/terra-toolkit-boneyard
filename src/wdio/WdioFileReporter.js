@@ -4,7 +4,7 @@ const stripAnsi = require('strip-ansi');
 const fs = require('fs');
 const path = require('path');
 
-const jsonFilePath = path.resolve(__dirname, './result.json');
+const jsonFilePath = path.resolve(__dirname, '../../tests/wdio/reports/results/wdio-result-output.json');
 const resultData = {};
 class WdioCustomeReporter extends WDIOSpecReporter {
   constructor(globalConfig, options) {
