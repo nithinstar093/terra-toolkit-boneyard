@@ -2,10 +2,7 @@
 
   
 
-Wdio File Reporter is a reporter that logs wdio test output to a separate files based on locale, theme and form-factor with the following attributes
-
-  
-- The name of the Reporter file will be **result-<locale>-<theme>-<form-factor>.json**(eg: result-en-huge.json)
+Wdio File Reporter is a reporter that logs wdio test output to separate files based on locale, theme and form-factor with the following attributes
 
 - This Reporter will shows us date/time of when the tests are started and when they are finished
 
@@ -25,6 +22,7 @@ const WdioFileReporter = require('terra-toolkit/src/wdio/WdioFileReporter');
 ```
 
 **This is how the generated log file looks**
+- The name of the log file will be **result-\<locale>-\<theme>-\<form-factor>.json**(eg: result-en-huge.json)
 ```
 {
   "startDate": "4/29/2020, 2:24:35 PM",
