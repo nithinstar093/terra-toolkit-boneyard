@@ -59,7 +59,7 @@ const config = {
 
   // Configuration for ServeStaticService
   webpackConfig,
-  reporters: ['dot', 'spec', WdioFileReporter],
+  reporters: ['dot', WdioFileReporter],
 };
 
 exports.config = config;
