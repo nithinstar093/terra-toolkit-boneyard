@@ -4,8 +4,8 @@ const stripAnsi = require('strip-ansi');
 const fs = require('fs');
 const path = require('path');
 
-const jsonFilePath = path.resolve(__dirname, '../../tests/wdio/reports/results/wdio-result-output.json');
-const resultData = {};
+const jsonFilePath = path.resolve(__dirname, '../../tests/wdio/reports/results/');
+let resultData = {};
 class WdioCustomeReporter extends WDIOSpecReporter {
   constructor(globalConfig, options) {
     super(globalConfig);
@@ -37,11 +37,13 @@ class WdioCustomeReporter extends WDIOSpecReporter {
         }
         resultData[runner.specHash].push(jsonObject);
       });
-      fs.writeFileSync(jsonFilePath, `${JSON.stringify(jsonMultilineStrings.split(resultData), null, 2)}\n\n`, (err) => {
+      const fileName = `/result-${process.env.LOCALE || '-'}${process.env.THEME || '-'}${process.env.FORM_FACTOR}.json`;
+      fs.writeFileSync(`${jsonFilePath}${fileName}`, `${JSON.stringify(jsonMultilineStrings.split(resultData), null, 2)}\n\n`, (err) => {
         if (err) {
           console.log(`File Error -> ${err.message}`);
         }
       });
+      resultData = {};
     }
   }
 }
