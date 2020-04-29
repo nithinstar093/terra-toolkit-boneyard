@@ -1,50 +1,50 @@
 const WDIOSpecReporter = require('wdio-spec-reporter/build/reporter');
-const jsonMultilineStrings = require('json-multiline-strings');
 const stripAnsi = require('strip-ansi');
 const fs = require('fs');
 const path = require('path');
+const endOfLine = require('os').EOL;
 
 const jsonFilePath = path.resolve(__dirname, '../../tests/wdio/reports/results/');
-let resultData = {};
 class WdioCustomeReporter extends WDIOSpecReporter {
-  constructor(globalConfig, options) {
+  constructor(globalConfig) {
     super(globalConfig);
-    this.isSpecStarted = false;
-    this.options = options;
     this.runners = [];
     this.on('runner:end', (runner) => {
       this.runners.push(runner);
     });
+    this.resultJsonObject = {
+      startDate: '',
+      type: 'wdio',
+      locale: '',
+      formFactor: '',
+      theme: '',
+      Output: [],
+      endDate: '',
+    };
   }
 
   printSuitesSummary() {
+    this.resultJsonObject.endDate = new Date(this.baseReporter.stats.end).toLocaleString();
+    this.resultJsonObject.startDate = new Date(this.baseReporter.stats.start).toLocaleString();
+    this.resultJsonObject.locale = process.env.LOCALE;
+    this.resultJsonObject.formFactor = process.env.FORM_FACTOR;
+    this.resultJsonObject.theme = process.env.THEME || 'default-theme';
     const { runners } = this;
     if (runners && runners.length) {
       runners.forEach((runner) => {
-        const endDate = new Date(this.baseReporter.stats.end).toLocaleString();
-        const startDate = new Date(this.baseReporter.stats.start).toLocaleString();
-        const jsonObject = {
-          startDate,
-          type: 'wdio',
-          theme: process.env.THEME || 'default-theme',
-          locale: process.env.LOCALE,
-          formFactor: process.env.FORM_FACTOR,
-          result: stripAnsi(this.getSuiteResult(runner)),
-          endDate,
-        };
-        if (!resultData[runner.specHash]) {
-          resultData[runner.specHash] = [];
-        }
-        resultData[runner.specHash].push(jsonObject);
-      });
-      const fileName = `/result-${process.env.LOCALE || '-'}${process.env.THEME || '-'}${process.env.FORM_FACTOR}.json`;
-      fs.writeFileSync(`${jsonFilePath}${fileName}`, `${JSON.stringify(jsonMultilineStrings.split(resultData), null, 2)}\n\n`, (err) => {
-        if (err) {
-          console.log(`File Error -> ${err.message}`);
+        const readableMessage = `${stripAnsi(this.getSuiteResult(runner))}${endOfLine}`;
+        if (readableMessage.search('\n') !== -1) {
+          this.resultJsonObject.Output.push(readableMessage.split(/\n/g));
         }
       });
-      resultData = {};
     }
+    const fileName = `/result-${process.env.LOCALE || '-'}${process.env.THEME || '-'}${process.env.FORM_FACTOR}.json`;
+    fs.writeFileSync(`${jsonFilePath}${fileName}`, `${JSON.stringify(this.resultJsonObject, null, 2)}`, { flag: 'a+' }, (err) => {
+      if (err) {
+        console.log(`File Error -> ${err.message}`);
+      }
+    });
+    this.resultJsonObject = {};
   }
 }
 
