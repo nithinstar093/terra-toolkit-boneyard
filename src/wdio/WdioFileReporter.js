@@ -8,7 +8,6 @@ const endOfLine = require('os').EOL;
 class WdioCustomeReporter extends WDIOSpecReporter {
   constructor(globalConfig, options) {
     super(globalConfig);
-    console.log('*global config', options);
     this.runners = [];
     this.on('runner:end', (runner) => {
       this.runners.push(runner);

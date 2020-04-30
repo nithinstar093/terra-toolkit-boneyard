@@ -7,7 +7,7 @@ jest.mock('path');
 describe('Wdio File Reporter Testing', () => {
   let fsWriteSpy;
   let spyGetSuiteResult;
-  const wdioReporter = new WdioReporter({});
+  const wdioReporter = new WdioReporter({}, { reporterDir: 'opt/test' });
   const runner = {
     event: 'runner:end',
     failures: 0,
