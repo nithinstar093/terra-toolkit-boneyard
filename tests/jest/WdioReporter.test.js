@@ -26,6 +26,12 @@ describe('Wdio File Reporter Testing', () => {
 
   it('should not call fs.writeFileSync when no test cases', () => {
     wdioReporter.runners = [];
+    wdioReporter.baseReporter = {
+      stats: {
+        start: 'Tue Apr 28 2020 12:14:56',
+        end: 'Tue Apr 28 2020 12:14:59',
+      },
+    };
     wdioReporter.printSuitesSummary();
     expect(fsWriteSpy).not.toBeCalled();
   });
