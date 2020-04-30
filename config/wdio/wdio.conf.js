@@ -112,7 +112,7 @@ const config = {
     timeout: 1200000,
     bail,
   },
-
+  reporterDir: path.resolve(__dirname, '../../tests/wdio/reports/results/'),
   ...theme && { theme },
 };
 

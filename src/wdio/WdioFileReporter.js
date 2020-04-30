@@ -1,13 +1,14 @@
 const WDIOSpecReporter = require('wdio-spec-reporter/build/reporter');
 const stripAnsi = require('strip-ansi');
 const fs = require('fs');
-const path = require('path');
+// const path = require('path');
 const endOfLine = require('os').EOL;
 
-const jsonFilePath = path.resolve(__dirname, '../../tests/wdio/reports/results/');
+// const jsonFilePath = path.resolve(__dirname, '../../tests/wdio/reports/results/');
 class WdioCustomeReporter extends WDIOSpecReporter {
-  constructor(globalConfig) {
+  constructor(globalConfig, options) {
     super(globalConfig);
+    console.log('*global config', options);
     this.runners = [];
     this.on('runner:end', (runner) => {
       this.runners.push(runner);
@@ -21,6 +22,7 @@ class WdioCustomeReporter extends WDIOSpecReporter {
       Output: [],
       endDate: '',
     };
+    this.filePath = options.reporterDir;
   }
 
   printSuitesSummary() {
@@ -39,7 +41,7 @@ class WdioCustomeReporter extends WDIOSpecReporter {
       });
     }
     const fileName = `/result-${process.env.LOCALE || '-'}${process.env.THEME || '-'}${process.env.FORM_FACTOR}.json`;
-    fs.writeFileSync(`${jsonFilePath}${fileName}`, `${JSON.stringify(this.resultJsonObject, null, 2)}`, { flag: 'a+' }, (err) => {
+    fs.writeFileSync(`${this.filePath}${fileName}`, `${JSON.stringify(this.resultJsonObject, null, 2)}`, { flag: 'a+' }, (err) => {
       if (err) {
         console.log(`File Error -> ${err.message}`);
       }
