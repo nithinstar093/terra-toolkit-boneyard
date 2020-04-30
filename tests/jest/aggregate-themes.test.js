@@ -54,33 +54,33 @@ describe('Theme Aggregator', () => {
       expect(file).toBeNull();
     });
 
-    // it('uses the supplied config', () => {
-    //   glob.sync
-    //     .mockReturnValueOnce(['tests/jest/fixtures/themes/terra-mock-dark-theme/root-theme.scss'])
-    //     .mockReturnValueOnce([])
-    //     .mockReturnValueOnce(['tests/jest/fixtures/themes/terra-mock-dark-theme/terra-mock-dark-theme.scss'])
-    //     .mockReturnValueOnce([]);
-    //   const config = { theme: 'terra-mock-dark-theme', scoped: [] };
-    //   const file = ThemeAggregator.aggregate(null, { config });
+    it('uses the supplied config', () => {
+      glob.sync
+        .mockReturnValueOnce(['tests/jest/fixtures/themes/terra-mock-dark-theme/root-theme.scss'])
+        .mockReturnValueOnce([])
+        .mockReturnValueOnce(['tests/jest/fixtures/themes/terra-mock-dark-theme/terra-mock-dark-theme.scss'])
+        .mockReturnValueOnce([]);
+      const config = { theme: 'terra-mock-dark-theme', scoped: [] };
+      const file = ThemeAggregator.aggregate(null, { config });
 
-    //   const expected = '/opt/module/generated-themes/aggregated-themes.js';
+      const expected = '/generated-themes/aggregated-themes.js';
 
-    //   expect(file).toEqual(expected);
-    // });
+      expect(file).toMatch(expected);
+    });
 
-    // it('overrides the supplied config', () => {
-    //   glob.sync
-    //     .mockReturnValueOnce([])
-    //     .mockReturnValueOnce([])
-    //     .mockReturnValueOnce(['tests/jest/fixtures/themes/terra-mock-rainbow-theme/terra-mock-rainbow-theme.scss'])
-    //     .mockReturnValueOnce([]);
-    //   const config = { theme: 'terra-mock-dark-theme', scoped: [] };
-    //   const file = ThemeAggregator.aggregate('terra-mock-rainbow-theme', { config });
+    it('overrides the supplied config', () => {
+      glob.sync
+        .mockReturnValueOnce([])
+        .mockReturnValueOnce([])
+        .mockReturnValueOnce(['tests/jest/fixtures/themes/terra-mock-rainbow-theme/terra-mock-rainbow-theme.scss'])
+        .mockReturnValueOnce([]);
+      const config = { theme: 'terra-mock-dark-theme', scoped: [] };
+      const file = ThemeAggregator.aggregate('terra-mock-rainbow-theme', { config });
 
-    //   const expected = '/opt/module/generated-themes/aggregated-themes.js';
+      const expected = '/generated-themes/aggregated-themes.js';
 
-    //   expect(file).toEqual(expected);
-    //  });
+      expect(file).toMatch(expected);
+    });
   });
 
   describe('aggregateThemes', () => {
