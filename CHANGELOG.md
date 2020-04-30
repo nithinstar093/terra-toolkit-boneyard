@@ -5,6 +5,8 @@ Unreleased
 ----------
 ### Changed
 * Disabled color-contrast axe-core rule for clinical-lowlight-theme wdio testing
+### Added
+* Wdio File Reporter that logs wdio test output to separate json files based on locale, theme and form-factor.
 
 6.0.0 - (April 21, 2020)
 ----------
