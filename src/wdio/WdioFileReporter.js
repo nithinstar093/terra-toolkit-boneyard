@@ -1,10 +1,8 @@
 const WDIOSpecReporter = require('wdio-spec-reporter/build/reporter');
 const stripAnsi = require('strip-ansi');
 const fs = require('fs');
-// const path = require('path');
 const endOfLine = require('os').EOL;
 
-// const jsonFilePath = path.resolve(__dirname, '../../tests/wdio/reports/results/');
 class WdioCustomeReporter extends WDIOSpecReporter {
   constructor(globalConfig, options) {
     super(globalConfig);
