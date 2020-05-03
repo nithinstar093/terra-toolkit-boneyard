@@ -95,6 +95,7 @@
     "postcss-custom-properties": "^9.0.2",
     "postcss-loader": "^3.0.0",
     "postcss-rtl": "^1.3.3",
+    "postcss-value-parser": "^4.1.0",
     "raw-loader": "^3.0.0",
     "sass-loader": "^7.0.1",
     "terra-aggregate-translations": "^1.6.0",
