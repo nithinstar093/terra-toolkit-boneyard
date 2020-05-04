@@ -5,9 +5,9 @@ const endOfLine = require('os').EOL;
 const path = require('path');
 const Logger = require('../../scripts/utils/logger');
 
-const LOG_CONTEXT = '[Terra-Toolkit:theme-aggregator]';
+const LOG_CONTEXT = '[Terra-Toolkit:terra-wdio-spec-reporter]';
 
-class WdioCustomeReporter extends WDIOSpecReporter {
+class TerraWDIOSpecReporter extends WDIOSpecReporter {
   constructor(globalConfig, options) {
     super(globalConfig);
     this.runners = [];
@@ -48,7 +48,7 @@ class WdioCustomeReporter extends WDIOSpecReporter {
   }
 
   fileNameCheck() {
-    const { LOCALE = '', THEME = '', FORM_FACTOR = '' } = process.env;
+    const { LOCALE, THEME, FORM_FACTOR } = process.env;
     const fileNameConf = [];
     if (LOCALE) {
       fileNameConf.push(LOCALE);
@@ -66,11 +66,13 @@ class WdioCustomeReporter extends WDIOSpecReporter {
   }
 
   printSuitesSummary() {
-    this.resultJsonObject.endDate = new Date(this.baseReporter.stats.end).toLocaleString();
-    this.resultJsonObject.startDate = new Date(this.baseReporter.stats.start).toLocaleString();
-    this.resultJsonObject.locale = process.env.LOCALE;
-    this.resultJsonObject.formFactor = process.env.FORM_FACTOR;
-    this.resultJsonObject.theme = process.env.THEME || 'default-theme';
+    const { end, start } = this.baseReporter.stats;
+    const { LOCALE, THEME, FORM_FACTOR } = process.env;
+    this.resultJsonObject.endDate = new Date(end).toLocaleString();
+    this.resultJsonObject.startDate = new Date(start).toLocaleString();
+    this.resultJsonObject.locale = LOCALE;
+    this.resultJsonObject.formFactor = FORM_FACTOR;
+    this.resultJsonObject.theme = THEME || 'default-theme';
     const { runners } = this;
     if (runners && runners.length) {
       runners.forEach((runner) => {
@@ -81,7 +83,7 @@ class WdioCustomeReporter extends WDIOSpecReporter {
       });
     }
     this.fileNameCheck();
-    fs.writeFileSync(`${this.filePath}${this.fileName}`, `${JSON.stringify(this.resultJsonObject, null, 2)}`, { flag: 'a+' }, (err) => {
+    fs.writeFileSync(`${this.filePath}${this.fileName}`, `${JSON.stringify(this.resultJsonObject, null, 2)}`, { flag: 'w+' }, (err) => {
       if (err) {
         Logger.error(err.message, { context: LOG_CONTEXT });
       }
@@ -89,4 +91,4 @@ class WdioCustomeReporter extends WDIOSpecReporter {
   }
 }
 
-module.exports = WdioCustomeReporter;
+module.exports = TerraWDIOSpecReporter;

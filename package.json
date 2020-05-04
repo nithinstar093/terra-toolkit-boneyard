@@ -83,7 +83,6 @@
     "css-loader": "^3.2.0",
     "css-selector-tokenizer": "^0.7.2",
     "express": "^4.16.4",
-    "extends-classes": "^1.0.5",
     "file-loader": "^4.0.0",
     "fs-extra": "^8.0.1",
     "glob": "^7.1.1",
