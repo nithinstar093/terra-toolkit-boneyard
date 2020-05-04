@@ -36,6 +36,7 @@
     "extends": "terra",
     "settings": {
       "polyfills": [
+        "Array",
         "Promise"
       ]
     }

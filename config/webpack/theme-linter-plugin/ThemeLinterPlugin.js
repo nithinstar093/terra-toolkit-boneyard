@@ -2,7 +2,6 @@ const path = require('path');
 const fs = require('fs');
 const postcss = require('postcss');
 const postcssValueParser = require('postcss-value-parser');
-const Logger = require('../../../scripts/utils/logger');
 
 const CONFIG = 'terra-theme.config.js';
 
@@ -24,7 +23,8 @@ module.exports = class ThemeLinterPlugin {
       themeableVariables: new Set(),
       themeToPopulatedVariables: {},
     };
-    [themeConfig.theme, ...(themeConfig.scoped || [])].forEach((theme) => {
+    const themes = [themeConfig.theme, ...(themeConfig.scoped || [])].filter((theme) => theme !== undefined);
+    themes.forEach((theme) => {
       this.variableInformation.themeToPopulatedVariables[theme] = new Set();
     });
   }
@@ -52,12 +52,12 @@ module.exports = class ThemeLinterPlugin {
   }
 
   apply(compiler) {
-    compiler.hooks.emit.tapPromise('ThemeLinterPlugin', () => {
+    compiler.hooks.emit.tapPromise('ThemeLinterPlugin', (compilation) => {
       Object.entries(this.variableInformation.themeToPopulatedVariables).forEach(([theme, populatedVariables]) => {
-        const missingThemeVariables = new Set([...this.variableInformation.themeableVariables].filter(x => !populatedVariables.has(x))).entries().sort();
+        const missingThemeVariables = Array.from(new Set([...this.variableInformation.themeableVariables].filter(x => !populatedVariables.has(x)))).sort();
 
         if (missingThemeVariables.length > 0) {
-          Logger.warn(`The following themeable variables are missing for ${theme}: ${missingThemeVariables}`);
+          compilation.warnings.push(`${theme}.\nThe following variables are missing:\n${missingThemeVariables.join('\n')}`);
         }
       });
 
