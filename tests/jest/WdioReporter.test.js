@@ -2,12 +2,11 @@ import fs from 'fs';
 import WdioReporter from '../../src/wdio/WdioFileReporter';
 
 jest.mock('fs');
-jest.mock('path');
 
 describe('Wdio File Reporter Testing', () => {
   let fsWriteSpy;
   let spyGetSuiteResult;
-  const wdioReporter = new WdioReporter({}, { reporterDir: 'opt/test' });
+  const wdioReporter = new WdioReporter({}, { reporterDir: 'wdio/reports' });
   const runner = {
     event: 'runner:end',
     failures: 0,
@@ -23,8 +22,15 @@ describe('Wdio File Reporter Testing', () => {
     fsWriteSpy = jest.spyOn(fs, 'writeFileSync');
     spyGetSuiteResult = jest.fn().mockImplementation(() => 'test result');
   });
+  it('resultJsonObject should have output, startDate, endDate, and type', () => {
+    expect(wdioReporter.resultJsonObject).toHaveProperty('output');
+    expect(wdioReporter.resultJsonObject).toHaveProperty('startDate');
+    expect(wdioReporter.resultJsonObject).toHaveProperty('endDate');
+    expect(wdioReporter.resultJsonObject).toHaveProperty('type');
+    expect(typeof wdioReporter.resultJsonObject.output).toEqual('object');
+  });
 
-  it('should call fs.writeFileSync when have some test cases', () => {
+  it('should have output property in the resultJsonObject and have some length while calling printSuitesSummary ', () => {
     wdioReporter.runners = [runner];
     wdioReporter.baseReporter = {
       stats: {
@@ -32,8 +38,14 @@ describe('Wdio File Reporter Testing', () => {
         end: 'Tue Apr 28 2020 12:14:59',
       },
     };
+    wdioReporter.resultJsonObject.output = ['result'];
+    expect(wdioReporter.resultJsonObject.output.length).toBeGreaterThanOrEqual(1);
     wdioReporter.getSuiteResult = spyGetSuiteResult;
     wdioReporter.printSuitesSummary();
     expect(fsWriteSpy).toBeCalled();
+  });
+
+  it('should set filePath when  options.filePath not available', () => {
+    expect(wdioReporter.filePath).toEqual(expect.stringContaining('wdio/reports'));
   });
 });

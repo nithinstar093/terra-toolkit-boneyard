@@ -2,6 +2,7 @@ const WDIOSpecReporter = require('wdio-spec-reporter/build/reporter');
 const stripAnsi = require('strip-ansi');
 const fs = require('fs');
 const endOfLine = require('os').EOL;
+const path = require('path');
 const Logger = require('../../scripts/utils/logger');
 
 const LOG_CONTEXT = '[Terra-Toolkit:theme-aggregator]';
@@ -10,9 +11,6 @@ class WdioCustomeReporter extends WDIOSpecReporter {
   constructor(globalConfig, options) {
     super(globalConfig);
     this.runners = [];
-    this.on('runner:end', (runner) => {
-      this.runners.push(runner);
-    });
     this.resultJsonObject = {
       startDate: '',
       type: 'wdio',
@@ -22,28 +20,49 @@ class WdioCustomeReporter extends WDIOSpecReporter {
       output: [],
       endDate: '',
     };
-    this.filePath = options.reporterDir;
+    if (!options.reporterDir) {
+      this.filePath = path.resolve(__dirname, '..', '..', 'tests/wdio/reports/results');
+    } else {
+      this.filePath = options.reporterDir;
+    }
     this.fileName = '';
+    this.checkResultDirExist = this.checkResultDirExist.bind(this);
+    this.checkResultDirExist();
+    this.on('runner:end', (runner) => {
+      this.runners.push(runner);
+    });
+  }
+
+  hasReportDir() {
+    const reportDir = path.resolve(this.filePath, '..');
+    if (!fs.existsSync(reportDir)) {
+      fs.mkdirSync(reportDir);
+    }
+  }
+
+  checkResultDirExist() {
+    if (this.filePath && !fs.existsSync(this.filePath)) {
+      this.hasReportDir();
+      fs.mkdirSync(this.filePath);
+    }
   }
 
   fileNameCheck() {
-    if (process.env.LOCALE === undefined && process.env.THEME === undefined && process.env.LOCALE === undefined) {
-      this.fileName = 'result.json';
-    } else if (process.env.FORM_FACTOR === undefined && process.env.LOCALE === undefined) {
-      this.fileName = `/result-${process.env.THEME}.json`;
-    } else if (process.env.FORM_FACTOR === undefined && process.env.THEME === undefined) {
-      this.fileName = `/result-${process.env.LOCALE}.json`;
-    } else if (process.env.THEME === undefined && process.env.LOCALE === undefined) {
-      this.fileName = `/result-${process.env.FORM_FACTOR}.json`;
-    } else if (process.env.LOCALE === undefined) {
-      this.fileName = `/result-${process.env.FORM_FACTOR}-${process.env.THEME}.json`;
-    } else if (process.env.THEME === undefined) {
-      this.fileName = `/result-${process.env.LOCALE}-${process.env.FORM_FACTOR}.json`;
-    } else if (process.env.FORM_FACTOR === undefined) {
-      this.fileName = `/result-${process.env.LOCALE}-${process.env.THEME}.json`;
-    } else if (process.env.THEME !== undefined && process.env.LOCALE !== undefined && process.env.LOCALE !== undefined) {
-      this.fileName = `/result-${process.env.LOCALE || '-'}${process.env.THEME || '-'}${process.env.FORM_FACTOR}.json`;
+    const { LOCALE = '', THEME = '', FORM_FACTOR = '' } = process.env;
+    const fileNameConf = [];
+    if (LOCALE) {
+      fileNameConf.push(LOCALE);
     }
+    if (THEME) {
+      fileNameConf.push(THEME);
+    }
+    if (FORM_FACTOR) {
+      fileNameConf.push(FORM_FACTOR);
+    }
+    if (!fileNameConf.length) {
+      this.fileName = '/result.json';
+    }
+    this.fileName = `/result-${fileNameConf.join('-')}.json`;
   }
 
   printSuitesSummary() {
@@ -67,7 +86,6 @@ class WdioCustomeReporter extends WDIOSpecReporter {
         Logger.error(err.message, { context: LOG_CONTEXT });
       }
     });
-    this.resultJsonObject = {};
   }
 }
 
