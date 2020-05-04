@@ -83,7 +83,7 @@ const webpackConfig = (options, env, argv) => {
                 ident: 'postcss',
                 sourceMap: true,
                 plugins: [
-                  themeLinterPlugin.loaderPlugin,
+                  themeLinterPlugin.loaderPlugin(),
                   ThemePlugin(themeConfig),
                   rtl(),
                   Autoprefixer(),
