@@ -10,6 +10,8 @@ Wdio File Reporter is a reporter that logs wdio test output to separate files ba
 
 - Name of the tests and whether they've succeeded or failed
 
+## Usage
+
 Add WdioFileReporter as an additional reporter within the wdio.config file. Include "dot" to avoid overriding default reporters
 
 ```javascript
@@ -20,8 +22,7 @@ const WdioFileReporter = require('terra-toolkit/src/wdio/WdioFileReporter');
 }
 
 ```
-
-**This is how the generated log file looks**
+## Report Format
 - The name of the log file will be **result-\<locale>-\<theme>-\<form-factor>.json**(eg: result-en-huge.json)
 ```
 {
