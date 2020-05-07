@@ -16,6 +16,11 @@ import Logger from '../../../scripts/utils/logger';
 * provides accessibility and visual regression test steps.
 */
 export default class TerraService {
+  // expose overrides instance object to toggle functionality, such as the afterCommand.
+  constructor(overrides) {
+    this.overrides = overrides;
+  }
+
   // eslint-disable-next-line class-methods-use-this
   onPrepare(config) {
     Logger.log(`Running tests against ${Logger.emphasis(`Selenium ${config.seleniumVersion}`)}`, { context: '[Terra-Toolkit:terra-service]' });
@@ -80,6 +85,11 @@ export default class TerraService {
    */
   // eslint-disable-next-line class-methods-use-this
   afterCommand(commandName, args, result, error) {
+    // IE cannot handle multiple async afterCommand requests. Expose flag that turns the hidden input caret for full stack testing.
+    if (this.overrides && this.overrides.isAfterCommandDisabled) {
+      return;
+    }
+
     if ((commandName === 'refresh' || commandName === 'url') && !error) {
       try {
         // This is only meant as a convenience so failure is not particularly concerning
