@@ -10,6 +10,7 @@ const LOG_CONTEXT = '[Terra-Toolkit:terra-wdio-spec-reporter]';
 class TerraWDIOSpecReporter extends WDIOSpecReporter {
   constructor(globalConfig, options) {
     super(globalConfig);
+    this.options = options;
     this.runners = [];
     this.resultJsonObject = {
       startDate: '',
@@ -20,30 +21,25 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
       output: [],
       endDate: '',
     };
-    if (!options.reporterDir) {
-      this.filePath = path.resolve(__dirname, '..', '..', 'tests/wdio/reports/results');
+    if (options.reporterOptions && options.reporterOptions.outputDir) {
+      this.filePath = options.reporterOptions.outputDir;
     } else {
-      this.filePath = options.reporterDir;
+      this.filePath = path.join(process.cwd(), '/tests/wdio/reports/results');
     }
     this.fileName = '';
-    this.checkResultDirExist = this.checkResultDirExist.bind(this);
-    this.checkResultDirExist();
+    this.hasReportDir = this.hasReportDir.bind(this);
+    this.hasReportDir();
     this.on('runner:end', (runner) => {
       this.runners.push(runner);
     });
   }
 
   hasReportDir() {
-    const reportDir = path.resolve(this.filePath, '..');
+    const reportDir = path.join(this.filePath, '..');
     if (!fs.existsSync(reportDir)) {
-      fs.mkdirSync(reportDir);
-    }
-  }
-
-  checkResultDirExist() {
-    if (this.filePath && !fs.existsSync(this.filePath)) {
-      this.hasReportDir();
-      fs.mkdirSync(this.filePath);
+      fs.mkdirSync(this.filePath, { recursive: true }, (err) => {
+        if (err) throw err;
+      });
     }
   }
 
