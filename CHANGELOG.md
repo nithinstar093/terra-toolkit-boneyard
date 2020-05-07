@@ -3,6 +3,9 @@ Changelog
 
 Unreleased
 ----------
+
+6.1.0 - (May 5, 2020)
+----------
 ### Changed
 * Disabled color-contrast axe-core rule for clinical-lowlight-theme wdio testing
 * Added `TERRA_THEME_CONFIG` global to the webpack bundle.
