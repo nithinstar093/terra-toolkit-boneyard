@@ -3,9 +3,6 @@ const fs = require('fs');
 const wdioConf = require('./config/wdio/wdio.conf');
 const webpackConfigObject = require('./tests/test.config.js');
 const webpackConfigFunction = require('./tests/test.config.func.js');
-const TerraWDIOSpecReporter = require('./src/wdio/reporters/TerraWDIOSpecReporter');
-
-TerraWDIOSpecReporter.reporterName = 'TT_WDIO_CR';
 
 const site = path.join('./build');
 const siteExists = fs.existsSync(site) && fs.lstatSync(site).isDirectory() && fs.readdirSync(site).length > 0;
@@ -59,7 +56,6 @@ const config = {
 
   // Configuration for ServeStaticService
   webpackConfig,
-  reporters: ['dot', TerraWDIOSpecReporter],
 };
 
 exports.config = config;

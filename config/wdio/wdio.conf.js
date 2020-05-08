@@ -8,6 +8,9 @@ const {
   SeleniumDocker: SeleniumDockerService, ServeStaticService, Terra: TerraService,
 } = require('../../lib/wdio/services/index');
 const visualRegressionConfig = require('./visualRegressionConf');
+const TerraWDIOSpecReporter = require('../../src/wdio/reporters/TerraWDIOSpecReporter');
+
+TerraWDIOSpecReporter.reporterName = 'TT_WDIO_CR';
 
 /* Use to pass your host's IP when running wdio tests from a VM or behind a proxy. */
 const ip = process.env.WDIO_EXTERNAL_HOST || localIP.address();
@@ -115,6 +118,7 @@ const config = {
   reporterOptions: {
     outputDir: path.join(process.cwd(), '/tests/wdio/reports/results'),
   },
+  reporters: ['dot', TerraWDIOSpecReporter],
   ...theme && { theme },
 };
 
