@@ -3,7 +3,7 @@ const stripAnsi = require('strip-ansi');
 const fs = require('fs');
 const endOfLine = require('os').EOL;
 const path = require('path');
-const Logger = require('../../scripts/utils/logger');
+const Logger = require('../../../scripts/utils/logger');
 
 const LOG_CONTEXT = '[Terra-Toolkit:terra-wdio-spec-reporter]';
 

@@ -1,5 +1,5 @@
 import fs from 'fs';
-import WdioReporter from '../../reporters/wdio/TerraWDIOSpecReporter';
+import WdioReporter from '../../src/wdio/reporters/TerraWDIOSpecReporter';
 
 jest.mock('fs');
 
