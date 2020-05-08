@@ -8,7 +8,7 @@ const {
   SeleniumDocker: SeleniumDockerService, ServeStaticService, Terra: TerraService,
 } = require('../../lib/wdio/services/index');
 const visualRegressionConfig = require('./visualRegressionConf');
-const TerraWDIOSpecReporter = require('../../src/wdio/reporters/TerraWDIOSpecReporter');
+const TerraWDIOSpecReporter = require('../../reporters/wdio/TerraWDIOSpecReporter');
 
 TerraWDIOSpecReporter.reporterName = 'TT_WDIO_CR';
 
