@@ -55,10 +55,12 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
     if (FORM_FACTOR) {
       fileNameConf.push(FORM_FACTOR);
     }
-    if (!fileNameConf.length) {
+    if (fileNameConf.length === 0) {
       this.fileName = '/result.json';
     }
-    this.fileName = `/result-${fileNameConf.join('-')}.json`;
+    if (fileNameConf.length >= 1) {
+      this.fileName = `/result-${fileNameConf.join('-')}.json`;
+    }
   }
 
   printSuitesSummary() {
