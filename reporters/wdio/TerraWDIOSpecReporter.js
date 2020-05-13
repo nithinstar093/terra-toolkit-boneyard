@@ -28,7 +28,7 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
     this.hasReportDir = this.hasReportDir.bind(this);
     this.setTestModule = this.setTestModule.bind(this);
     this.hasMonoRepo = this.hasMonoRepo.bind(this);
-    this.monoRepoPrintSuitesSummary = this.monoRepoPrintSuitesSummary(this);
+    this.monoRepoPrintSuitesSummary = this.monoRepoPrintSuitesSummary.bind(this);
     this.setTestDirPath = this.setTestDirPath.bind(this);
     this.hasMonoRepo();
     this.setTestDirPath();
