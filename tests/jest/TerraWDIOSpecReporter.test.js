@@ -6,6 +6,7 @@ jest.mock('fs');
 describe('Wdio File Reporter Testing', () => {
   let fsWriteSpy;
   let spyGetSuiteResult;
+  let fsExistSyncSpy;
   const wdioReporter = new WdioReporter({}, { reporterDir: 'wdio/reports' });
   const runner = {
     event: 'runner:end',
@@ -17,6 +18,7 @@ describe('Wdio File Reporter Testing', () => {
   afterEach(() => {
     fsWriteSpy.mockClear();
     spyGetSuiteResult.mockClear();
+    fsExistSyncSpy = jest.spyOn(fs, 'existsSync');
   });
   beforeEach(() => {
     fsWriteSpy = jest.spyOn(fs, 'writeFileSync');
@@ -47,5 +49,19 @@ describe('Wdio File Reporter Testing', () => {
 
   it('should set filePath when  options.filePath not available', () => {
     expect(wdioReporter.filePath).toEqual(expect.stringContaining('wdio/reports'));
+  });
+
+  it('should call hasMonoRepo', () => {
+    expect(fsExistSyncSpy).toBeCalled();
+    expect(typeof wdioReporter.isMonoRepo).toEqual('boolean');
+  });
+
+  it('should call setTestDirPath and include /tests/wdio/reports/results in reporter filePath', () => {
+    expect(wdioReporter.filePath).toEqual(expect.stringContaining('/tests/wdio/reports/results'));
+  });
+
+  it('should set this.moduleName when root folder has package directory', () => {
+    wdioReporter.setTestModule('packages/terra-clinical-header');
+    expect(wdioReporter.moduleName).toEqual(expect.stringContaining('terra-clinical-header'));
   });
 });
