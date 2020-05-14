@@ -59,10 +59,11 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
   }
 
   hasReportDir() {
-    // const reportDir = path.join(this.filePath, '..');
     if (!fs.existsSync(this.filePath)) {
       fs.mkdirSync(this.filePath, { recursive: true }, (err) => {
-        if (err) throw err;
+        if (err) {
+          Logger.error(err.message, { context: LOG_CONTEXT });
+        }
       });
     }
   }
@@ -130,12 +131,12 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
     if (output && moduleKeys.length) {
       moduleKeys.forEach(key => {
         const fileData = {
-          endDate,
           startDate,
           locale,
           theme,
           formFactor,
           output: output[key],
+          endDate,
         };
         fs.writeFileSync(`${this.filePath}${this.fileName}${key}.json`, `${JSON.stringify(fileData, null, 2)}`, { flag: 'w+' }, (err) => {
           if (err) {
