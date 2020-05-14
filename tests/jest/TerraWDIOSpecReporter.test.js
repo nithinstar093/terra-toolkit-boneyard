@@ -56,12 +56,17 @@ describe('Wdio File Reporter Testing', () => {
     expect(typeof wdioReporter.isMonoRepo).toEqual('boolean');
   });
 
-  it('should call setTestDirPath and include /tests/wdio/reports/results in reporter filePath', () => {
-    expect(wdioReporter.filePath).toEqual(expect.stringContaining('/tests/wdio/reports/results'));
+  it('should call setTestDirPath and include /test in reporter filePath', () => {
+    expect(wdioReporter.filePath).toEqual(expect.stringContaining('/test'));
   });
 
   it('should set this.moduleName when root folder has package directory', () => {
     wdioReporter.setTestModule('packages/terra-clinical-header');
     expect(wdioReporter.moduleName).toEqual(expect.stringContaining('terra-clinical-header'));
+  });
+
+  it('should not set this.moduleName when root folder has no package directory', () => {
+    wdioReporter.setTestModule('');
+    expect(wdioReporter.moduleName).toEqual(expect.stringContaining(''));
   });
 });

@@ -24,6 +24,7 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
     this.fileName = '';
     this.moduleName = '';
     this.isMonoRepo = false;
+    this.testDirPath = '';
     this.setResultsDir = this.setResultsDir.bind(this);
     this.hasReportDir = this.hasReportDir.bind(this);
     this.setTestModule = this.setTestModule.bind(this);
@@ -41,11 +42,11 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
 
   setTestDirPath() {
     if (fs.existsSync(path.join(process.cwd(), '/tests'))) {
-      this.filePath = '/tests/jest/reports/results';
+      this.testDirPath = '/tests/wdio/reports/results';
     } else if (fs.existsSync(path.join(process.cwd(), '/test'))) {
-      this.filePath = '/test/jest/reports/results';
+      this.testDirPath = '/test/wdio/reports/results';
     } else {
-      this.filePath = '/tests/jest/reports/results';
+      this.testDirPath = '/tests/wdio/reports/results';
     }
   }
 
@@ -53,13 +54,13 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
     if (options.reporterOptions && options.reporterOptions.outputDir) {
       this.filePath = options.reporterOptions.outputDir;
     } else {
-      this.filePath = path.join(process.cwd(), '/tests/wdio/reports/results');
+      this.filePath = path.join(process.cwd(), this.testDirPath);
     }
   }
 
   hasReportDir() {
-    const reportDir = path.join(this.filePath, '..');
-    if (!fs.existsSync(reportDir)) {
+    // const reportDir = path.join(this.filePath, '..');
+    if (!fs.existsSync(this.filePath)) {
       fs.mkdirSync(this.filePath, { recursive: true }, (err) => {
         if (err) throw err;
       });
