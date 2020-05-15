@@ -121,18 +121,27 @@ describe('Theme Linter Loader Plugin', () => {
 
     const mockDecl1 = {
       prop: '--var1',
+      value: 1,
     };
 
     const mockDecl2 = {
       prop: '--var2',
+      value: 2,
     };
 
     const mockDecl2Dup = {
       prop: '--var2',
+      value: 3,
     };
 
     const mockDecl3 = {
       prop: '--var3',
+      value: 3,
+    };
+
+    const mockDecl3NonDup = {
+      prop: '--var3',
+      value: 3,
     };
 
     const mockDefaultNode = {
@@ -159,6 +168,7 @@ describe('Theme Linter Loader Plugin', () => {
           func(mockDecl2);
           func(mockDecl2Dup);
           func(mockDecl3);
+          func(mockDecl3NonDup);
         }),
     };
 
@@ -214,24 +224,36 @@ describe('Theme Linter Plugin', () => {
     // default is set up correctly
     ['--var1', '--var2', '--var3'].forEach((item) => plugin.variableInformation.themeableVariables.add(item));
     ['--var1', '--var2', '--var3'].forEach((item) => plugin.variableInformation.themeVariableTracker.default.populatedVariables.add(item));
+    plugin.variableInformation.themeVariableTracker.default.duplicateVariableTracker = { '--var1': new Set([1]), '--var2': new Set([2]), '--var3': new Set([3]) };
 
     // a has dup variables
     ['--var1', '--var2', '--var3'].forEach((item) => plugin.variableInformation.themeableVariables.add(item));
     ['--var1', '--var2', '--var3'].forEach((item) => plugin.variableInformation.themeVariableTracker.a.populatedVariables.add(item));
-    ['--var2', '--var3'].forEach((item) => plugin.variableInformation.themeVariableTracker.a.duplicateVariables.add(item));
+    plugin.variableInformation.themeVariableTracker.a.duplicateVariableTracker = { '--var1': new Set([1]), '--var2': new Set([2, 3]), '--var3': new Set([3, 4]) };
 
     // b is missing variables
     ['--var1', '--var2', '--var3'].forEach((item) => plugin.variableInformation.themeableVariables.add(item));
     ['--var3'].forEach((item) => plugin.variableInformation.themeVariableTracker.b.populatedVariables.add(item));
+    plugin.variableInformation.themeVariableTracker.b.duplicateVariableTracker = { '--var3': new Set([3]) };
 
     // c has stale variables
     ['--var1', '--var2', '--var3'].forEach((item) => plugin.variableInformation.themeableVariables.add(item));
     ['--var1', '--var2', '--var3', '--var4'].forEach((item) => plugin.variableInformation.themeVariableTracker.c.populatedVariables.add(item));
+    plugin.variableInformation.themeVariableTracker.c.duplicateVariableTracker = {
+      '--var1': new Set([1]),
+      '--var2': new Set([2]),
+      '--var3': new Set([3]),
+      '--var4': new Set([4]),
+    };
 
     // d has various problems
     ['--var1', '--var2', '--var3'].forEach((item) => plugin.variableInformation.themeableVariables.add(item));
     ['--var2', '--var3', '--var4'].forEach((item) => plugin.variableInformation.themeVariableTracker.d.populatedVariables.add(item));
-    ['--var2', '--var3'].forEach((item) => plugin.variableInformation.themeVariableTracker.d.duplicateVariables.add(item));
+    plugin.variableInformation.themeVariableTracker.d.duplicateVariableTracker = {
+      '--var2': new Set([2, 3]),
+      '--var3': new Set([3, 4]),
+      '--var4': new Set([4]),
+    };
 
     plugin.apply(mockCompiler);
 

@@ -4,15 +4,15 @@ exports[`Theme Linter Constructor creates the tracker with a filled out config 1
 Object {
   "themeVariableTracker": Object {
     "a": Object {
-      "duplicateVariables": Set {},
+      "duplicateVariableTracker": Object {},
       "populatedVariables": Set {},
     },
     "b": Object {
-      "duplicateVariables": Set {},
+      "duplicateVariableTracker": Object {},
       "populatedVariables": Set {},
     },
     "default": Object {
-      "duplicateVariables": Set {},
+      "duplicateVariableTracker": Object {},
       "populatedVariables": Set {},
     },
   },
@@ -24,15 +24,15 @@ exports[`Theme Linter Constructor creates the tracker with an undefined scoped i
 Object {
   "themeVariableTracker": Object {
     "a": Object {
-      "duplicateVariables": Set {},
+      "duplicateVariableTracker": Object {},
       "populatedVariables": Set {},
     },
     "b": Object {
-      "duplicateVariables": Set {},
+      "duplicateVariableTracker": Object {},
       "populatedVariables": Set {},
     },
     "default": Object {
-      "duplicateVariables": Set {},
+      "duplicateVariableTracker": Object {},
       "populatedVariables": Set {},
     },
   },
@@ -44,11 +44,11 @@ exports[`Theme Linter Constructor creates the tracker with no default in the con
 Object {
   "themeVariableTracker": Object {
     "a": Object {
-      "duplicateVariables": Set {},
+      "duplicateVariableTracker": Object {},
       "populatedVariables": Set {},
     },
     "b": Object {
-      "duplicateVariables": Set {},
+      "duplicateVariableTracker": Object {},
       "populatedVariables": Set {},
     },
   },
@@ -60,7 +60,7 @@ exports[`Theme Linter Constructor creates the tracker with no scoped in the conf
 Object {
   "themeVariableTracker": Object {
     "default": Object {
-      "duplicateVariables": Set {},
+      "duplicateVariableTracker": Object {},
       "populatedVariables": Set {},
     },
   },
@@ -72,15 +72,15 @@ exports[`Theme Linter Loader Plugin populates the list of themeable variables 1`
 Object {
   "themeVariableTracker": Object {
     "a": Object {
-      "duplicateVariables": Set {},
+      "duplicateVariableTracker": Object {},
       "populatedVariables": Set {},
     },
     "b": Object {
-      "duplicateVariables": Set {},
+      "duplicateVariableTracker": Object {},
       "populatedVariables": Set {},
     },
     "default": Object {
-      "duplicateVariables": Set {},
+      "duplicateVariableTracker": Object {},
       "populatedVariables": Set {},
     },
   },
@@ -95,14 +95,27 @@ exports[`Theme Linter Loader Plugin populates the list of tracked variables 1`] 
 Object {
   "themeVariableTracker": Object {
     "a": Object {
-      "duplicateVariables": Set {},
+      "duplicateVariableTracker": Object {
+        "--var1": Set {
+          1,
+        },
+      },
       "populatedVariables": Set {
         "--var1",
       },
     },
     "b": Object {
-      "duplicateVariables": Set {
-        "--var2",
+      "duplicateVariableTracker": Object {
+        "--var1": Set {
+          1,
+        },
+        "--var2": Set {
+          2,
+          3,
+        },
+        "--var3": Set {
+          3,
+        },
       },
       "populatedVariables": Set {
         "--var1",
@@ -111,7 +124,17 @@ Object {
       },
     },
     "default": Object {
-      "duplicateVariables": Set {},
+      "duplicateVariableTracker": Object {
+        "--var1": Set {
+          1,
+        },
+        "--var2": Set {
+          2,
+        },
+        "--var3": Set {
+          3,
+        },
+      },
       "populatedVariables": Set {
         "--var1",
         "--var2",

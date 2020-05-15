@@ -20,7 +20,7 @@ module.exports = class ThemeLinterPlugin {
     themes.forEach((theme) => {
       this.variableInformation.themeVariableTracker[theme] = {
         populatedVariables: new Set(),
-        duplicateVariables: new Set(),
+        duplicateVariableTracker: {},
       };
     });
   }
@@ -42,10 +42,10 @@ module.exports = class ThemeLinterPlugin {
         Object.entries(this.variableInformation.themeVariableTracker).forEach(([theme, tracker]) => {
           root.walkRules(RegExp(`.${theme}`), (node) => {
             node.walkDecls(decl => {
-              if (tracker.populatedVariables.has(decl.prop)) {
-                tracker.duplicateVariables.add(decl.prop);
-              }
-              tracker.populatedVariables.add(decl.prop);
+              const updatedTracker = tracker;
+              updatedTracker.populatedVariables.add(decl.prop);
+              updatedTracker.duplicateVariableTracker[decl.prop] = tracker.duplicateVariableTracker[decl.prop] || new Set();
+              updatedTracker.duplicateVariableTracker[decl.prop].add(decl.value);
             });
           });
         });
@@ -68,9 +68,10 @@ module.exports = class ThemeLinterPlugin {
           compilation.warnings.push(`${theme}.\nThe following variables are stale:\n${staleThemeVariables.join('\n')}`);
         }
 
+        const duplicateVariables = Object.entries(tracker.duplicateVariableTracker).filter(([, values]) => values.size > 1).map(([key]) => key);
         // Mark duplicate variables as a duplicate warning
-        if (tracker.duplicateVariables.size) {
-          compilation.warnings.push(`${theme}.\nThe following variables are duplicated:\n${Array.from(tracker.duplicateVariables).sort().join('\n')}`);
+        if (duplicateVariables.length > 0) {
+          compilation.warnings.push(`${theme}.\nThe following variables are duplicated:\n${duplicateVariables.sort().join('\n')}`);
         }
       });
 
