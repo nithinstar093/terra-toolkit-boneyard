@@ -3,6 +3,9 @@ Changelog
 
 Unreleased
 ----------
+### Added
+* Theme Linter PostCSS plugin to track missing, duplicate, and stale variables and a corresponding Theme Linter Webpack plugin to flag those tracked variables as warnings
+
 ### Changed
 * Disabled color-contrast axe-core rule for clinical-lowlight-theme wdio testing
 * Added `TERRA_THEME_CONFIG` global to the webpack bundle.

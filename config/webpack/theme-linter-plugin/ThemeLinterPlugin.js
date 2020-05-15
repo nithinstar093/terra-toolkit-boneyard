@@ -1,37 +1,34 @@
-const path = require('path');
-const fs = require('fs');
 const postcss = require('postcss');
 const postcssValueParser = require('postcss-value-parser');
+const getThemeConfig = require('../postcss/_getThemeConfig');
 
-const CONFIG = 'terra-theme.config.js';
-
+/**
+ * This plugin provides a post css loader plugin that tracks themeable variables and a webpack plugin that aggregates those
+ * results as warnings by the webpack compilation
+ */
 module.exports = class ThemeLinterPlugin {
   constructor(config) {
-    // Retrieve theme config.
-    let themeConfig = {};
-    if (config) {
-      themeConfig = config;
-    } else {
-      const defaultConfig = path.resolve(process.cwd(), CONFIG);
-      if (fs.existsSync(defaultConfig)) {
-        // eslint-disable-next-line global-require, import/no-dynamic-require
-        themeConfig = require(defaultConfig);
-      }
-    }
+    const themeConfig = config || getThemeConfig();
 
     this.variableInformation = {
       themeableVariables: new Set(),
-      themeToPopulatedVariables: {},
+      themeVariableTracker: {},
     };
+
+    // Set up a tracker for each theme in the config
     const themes = [themeConfig.theme, ...(themeConfig.scoped || [])].filter((theme) => theme !== undefined);
     themes.forEach((theme) => {
-      this.variableInformation.themeToPopulatedVariables[theme] = new Set();
+      this.variableInformation.themeVariableTracker[theme] = {
+        populatedVariables: new Set(),
+        duplicateVariables: new Set(),
+      };
     });
   }
 
   loaderPlugin() {
-    return postcss.plugin('theme-linter-plugin', () => (
+    return postcss.plugin('terra-theme-linter-plugin', () => (
       (root) => {
+        // Walk the declarations and flag all values that are var's
         root.walkDecls(decl => {
           postcssValueParser(decl.value).walk(node => {
             if (node.type === 'function' && node.value === 'var') {
@@ -40,10 +37,15 @@ module.exports = class ThemeLinterPlugin {
           });
         });
 
-        Object.entries(this.variableInformation.themeToPopulatedVariables).forEach(([theme, populatedVariables]) => {
+        // For each theme, walk each rule that is declared as a class for that theme and then walk declarations
+        // for that rule and mark the variables as tracked (or duplicate if they've already been added)
+        Object.entries(this.variableInformation.themeVariableTracker).forEach(([theme, tracker]) => {
           root.walkRules(RegExp(`.${theme}`), (node) => {
             node.walkDecls(decl => {
-              populatedVariables.add(decl.prop);
+              if (tracker.populatedVariables.has(decl.prop)) {
+                tracker.duplicateVariables.add(decl.prop);
+              }
+              tracker.populatedVariables.add(decl.prop);
             });
           });
         });
@@ -52,12 +54,23 @@ module.exports = class ThemeLinterPlugin {
   }
 
   apply(compiler) {
-    compiler.hooks.emit.tapPromise('ThemeLinterPlugin', (compilation) => {
-      Object.entries(this.variableInformation.themeToPopulatedVariables).forEach(([theme, populatedVariables]) => {
-        const missingThemeVariables = Array.from(new Set([...this.variableInformation.themeableVariables].filter(x => !populatedVariables.has(x)))).sort();
-
+    compiler.hooks.emit.tapPromise('TerraThemeLinterPlugin', (compilation) => {
+      Object.entries(this.variableInformation.themeVariableTracker).forEach(([theme, tracker]) => {
+        // Mark variables that are in the list of themeable variables but weren't tracked as a missing warning
+        const missingThemeVariables = Array.from(new Set([...this.variableInformation.themeableVariables].filter(x => !tracker.populatedVariables.has(x)))).sort();
         if (missingThemeVariables.length > 0) {
           compilation.warnings.push(`${theme}.\nThe following variables are missing:\n${missingThemeVariables.join('\n')}`);
+        }
+
+        // Mark variables that are in the list of populated variables but in the list of themeable variables as a stale warning
+        const staleThemeVariables = Array.from(new Set([...tracker.populatedVariables].filter(x => !this.variableInformation.themeableVariables.has(x)))).sort();
+        if (staleThemeVariables.length > 0) {
+          compilation.warnings.push(`${theme}.\nThe following variables are stale:\n${staleThemeVariables.join('\n')}`);
+        }
+
+        // Mark duplicate variables as a duplicate warning
+        if (tracker.duplicateVariables.size) {
+          compilation.warnings.push(`${theme}.\nThe following variables are duplicated:\n${Array.from(tracker.duplicateVariables).sort().join('\n')}`);
         }
       });
 
