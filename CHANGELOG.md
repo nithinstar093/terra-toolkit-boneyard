@@ -3,9 +3,15 @@ Changelog
 
 Unreleased
 ----------
+### Fixed
+* postcss theme plugin: remove :root pseduo selectors when checking for the theme selector.
+
 ### Added
+* webpack config: add webpack env to allow overriding the theme.
 * Theme Linter PostCSS plugin to track missing, duplicate, and stale variables and a corresponding Theme Linter Webpack plugin to flag those tracked variables as warnings
 
+6.1.0 - (May 5, 2020)
+----------
 ### Changed
 * Disabled color-contrast axe-core rule for clinical-lowlight-theme wdio testing
 * Added `TERRA_THEME_CONFIG` global to the webpack bundle.
