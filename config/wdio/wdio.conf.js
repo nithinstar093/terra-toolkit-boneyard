@@ -36,6 +36,7 @@ const locale = process.env.LOCALE;
 
 /* Use to change the form factor (test viewport) used in the wdio run. */
 const formFactor = process.env.FORM_FACTOR;
+
 /* Use to disable running webpack in the ServeStatic Service, provide the packed site to serve directly. */
 const site = process.env.SITE;
 
@@ -116,7 +117,7 @@ const config = {
     bail,
   },
   reporterOptions: {
-    outputDir: path.join(process.cwd(), '/tests/wdio/reports/results'),
+    outputDir: path.resolve(process.cwd(), 'tests', 'wdio', 'reports', 'results'),
   },
   reporters: ['dot', TerraWDIOSpecReporter],
   ...theme && { theme },

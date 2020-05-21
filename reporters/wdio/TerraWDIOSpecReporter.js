@@ -23,39 +23,36 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
     };
     this.fileName = '';
     this.moduleName = '';
-    this.isMonoRepo = false;
     this.testDirPath = '';
     this.setResultsDir = this.setResultsDir.bind(this);
     this.hasReportDir = this.hasReportDir.bind(this);
     this.setTestModule = this.setTestModule.bind(this);
     this.hasMonoRepo = this.hasMonoRepo.bind(this);
-    this.monoRepoPrintSuitesSummary = this.monoRepoPrintSuitesSummary.bind(this);
+    this.printSummary = this.printSummary.bind(this);
     this.setTestDirPath = this.setTestDirPath.bind(this);
-    this.hasMonoRepo();
+    this.isMonoRepo = this.hasMonoRepo();
     this.setTestDirPath();
-    this.setResultsDir(options);
+    this.filePath = this.setResultsDir(options);
     this.hasReportDir();
     this.on('runner:end', (runner) => {
       this.runners.push(runner);
     });
   }
 
+  // eslint-disable-next-line class-methods-use-this
   setTestDirPath() {
-    if (fs.existsSync(path.join(process.cwd(), '/tests'))) {
-      this.testDirPath = '/tests/wdio/reports/results';
-    } else if (fs.existsSync(path.join(process.cwd(), '/test'))) {
-      this.testDirPath = '/test/wdio/reports/results';
-    } else {
-      this.testDirPath = '/tests/wdio/reports/results';
+    let testDir = 'tests';
+    if (fs.existsSync(path.join(process.cwd(), '/test'))) {
+      testDir = 'test';
     }
+    return path.join(testDir, 'wdio', 'reports', 'reports');
   }
 
   setResultsDir(options) {
     if (options.reporterOptions && options.reporterOptions.outputDir) {
-      this.filePath = options.reporterOptions.outputDir;
-    } else {
-      this.filePath = path.join(process.cwd(), this.testDirPath);
+      return options.reporterOptions.outputDir;
     }
+    return path.join(process.cwd(), this.setTestDirPath());
   }
 
   hasReportDir() {
@@ -68,10 +65,9 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   hasMonoRepo() {
-    if (fs.existsSync(path.join(process.cwd(), '/packages'))) {
-      this.isMonoRepo = true;
-    }
+    return fs.existsSync(path.join(process.cwd(), '/packages'));
   }
 
   fileNameCheck() {
@@ -105,7 +101,7 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
     }
   }
 
-  monoRepoPrintSuitesSummary(runners) {
+  printSummary(runners) {
     if (runners && runners.length) {
       runners.forEach((runner) => {
         this.setTestModule(runner.specs[0]);
@@ -138,6 +134,7 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
           output: output[key],
           endDate,
         };
+
         fs.writeFileSync(`${this.filePath}${this.fileName}${key}.json`, `${JSON.stringify(fileData, null, 2)}`, { flag: 'w+' }, (err) => {
           if (err) {
             Logger.error(err.message, { context: LOG_CONTEXT });
@@ -156,24 +153,7 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
     this.resultJsonObject.formFactor = FORM_FACTOR;
     this.resultJsonObject.theme = THEME || 'default-theme';
     const { runners } = this;
-    if (!this.isMonoRepo) {
-      if (runners && runners.length) {
-        runners.forEach((runner) => {
-          const readableMessage = `${stripAnsi(this.getSuiteResult(runner))}${endOfLine}`;
-          if (readableMessage.search('\n') !== -1) {
-            this.resultJsonObject.output.push(readableMessage.split(/\n/g));
-          }
-        });
-      }
-      this.fileNameCheck();
-      fs.writeFileSync(`${this.filePath}${this.fileName}.json`, `${JSON.stringify(this.resultJsonObject, null, 2)}`, { flag: 'w+' }, (err) => {
-        if (err) {
-          Logger.error(err.message, { context: LOG_CONTEXT });
-        }
-      });
-    } else {
-      this.monoRepoPrintSuitesSummary(runners);
-    }
+    this.printSummary(runners);
   }
 }
 
