@@ -3,6 +3,17 @@ Changelog
 
 Unreleased
 ----------
+
+6.2.0 - (May 19, 2020)
+----------
+### Fixed
+* postcss theme plugin: remove :root pseduo selectors when checking for the theme selector.
+
+### Added
+* webpack config: add webpack env to allow overriding the theme.
+
+6.1.0 - (May 5, 2020)
+----------
 ### Changed
 * Disabled color-contrast axe-core rule for clinical-lowlight-theme wdio testing
 * Added `TERRA_THEME_CONFIG` global to the webpack bundle.
