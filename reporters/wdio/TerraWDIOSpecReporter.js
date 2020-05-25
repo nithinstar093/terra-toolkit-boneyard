@@ -23,14 +23,13 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
     };
     this.fileName = '';
     this.moduleName = '';
-    this.testDirPath = '';
     this.setResultsDir = this.setResultsDir.bind(this);
     this.hasReportDir = this.hasReportDir.bind(this);
     this.setTestModule = this.setTestModule.bind(this);
-    this.hasMonoRepo = this.hasMonoRepo.bind(this);
+    this.getIsMonoRepo = this.getIsMonoRepo.bind(this);
     this.printSummary = this.printSummary.bind(this);
     this.setTestDirPath = this.setTestDirPath.bind(this);
-    this.isMonoRepo = this.hasMonoRepo();
+    this.isMonoRepo = this.getIsMonoRepo();
     this.setTestDirPath();
     this.filePath = this.setResultsDir(options);
     this.hasReportDir();
@@ -42,10 +41,10 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
   // eslint-disable-next-line class-methods-use-this
   setTestDirPath() {
     let testDir = 'tests';
-    if (fs.existsSync(path.join(process.cwd(), '/test'))) {
+    if (fs.existsSync(path.join(process.cwd(), 'test'))) {
       testDir = 'test';
     }
-    return path.join(testDir, 'wdio', 'reports', 'reports');
+    return path.join(testDir, 'wdio', 'reports', 'results');
   }
 
   setResultsDir(options) {
@@ -66,10 +65,14 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  hasMonoRepo() {
-    return fs.existsSync(path.join(process.cwd(), '/packages'));
+  getIsMonoRepo() {
+    return fs.existsSync(path.join(process.cwd(), 'packages'));
   }
 
+  /**
+  * Formatting the filename based on LOCALE, THEME, FORM_FACTOR and locale
+  * @return null
+  */
   fileNameCheck() {
     const { LOCALE, THEME, FORM_FACTOR } = process.env;
     const fileNameConf = [];
@@ -123,6 +126,7 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
       theme,
       output,
     } = this.resultJsonObject;
+    let filePathLocation = '';
     const moduleKeys = Object.keys(output) || [];
     if (output && moduleKeys.length) {
       moduleKeys.forEach(key => {
@@ -134,8 +138,12 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
           output: output[key],
           endDate,
         };
-
-        fs.writeFileSync(`${this.filePath}${this.fileName}${key}.json`, `${JSON.stringify(fileData, null, 2)}`, { flag: 'w+' }, (err) => {
+        if (this.isMonoRepo) {
+          filePathLocation = `${this.filePath}${this.fileName}-${key}.json`;
+        } else {
+          filePathLocation = `${this.filePath}${this.fileName}.json`;
+        }
+        fs.writeFileSync(filePathLocation, `${JSON.stringify(fileData, null, 2)}`, { flag: 'w+' }, (err) => {
           if (err) {
             Logger.error(err.message, { context: LOG_CONTEXT });
           }
