@@ -65,7 +65,7 @@ module.exports = class ThemeLinterPlugin {
         // Mark variables that are in the list of populated variables but in the list of themeable variables as a stale warning
         const staleThemeVariables = Array.from(new Set([...tracker.populatedVariables].filter(x => !this.variableInformation.themeableVariables.has(x)))).sort();
         if (staleThemeVariables.length > 0) {
-          compilation.warnings.push(`${theme}.\nThe following variables are stale:\n${staleThemeVariables.join('\n')}`);
+          compilation.warnings.push(`${theme}.\nThe following variables are not used:\n${staleThemeVariables.join('\n')}`);
         }
 
         const duplicateVariables = Object.entries(tracker.duplicateVariableTracker).filter(([, values]) => values.size > 1).map(([key]) => key);
