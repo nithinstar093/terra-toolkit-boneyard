@@ -8,7 +8,8 @@ Unreleased
 
 ### Added
 * webpack config: add webpack env to allow overriding the theme.
-* Theme Linter PostCSS plugin to track missing, duplicate, and stale variables and a corresponding Theme Linter Webpack plugin to flag those tracked variables as warnings
+* Theme Linter PostCSS plugin to collect missing, duplicate, and stale css variables
+* Theme Linter Webpack plugin to flag missing, duplicate, and stale css variables variables as warnings
 
 6.1.0 - (May 5, 2020)
 ----------
