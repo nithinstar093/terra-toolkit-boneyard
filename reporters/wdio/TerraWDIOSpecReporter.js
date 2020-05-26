@@ -38,6 +38,11 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
     });
   }
 
+  /**
+  * output test results in tests/wdio/reports/results or test/wdio/reports/results
+  * depending on whether tests or test is the directory with tests
+  * @return string
+  */
   // eslint-disable-next-line class-methods-use-this
   setTestDirPath() {
     let testDir = 'tests';
@@ -47,6 +52,13 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
     return path.join(testDir, 'wdio', 'reports', 'results');
   }
 
+  /**
+  * checks global config has outputDir config
+  * return global config if available
+  * return /tests path if global config not available
+  * @param {object} options
+  * @return string
+  */
   setResultsDir(options) {
     if (options.reporterOptions && options.reporterOptions.outputDir) {
       return options.reporterOptions.outputDir;
@@ -54,6 +66,10 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
     return path.join(process.cwd(), this.setTestDirPath());
   }
 
+  /**
+  * Check and create reports dir if doesn't exist
+  * @return null
+  */
   hasReportDir() {
     if (!fs.existsSync(this.filePath)) {
       fs.mkdirSync(this.filePath, { recursive: true }, (err) => {
@@ -93,6 +109,11 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
     }
   }
 
+  /**
+  * Set the package name to moduleName property if specsValue contains /package string
+  * @param {string} specsValue
+  * @return null
+  */
   setTestModule(specsValue) {
     const index = specsValue.lastIndexOf('packages/');
     if (index > -1) {
@@ -104,6 +125,11 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
     }
   }
 
+  /**
+  * Writes result to a json file
+  * @param {array} runners
+  * @return null
+  */
   printSummary(runners) {
     if (runners && runners.length) {
       runners.forEach((runner) => {
