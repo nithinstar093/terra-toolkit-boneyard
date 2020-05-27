@@ -1,8 +1,8 @@
 class ThemeableVariableValue {
-  constructor(name, value, location) {
+  constructor(name, value, origin) {
     this.name = name;
     this.value = value;
-    this.location = location;
+    this.location = origin;
   }
 }
 

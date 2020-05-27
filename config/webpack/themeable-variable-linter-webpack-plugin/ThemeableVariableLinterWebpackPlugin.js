@@ -1,4 +1,6 @@
-const namesAndLocationsOfVariables = (variables) => variables.map(variable => `${variable.name}(${variable.location})`);
+const path = require('path');
+
+const namesAndLocationsOfVariables = (variables) => variables.map(variable => `${variable.name} - ${path.relative(process.cwd(), variable.origin.file)}(line: ${variable.origin.line}, column: ${variable.origin.column})`);
 
 /**
  * This plugin provides a post css loader plugin that tracks themeable variables and a webpack plugin that aggregates those
@@ -11,7 +13,7 @@ module.exports = class ThemeableVariableLinterPlugin {
 
   apply(compiler) {
     compiler.hooks.emit.tapPromise('TerraThemeableVariableLinterPlugin', (compilation) => {
-      Object.entries(this.themeableVariableInformation.themes).forEach((theme) => {
+      this.themeableVariableInformation.themes.forEach((theme) => {
         const missingVariablesForTheme = this.themeableVariableInformation.missingVariablesForTheme(theme);
         if (missingVariablesForTheme.length > 0) {
           compilation.warnings.push(`${theme}.\nThe following variables are missing:\n${namesAndLocationsOfVariables(missingVariablesForTheme).join('\n')}`);
