@@ -22,6 +22,7 @@ describe('Wdio File Reporter Testing', () => {
     fsWriteSpy = jest.spyOn(fs, 'writeFileSync');
     spyGetSuiteResult = jest.fn().mockImplementation(() => 'test result');
   });
+
   it('resultJsonObject should have output, startDate, endDate, and type', () => {
     expect(wdioReporter.resultJsonObject).toHaveProperty('output');
     expect(wdioReporter.resultJsonObject).toHaveProperty('startDate');
