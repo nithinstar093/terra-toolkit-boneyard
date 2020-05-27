@@ -15,13 +15,15 @@ class ThemeableVariableInformation {
 
   addValuedVariableForTheme(variable, theme) {
     this.perThemeVariableTracker[theme][variable.name] = this.perThemeVariableTracker[theme][variable.name] || [];
-    this.perThemeVariableTracker[theme][variable.name].push(variable);
+    if (!this.perThemeVariableTracker[theme][variable.name].some(existingVariable => existingVariable.value === variable.value)) {
+      this.perThemeVariableTracker[theme][variable.name].push(variable);
+    }
   }
 
   missingVariablesForTheme(theme) {
     return Object.entries(this.variables).filter(([name]) => (
       !Object.keys(this.perThemeVariableTracker[theme]).includes(name)
-    ).map(([, variable]) => variable)).sort((variable) => variable.name);
+    )).map(([, variable]) => variable).sort((variable1, variable2) => variable1.name.localeCompare(variable2.name));
   }
 
   unusedVariablesForTheme(theme) {
@@ -29,15 +31,15 @@ class ThemeableVariableInformation {
       !Object.keys(this.variables).includes(name)
     )).reduce((accumulatedVariables, [, variables]) => (
       accumulatedVariables.concat(variables)
-    ), []).sort((variable) => variable.name);
+    ), []).sort((variable1, variable2) => variable1.name.localeCompare(variable2.name));
   }
 
   duplicateVariablesForTheme(theme) {
     return Object.values(this.perThemeVariableTracker[theme]).filter((variables) => (
-      variables.length > 0
+      variables.length > 1
     )).reduce((accumulatedVariables, variables) => (
       accumulatedVariables.concat(variables)
-    ), []).sort((variable) => variable.name);
+    ), []).sort((variable1, variable2) => variable1.name.localeCompare(variable2.name));
   }
 }
 

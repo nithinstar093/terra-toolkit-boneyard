@@ -1,7 +1,7 @@
 class ThemeableVariableDeclaration {
-  constructor(name, location) {
+  constructor(name, origin) {
     this.name = name;
-    this.location = location;
+    this.origin = origin;
   }
 }
 

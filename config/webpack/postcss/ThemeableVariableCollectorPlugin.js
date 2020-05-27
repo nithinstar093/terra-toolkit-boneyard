@@ -9,7 +9,8 @@ module.exports = postcss.plugin('terra-themeable-variable-collector-plugin', (th
     root.walkDecls(decl => {
       postcssValueParser(decl.value).walk(node => {
         if (node.type === 'function' && node.value === 'var') {
-          themeableVariableInformation.addDeclaredVariable(new ThemeableVariableDeclaration(node.nodes[0].value, root.source.input.from));
+          const origin = decl.source.input.origin(decl.source.start.line, decl.source.start.column);
+          themeableVariableInformation.addDeclaredVariable(new ThemeableVariableDeclaration(node.nodes[0].value, origin));
         }
       });
     });
@@ -19,7 +20,8 @@ module.exports = postcss.plugin('terra-themeable-variable-collector-plugin', (th
     themeableVariableInformation.themes.forEach((theme) => {
       root.walkRules(RegExp(`.${theme}`), (node) => {
         node.walkDecls(decl => {
-          themeableVariableInformation.addValuedVariableForTheme(new ThemeableVariableValue(decl.prop, decl.value, root.source.input.from), theme);
+          const origin = decl.source.input.origin(decl.source.start.line, decl.source.start.column);
+          themeableVariableInformation.addValuedVariableForTheme(new ThemeableVariableValue(decl.prop, decl.value, origin), theme);
         });
       });
     });
