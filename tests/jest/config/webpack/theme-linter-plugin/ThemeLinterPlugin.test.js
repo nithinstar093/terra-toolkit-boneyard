@@ -1,7 +1,7 @@
 jest.mock('postcss-value-parser');
 
 const postcssValueParser = require('postcss-value-parser');
-const ThemeLinterPlugin = require('../../../../../config/webpack/theme-linter-plugin/ThemeLinterPlugin');
+const ThemeLinterPlugin = require('../../../../../config/webpack/themeable-variable-linter-webpack-plugin/ThemeableVariableLinterWebpackPlugin');
 
 describe('Theme Linter Constructor', () => {
   it('creates the tracker with a filled out config', () => {
