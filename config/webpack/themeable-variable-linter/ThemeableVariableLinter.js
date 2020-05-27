@@ -1,24 +1,15 @@
 const getThemeConfig = require('../postcss/_getThemeConfig');
 const ThemeableVariableCollectorPlugin = require('../postcss/ThemeableVariableCollectorPlugin');
 const ThemeableVariableLinterPlugin = require('../themeable-variable-linter-webpack-plugin/ThemeableVariableLinterWebpackPlugin');
+const ThemeableVariableInformation = require('./ThemeableVariableInformation');
 
 class ThemeableVariableInformationLinter {
   constructor(config) {
     const themeConfig = config || getThemeConfig();
 
-    this.themeableVariableInformation = {
-      themeableVariables: new Set(),
-      themeableVariableTracker: {},
-    };
-
     // Set up a tracker for each theme in the config
     const themes = [themeConfig.theme, ...(themeConfig.scoped || [])].filter((theme) => theme !== undefined);
-    themes.forEach((theme) => {
-      this.themeableVariableInformation.themeableVariableTracker[theme] = {
-        populatedVariables: new Set(),
-        duplicateVariableTracker: {},
-      };
-    });
+    this.themeableVariableInformation = new ThemeableVariableInformation(themes);
   }
 
   themeableVariableCollectorPlugin() {
