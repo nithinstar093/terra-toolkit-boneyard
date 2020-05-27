@@ -1,6 +1,10 @@
 const path = require('path');
 
-const namesAndLocationsOfVariables = (variables) => variables.map(variable => `${variable.name} - ${path.relative(process.cwd(), variable.origin.file)}(line: ${variable.origin.line}, column: ${variable.origin.column})`);
+const namesAndLocationsOfVariables = (variables) => (
+  variables.map(variable => (
+    `${variable.name} - ${path.relative(process.cwd(), variable.origin.file)} (line: ${variable.origin.line}, column: ${variable.origin.column})`
+  ))
+);
 
 /**
  * This plugin provides a post css loader plugin that tracks themeable variables and a webpack plugin that aggregates those
