@@ -1,5 +1,6 @@
 const path = require('path');
 
+// Displays a more friendly version of the variable of the form "<name> - <file> (line: <line>, column: <column>)"
 const namesAndLocationsOfVariables = (variables) => (
   variables.map(variable => (
     `${variable.name} - ${path.relative(process.cwd(), variable.origin.file)} (line: ${variable.origin.line}, column: ${variable.origin.column})`
@@ -23,16 +24,9 @@ module.exports = class ThemeableVariableLinterPlugin {
           compilation.warnings.push(`${theme}.\nThe following variables are missing:\n${namesAndLocationsOfVariables(missingVariablesForTheme).join('\n')}`);
         }
 
-<<<<<<< HEAD
-        // Mark variables that are in the list of populated variables but in the list of themeable variables as a stale warning
-        const staleThemeVariables = Array.from(new Set([...tracker.populatedVariables].filter(x => !this.themeableVariableInformation.themeableVariables.has(x)))).sort();
-        if (staleThemeVariables.length > 0) {
-          compilation.warnings.push(`${theme}.\nThe following variables are unused:\n${staleThemeVariables.join('\n')}`);
-=======
         const unusedVariablesForTheme = this.themeableVariableInformation.unusedVariablesForTheme(theme);
         if (unusedVariablesForTheme.length > 0) {
           compilation.warnings.push(`${theme}.\nThe following variables are unused:\n${namesAndLocationsOfVariables(unusedVariablesForTheme).join('\n')}`);
->>>>>>> Theme linter refactor
         }
 
         const duplicateVariablesForTheme = this.themeableVariableInformation.duplicateVariablesForTheme(theme);

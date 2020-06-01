@@ -1,7 +1,7 @@
 const getThemeConfig = require('../postcss/_getThemeConfig');
 const ThemeableVariableCollectorPlugin = require('./private/ThemeableVariableCollectorPostCSSPlugin');
 const ThemeableVariableLinterPlugin = require('./private/ThemeableVariableLinterWebpackPlugin');
-const ThemeableVariableInformation = require('./ThemeableVariableInformation');
+const ThemeableVariableInformation = require('./private/ThemeableVariableInformation');
 
 class ThemeableVariableLinter {
   constructor(config) {

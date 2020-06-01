@@ -13,7 +13,7 @@ ThemeableVariableInformation {
     "b",
   ],
   "variables": Object {
-    "--var1": ThemeableVariableDeclaration {
+    "--var1": Object {
       "name": "--var1",
       "origin": Object {
         "column": 1,
@@ -21,7 +21,7 @@ ThemeableVariableInformation {
         "line": 1,
       },
     },
-    "--var2": ThemeableVariableDeclaration {
+    "--var2": Object {
       "name": "--var2",
       "origin": Object {
         "column": 1,
@@ -38,7 +38,7 @@ ThemeableVariableInformation {
   "perThemeVariableTracker": Object {
     "a": Object {
       "--var1": Array [
-        ThemeableVariableValue {
+        Object {
           "name": "--var1",
           "origin": Object {
             "column": 1,
@@ -51,7 +51,7 @@ ThemeableVariableInformation {
     },
     "b": Object {
       "--var1": Array [
-        ThemeableVariableValue {
+        Object {
           "name": "--var1",
           "origin": Object {
             "column": 1,
@@ -62,7 +62,7 @@ ThemeableVariableInformation {
         },
       ],
       "--var2": Array [
-        ThemeableVariableValue {
+        Object {
           "name": "--var2",
           "origin": Object {
             "column": 1,
@@ -71,7 +71,7 @@ ThemeableVariableInformation {
           },
           "value": 2,
         },
-        ThemeableVariableValue {
+        Object {
           "name": "--var2",
           "origin": Object {
             "column": 1,
@@ -82,7 +82,7 @@ ThemeableVariableInformation {
         },
       ],
       "--var3": Array [
-        ThemeableVariableValue {
+        Object {
           "name": "--var3",
           "origin": Object {
             "column": 1,
@@ -95,7 +95,7 @@ ThemeableVariableInformation {
     },
     "default": Object {
       "--var1": Array [
-        ThemeableVariableValue {
+        Object {
           "name": "--var1",
           "origin": Object {
             "column": 1,
@@ -106,7 +106,7 @@ ThemeableVariableInformation {
         },
       ],
       "--var2": Array [
-        ThemeableVariableValue {
+        Object {
           "name": "--var2",
           "origin": Object {
             "column": 1,
@@ -117,7 +117,7 @@ ThemeableVariableInformation {
         },
       ],
       "--var3": Array [
-        ThemeableVariableValue {
+        Object {
           "name": "--var3",
           "origin": Object {
             "column": 1,

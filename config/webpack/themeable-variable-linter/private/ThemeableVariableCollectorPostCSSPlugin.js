@@ -1,7 +1,5 @@
 const postcss = require('postcss');
 const postcssValueParser = require('postcss-value-parser');
-const ThemeableVariableDeclaration = require('../ThemeableVariableDeclaration');
-const ThemeableVariableValue = require('../ThemeableVariableValue');
 
 module.exports = postcss.plugin('terra-themeable-variable-collector-plugin', (themeableVariableInformation) => (
   (root) => {
@@ -10,7 +8,7 @@ module.exports = postcss.plugin('terra-themeable-variable-collector-plugin', (th
       postcssValueParser(decl.value).walk(node => {
         if (node.type === 'function' && node.value === 'var') {
           const origin = decl.source.input.origin(decl.source.start.line, decl.source.start.column);
-          themeableVariableInformation.addDeclaredVariable(new ThemeableVariableDeclaration(node.nodes[0].value, origin));
+          themeableVariableInformation.addDeclaredVariable({ name: node.nodes[0].value, origin });
         }
       });
     });
@@ -21,7 +19,7 @@ module.exports = postcss.plugin('terra-themeable-variable-collector-plugin', (th
       root.walkRules(RegExp(`.${theme}`), (node) => {
         node.walkDecls(decl => {
           const origin = decl.source.input.origin(decl.source.start.line, decl.source.start.column);
-          themeableVariableInformation.addValuedVariableForTheme(new ThemeableVariableValue(decl.prop, decl.value, origin), theme);
+          themeableVariableInformation.addValuedVariableForTheme({ name: decl.prop, value: decl.value, origin }, theme);
         });
       });
     });

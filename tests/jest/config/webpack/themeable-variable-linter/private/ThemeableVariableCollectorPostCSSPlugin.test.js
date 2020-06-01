@@ -1,7 +1,7 @@
 jest.mock('postcss-value-parser');
 
 const postcssValueParser = require('postcss-value-parser');
-const ThemeableVariableInformation = require('../../../../../../config/webpack/themeable-variable-linter/ThemeableVariableInformation');
+const ThemeableVariableInformation = require('../../../../../../config/webpack/themeable-variable-linter/private/ThemeableVariableInformation');
 const ThemeableVariableCollectorPlugin = require('../../../../../../config/webpack/themeable-variable-linter/private/ThemeableVariableCollectorPostCSSPlugin');
 
 describe('Themeable Variable Collector Plugin', () => {
