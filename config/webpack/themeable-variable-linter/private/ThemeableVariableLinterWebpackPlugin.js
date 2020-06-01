@@ -20,17 +20,17 @@ module.exports = class ThemeableVariableLinterPlugin {
     compiler.hooks.emit.tapPromise('TerraThemeableVariableLinterPlugin', (compilation) => {
       this.themeableVariableInformation.themes.forEach((theme) => {
         const missingVariablesForTheme = this.themeableVariableInformation.missingVariablesForTheme(theme);
-        if (missingVariablesForTheme.length > 0) {
+        if (missingVariablesForTheme.length) {
           compilation.warnings.push(`${theme}.\nThe following variables are missing:\n${namesAndLocationsOfVariables(missingVariablesForTheme).join('\n')}`);
         }
 
         const unusedVariablesForTheme = this.themeableVariableInformation.unusedVariablesForTheme(theme);
-        if (unusedVariablesForTheme.length > 0) {
+        if (unusedVariablesForTheme.length) {
           compilation.warnings.push(`${theme}.\nThe following variables are unused:\n${namesAndLocationsOfVariables(unusedVariablesForTheme).join('\n')}`);
         }
 
         const duplicateVariablesForTheme = this.themeableVariableInformation.duplicateVariablesForTheme(theme);
-        if (duplicateVariablesForTheme.length > 0) {
+        if (duplicateVariablesForTheme.length) {
           compilation.warnings.push(`${theme}.\nThe following variables are duplicated:\n${namesAndLocationsOfVariables(duplicateVariablesForTheme).join('\n')}`);
         }
       });
