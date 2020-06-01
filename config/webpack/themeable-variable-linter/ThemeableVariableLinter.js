@@ -1,9 +1,9 @@
 const getThemeConfig = require('../postcss/_getThemeConfig');
-const ThemeableVariableCollectorPlugin = require('../postcss/ThemeableVariableCollectorPlugin');
-const ThemeableVariableLinterPlugin = require('../themeable-variable-linter-webpack-plugin/ThemeableVariableLinterWebpackPlugin');
+const ThemeableVariableCollectorPlugin = require('./private/ThemeableVariableCollectorPostCSSPlugin');
+const ThemeableVariableLinterPlugin = require('./private/ThemeableVariableLinterWebpackPlugin');
 const ThemeableVariableInformation = require('./ThemeableVariableInformation');
 
-class ThemeableVariableInformationLinter {
+class ThemeableVariableLinter {
   constructor(config) {
     const themeConfig = config || getThemeConfig();
 
@@ -21,4 +21,4 @@ class ThemeableVariableInformationLinter {
   }
 }
 
-module.exports = ThemeableVariableInformationLinter;
+module.exports = ThemeableVariableLinter;
