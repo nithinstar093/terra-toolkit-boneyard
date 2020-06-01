@@ -1,7 +1,7 @@
 const postcss = require('postcss');
 const postcssValueParser = require('postcss-value-parser');
-const ThemeableVariableDeclaration = require('../themeable-variable-linter/ThemeableVariableDeclaration');
-const ThemeableVariableValue = require('../themeable-variable-linter/ThemeableVariableValue');
+const ThemeableVariableDeclaration = require('../ThemeableVariableDeclaration');
+const ThemeableVariableValue = require('../ThemeableVariableValue');
 
 module.exports = postcss.plugin('terra-themeable-variable-collector-plugin', (themeableVariableInformation) => (
   (root) => {
