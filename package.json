@@ -72,6 +72,7 @@
   },
   "dependencies": {
     "@cerner/duplicate-package-checker-webpack-plugin": "^1.0.0",
+    "@jest/reporters": "^25.3.0",
     "async": "^3.0.1",
     "autoprefixer": "^9.5.1",
     "axe-core": "3.5.3",
@@ -99,6 +100,7 @@
     "postcss-value-parser": "^4.1.0",
     "raw-loader": "^3.0.0",
     "sass-loader": "^7.0.1",
+    "strip-ansi": "^6.0.0",
     "terra-aggregate-translations": "^1.6.0",
     "terser-webpack-plugin": "^1.1.0",
     "wdio-mocha-framework": "^0.6.4",
