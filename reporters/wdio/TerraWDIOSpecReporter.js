@@ -89,23 +89,22 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
   * Formatting the filename based on LOCALE, THEME, FORM_FACTOR and locale
   * @return null
   */
-  fileNameCheck() {
-    const { LOCALE, THEME, FORM_FACTOR } = process.env;
+  fileNameCheck({ locale, theme, formFactor }) {
     const fileNameConf = [];
-    if (LOCALE) {
-      fileNameConf.push(LOCALE);
+    if (locale) {
+      fileNameConf.push(locale);
     }
-    if (THEME) {
-      fileNameConf.push(THEME);
+    if (theme) {
+      fileNameConf.push(theme);
     }
-    if (FORM_FACTOR) {
-      fileNameConf.push(FORM_FACTOR);
+    if (formFactor) {
+      fileNameConf.push(formFactor);
     }
-    if (fileNameConf.length === 0) {
-      this.fileName = '/result';
-    }
+
     if (fileNameConf.length >= 1) {
       this.fileName = `/result-${fileNameConf.join('-')}`;
+    } else {
+      this.fileName = '/result';
     }
   }
 
@@ -131,8 +130,22 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
   * @return null
   */
   printSummary(runners) {
+    let formFactor;
+    let locale;
+    let theme;
+
     if (runners && runners.length) {
-      runners.forEach((runner) => {
+      runners.forEach((runner, index) => {
+        if (index === 1) {
+          const { cid } = runner;
+          const { stats } = this.baseReporter;
+          const results = stats.runners[cid];
+          const { config } = results;
+          formFactor = config.formFactor;
+          locale = config.locale;
+          theme = config.theme;
+        }
+
         this.setTestModule(runner.specs[0]);
         if (!this.resultJsonObject.output[this.moduleName]) {
           this.resultJsonObject.output[this.moduleName] = [];
@@ -143,13 +156,10 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
         }
       });
     }
-    this.fileNameCheck();
+    this.fileNameCheck({ locale, formFactor, theme });
     const {
       endDate,
       startDate,
-      locale,
-      formFactor,
-      theme,
       output,
     } = this.resultJsonObject;
     let filePathLocation = '';
@@ -180,12 +190,8 @@ class TerraWDIOSpecReporter extends WDIOSpecReporter {
 
   printSuitesSummary() {
     const { end, start } = this.baseReporter.stats;
-    const { LOCALE, THEME, FORM_FACTOR } = process.env;
     this.resultJsonObject.endDate = new Date(end).toLocaleString();
     this.resultJsonObject.startDate = new Date(start).toLocaleString();
-    this.resultJsonObject.locale = LOCALE;
-    this.resultJsonObject.formFactor = FORM_FACTOR;
-    this.resultJsonObject.theme = THEME || 'default-theme';
     const { runners } = this;
     this.printSummary(runners);
   }
