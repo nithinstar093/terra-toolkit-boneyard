@@ -1,8 +1,10 @@
 const localIP = require('ip');
 const glob = require('glob');
 const path = require('path');
+const fs = require('fs');
 const determineSeleniumConfig = require('./selenium.config').determineConfig;
 const { dynamicRequire } = require('../configUtils');
+const launchChromeAndRunLighthouse = require('../../lightHouse/lightHouse');
 
 const {
   SeleniumDocker: SeleniumDockerService, ServeStaticService, Terra: TerraService,
@@ -112,6 +114,20 @@ const config = {
     ui: 'bdd',
     timeout: 1200000,
     bail,
+  },
+
+  /* eslint-disable object-shorthand */
+  afterTest: async function (test) {
+    const opts = {
+      output: 'html',
+      chromeFlags: ['--show-paint-rects', '--headless'],
+    };
+    const url = await global.browser.getUrl();
+    const results = await launchChromeAndRunLighthouse(url, opts);
+    if (!fs.existsSync('report')) {
+      fs.mkdirSync('report');
+    }
+    fs.writeFileSync(`report\\${test.fullTitle}.html`, results.html);
   },
 
   ...theme && { theme },
