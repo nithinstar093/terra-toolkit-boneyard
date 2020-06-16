@@ -1,5 +1,3 @@
-'use strict';
-
 const Config = {
   extends: 'lighthouse:default',
   settings: {
@@ -8,4 +6,4 @@ const Config = {
   },
 };
 
-module.exports = Config;
+export default Config;

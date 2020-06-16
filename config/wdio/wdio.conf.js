@@ -5,7 +5,7 @@ const fs = require('fs');
 const determineSeleniumConfig = require('./selenium.config').determineConfig;
 const { dynamicRequire } = require('../configUtils');
 const launchChromeAndRunLighthouse = require('../../lightHouse/lightHouse');
-const lightHouseConfig = require('../../lightHouse/lightHouseConfig');
+const lightHouseConfig = require('../../lightHouse/lightHouseConfig').default;
 
 const {
   SeleniumDocker: SeleniumDockerService, ServeStaticService, Terra: TerraService,
@@ -118,6 +118,7 @@ const config = {
   },
 
   /* eslint-disable object-shorthand */
+  // eslint-disable-next-line func-names
   afterTest: async function (test) {
     const opts = {
       output: 'html',
@@ -129,7 +130,7 @@ const config = {
       fs.mkdirSync('report');
     }
     fs.writeFileSync(`report//${test.fullTitle}.html`, results.html);
-    fs.writeFileSync(`report//${test.fullTitle}.json`, results.json);
+    // fs.writeFileSync(`report//${test.fullTitle}.json`, results.json);
   },
 
   ...theme && { theme },
