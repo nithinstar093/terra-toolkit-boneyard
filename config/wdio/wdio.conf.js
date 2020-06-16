@@ -5,6 +5,7 @@ const fs = require('fs');
 const determineSeleniumConfig = require('./selenium.config').determineConfig;
 const { dynamicRequire } = require('../configUtils');
 const launchChromeAndRunLighthouse = require('../../lightHouse/lightHouse');
+const lightHouseConfig = require('../../lightHouse/lightHouseConfig');
 
 const {
   SeleniumDocker: SeleniumDockerService, ServeStaticService, Terra: TerraService,
@@ -123,11 +124,12 @@ const config = {
       chromeFlags: ['--show-paint-rects', '--headless'],
     };
     const url = await global.browser.getUrl();
-    const results = await launchChromeAndRunLighthouse(url, opts);
+    const results = await launchChromeAndRunLighthouse(url, opts, lightHouseConfig);
     if (!fs.existsSync('report')) {
       fs.mkdirSync('report');
     }
-    fs.writeFileSync(`report\\${test.fullTitle}.html`, results.html);
+    fs.writeFileSync(`report//${test.fullTitle}.html`, results.html);
+    fs.writeFileSync(`report//${test.fullTitle}.json`, results.json);
   },
 
   ...theme && { theme },
