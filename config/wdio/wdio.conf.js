@@ -119,28 +119,12 @@ const config = {
   /* eslint-disable object-shorthand */
   // eslint-disable-next-line func-names
   afterTest: async function (test) {
-    const opts = {
-      output: 'html',
-      chromeFlags: ['--show-paint-rects', '--headless'],
-    };
-
-    const lightHouseConfig = {
-      extends: 'lighthouse:default',
-      settings: {
-        throttlingMethod: 'simulate',
-        onlyCategories: ['performance'],
-        // recordTrace: true,
-        // useThrottling: true,
-        // emulatedFormFactor: 'mobile',
-      },
-    };
     const url = await global.browser.getUrl();
-    const results = await launchChromeAndRunLighthouse(url, opts, lightHouseConfig);
+    const results = await launchChromeAndRunLighthouse(url);
     if (!fs.existsSync('report')) {
       fs.mkdirSync('report');
     }
     fs.writeFileSync(`report//${test.fullTitle}.html`, results.html);
-    fs.writeFileSync(`report//${test.fullTitle}.json`, results.json);
   },
 
   ...theme && { theme },
