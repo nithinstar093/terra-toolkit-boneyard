@@ -5,7 +5,6 @@ const fs = require('fs');
 const determineSeleniumConfig = require('./selenium.config').determineConfig;
 const { dynamicRequire } = require('../configUtils');
 const launchChromeAndRunLighthouse = require('../../lightHouse/lightHouse');
-const lightHouseConfig = require('../../lightHouse/lightHouseConfig');
 
 const {
   SeleniumDocker: SeleniumDockerService, ServeStaticService, Terra: TerraService,
@@ -118,10 +117,22 @@ const config = {
   },
 
   /* eslint-disable object-shorthand */
+  // eslint-disable-next-line func-names
   afterTest: async function (test) {
     const opts = {
       output: 'html',
       chromeFlags: ['--show-paint-rects', '--headless'],
+    };
+
+    const lightHouseConfig = {
+      extends: 'lighthouse:default',
+      settings: {
+        throttlingMethod: 'simulate',
+        onlyCategories: ['performance'],
+        // recordTrace: true,
+        // useThrottling: true,
+        // emulatedFormFactor: 'mobile',
+      },
     };
     const url = await global.browser.getUrl();
     const results = await launchChromeAndRunLighthouse(url, opts, lightHouseConfig);
