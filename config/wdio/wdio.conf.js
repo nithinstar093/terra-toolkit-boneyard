@@ -120,7 +120,28 @@ const config = {
   // eslint-disable-next-line func-names
   afterTest: async function (test) {
     const url = await global.browser.getUrl();
-    const results = await launchChromeAndRunLighthouse(url);
+    const lightHouseConfig = {
+      extends: 'lighthouse:default',
+      settings: {
+        onlyCategories: ['performance'],
+        throttlingMethod: 'simulate',
+        emulatedFormFactor: 'desktop',
+        // Skip the h2 audit so it doesn't lie to us. See https://github.com/GoogleChrome/lighthouse/issues/6539
+        skipAudits: ['uses-http2'],
+        passes: [
+          {
+            passName: 'defaultPass',
+            recordTrace: true,
+            useThrottling: true,
+            pauseAfterFcpMs: 1000,
+            pauseAfterLoadMs: 1000,
+            networkQuietThresholdMs: 1000,
+            cpuQuietThresholdMs: 1000,
+          },
+        ],
+      },
+    };
+    const results = await launchChromeAndRunLighthouse(url, lightHouseConfig);
     if (!fs.existsSync('report')) {
       fs.mkdirSync('report');
     }
