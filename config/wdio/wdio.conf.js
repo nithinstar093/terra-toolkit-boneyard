@@ -5,6 +5,9 @@ const fs = require('fs');
 const determineSeleniumConfig = require('./selenium.config').determineConfig;
 const { dynamicRequire } = require('../configUtils');
 const launchChromeAndRunLighthouse = require('../../lightHouse/lightHouse');
+const { generateSessionToken, getSessionToken } = require('../../lightHouse/testSessionToken');
+const Logger = require('../../scripts/utils/logger');
+const { validateSession, compareReports } = require('../../lightHouse/reportCompareHelper');
 
 const {
   SeleniumDocker: SeleniumDockerService, ServeStaticService, Terra: TerraService,
@@ -116,13 +119,49 @@ const config = {
     bail,
   },
 
+  before() {
+    generateSessionToken();
+  },
+
   async afterTest(test) {
     const url = await global.browser.getUrl();
-    const results = await launchChromeAndRunLighthouse(url, test.fullTitle);
-    if (!fs.existsSync('report')) {
-      fs.mkdirSync('report');
+    const isMobileDevice = test.fullTitle.includes('tiny') || test.fullTitle.includes('small');
+    const fileName = test.fullTitle.slice(test.fullTitle.indexOf(']') + 1);
+    const viewportExt = isMobileDevice ? '--Mhouse' : '--Dhouse';
+    const fileUrl = `${fileName}${viewportExt}${getSessionToken}.json`;
+    const dirUrl = `report//json//${fileUrl}`;
+    if (!fs.existsSync(dirUrl)) {
+      if (!fs.existsSync('report')) {
+        fs.mkdirSync('report');
+      } else {
+        if (!fs.existsSync('report/json')) {
+          fs.mkdirSync('report/json');
+        }
+        if (!fs.existsSync('report/html')) {
+          fs.mkdirSync('report/html');
+        }
+      }
+
+      const results = await launchChromeAndRunLighthouse(url, isMobileDevice);
+      const fileNames = fs.readdirSync('report//json//');
+      if (fileNames.length > 0) {
+        fileNames.forEach((file) => {
+          if (validateSession(file, fileUrl)) {
+            const newFile = JSON.stringify(results.json);
+            const extFile = JSON.parse(fs.readFileSync(`report//json//${file}`));
+            // Creates report only when there is difference in existing and previous performance score.
+            if (compareReports(newFile, extFile, test.fullTitle)) {
+              fs.writeFileSync(dirUrl, JSON.stringify(results.json));
+              fs.writeFileSync(`report//html//${test.fullTitle}.html`, results.html);
+            }
+          } else {
+            fs.writeFileSync(dirUrl, JSON.stringify(results.json));
+          }
+        });
+      } else {
+        fs.writeFileSync(dirUrl, JSON.stringify(results.json));
+      }
     }
-    fs.writeFileSync(`report//${test.fullTitle}.html`, results.html);
   },
 
   ...theme && { theme },
