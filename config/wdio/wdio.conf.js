@@ -133,13 +133,12 @@ const config = {
     if (!fs.existsSync(dirUrl)) {
       if (!fs.existsSync('report')) {
         fs.mkdirSync('report');
-      } else {
-        if (!fs.existsSync('report/json')) {
-          fs.mkdirSync('report/json');
-        }
-        if (!fs.existsSync('report/html')) {
-          fs.mkdirSync('report/html');
-        }
+      }
+      if (!fs.existsSync('report/json')) {
+        fs.mkdirSync('report/json');
+      }
+      if (!fs.existsSync('report/html')) {
+        fs.mkdirSync('report/html');
       }
 
       const results = await launchChromeAndRunLighthouse(url, isMobileDevice);
@@ -147,7 +146,7 @@ const config = {
       if (fileNames.length > 0) {
         fileNames.forEach((file) => {
           if (validateSession(file, fileUrl)) {
-            const newFile = JSON.stringify(results.json);
+            const newFile = JSON.parse(JSON.stringify(results.json));
             const extFile = JSON.parse(fs.readFileSync(`report//json//${file}`));
             // Creates report only when there is difference in existing and previous performance score.
             if (compareReports(newFile, extFile, test.fullTitle)) {

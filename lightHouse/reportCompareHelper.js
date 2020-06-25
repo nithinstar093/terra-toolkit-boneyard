@@ -3,8 +3,8 @@ const Logger = require('../scripts/utils/logger');
 const allowedVariance = 5;
 
 const validateSession = (extFileName, newFileName) => {
-  const newSessionName = newFileName.substring(newFileName.lastIndexOf('('), newFileName.lastIndexOf(')') + 1);
-  const extSessionName = extFileName.substring(extFileName.lastIndexOf('('), extFileName.lastIndexOf(')') + 1);
+  const newSessionName = newFileName.substring(newFileName.lastIndexOf('(') + 1, newFileName.lastIndexOf(')'));
+  const extSessionName = extFileName.substring(extFileName.lastIndexOf('(') + 1, extFileName.lastIndexOf(')'));
   const newFname = newFileName.substring(0, newFileName.lastIndexOf('('));
   const extFname = extFileName.substring(0, extFileName.lastIndexOf('('));
   return (newSessionName !== extSessionName && newFname === extFname);
