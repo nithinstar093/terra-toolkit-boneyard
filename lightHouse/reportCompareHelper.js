@@ -32,7 +32,7 @@ const compareReports = (newFile, extFile, testTitle) => {
   return false;
 };
 
-export {
+module.exports = {
   compareReports,
   validateSession,
 };

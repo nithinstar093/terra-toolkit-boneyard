@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+const uuidv4 = require('uuid');
 
 let sessionToken;
 
@@ -8,7 +8,7 @@ const generateSessionToken = () => {
 
 const getSessionToken = () => `(sessionId-${sessionToken})`;
 
-export {
+module.exports = {
   generateSessionToken,
   getSessionToken,
 };
