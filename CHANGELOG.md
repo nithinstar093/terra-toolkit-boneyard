@@ -4,10 +4,18 @@ Changelog
 Unreleased
 ----------
 ### Added
+* Terra wdio Spec Reporter that logs wdio test output to separate json files based on locale, theme and form-factor.
+
+6.2.0 - (June 9, 2020)
+----------
+### Added
 * Terra Verbose Reporter that logs jest test results to a json file.
 
 ### Removed (passively)
 * removed dockerfiles and the travis step to release dockerfiles. Moved to a new repo: https://github.com/cerner/terra-docker
+
+### Changed
+* Updated eslint-config-terra to @cerner/eslint-config-terra v^4.0.0
 
 6.2.0 - (May 19, 2020)
 ----------
