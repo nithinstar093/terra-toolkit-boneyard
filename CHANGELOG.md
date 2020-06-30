@@ -3,6 +3,9 @@ Changelog
 
 Unreleased
 ----------
+
+6.3.0 - (June 30, 2020)
+----------
 ### Added
 * Terra wdio Spec Reporter that logs wdio test output to separate json files based on locale, theme and form-factor.
 
