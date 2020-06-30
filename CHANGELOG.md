@@ -4,12 +4,12 @@ Changelog
 Unreleased
 ----------
 
-6.3.0 - (June 30, 2020)
+6.4.0 - (June 30, 2020)
 ----------
 ### Added
 * Terra wdio Spec Reporter that logs wdio test output to separate json files based on locale, theme and form-factor.
 
-6.2.0 - (June 9, 2020)
+6.3.0 - (June 9, 2020)
 ----------
 ### Added
 * Terra Verbose Reporter that logs jest test results to a json file.
