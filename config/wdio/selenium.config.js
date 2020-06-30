@@ -43,6 +43,21 @@ const ieConfig = {
   },
 };
 
+const edgeConfig = {
+  browserName: 'MicrosoftEdge',
+  maxInstances: 1,
+  /** IE Driver custom capabilities must be passed as a sub-object specified under 'se:ieOptions' key for
+   * version ^3.3.0.1. and Webdriver.io does not pass these as a sub-options.
+   * See https://github.com/SeleniumHQ/selenium/blob/master/cpp/iedriverserver/CHANGELOG#L782.
+   */
+  'se:ieOptions': {
+    javascriptEnabled: true,
+    locationContextEnabled: true,
+    handlesAlerts: true,
+    rotatable: true,
+  },
+};
+
 const determineCapabilities = ({ useSeleniumGrid, browsers }) => {
   const capabilities = [];
 
@@ -52,7 +67,7 @@ const determineCapabilities = ({ useSeleniumGrid, browsers }) => {
 
     // always test chrome, firefox and IE by default when selenium grid url is provided
     if (useSeleniumGrid) {
-      capabilities.push(firefoxConfig, ieConfig);
+      capabilities.push(firefoxConfig, ieConfig, edgeConfig);
     }
   } else {
     if (browsers.includes('chrome')) {
@@ -63,6 +78,9 @@ const determineCapabilities = ({ useSeleniumGrid, browsers }) => {
     }
     if (useSeleniumGrid && browsers.includes('ie')) {
       capabilities.push(ieConfig);
+    }
+    if (useSeleniumGrid && browsers.includes('edge')) {
+      capabilities.push(edgeConfig);
     }
   }
   /* Randomized the browser order to reduce a heavy number of session request made to the grid for each browser at once. */
