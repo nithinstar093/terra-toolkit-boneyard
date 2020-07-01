@@ -127,7 +127,7 @@ const config = {
     const isMobileDevice = test.fullTitle.includes('tiny') || test.fullTitle.includes('small');
     const fileName = test.fullTitle.slice(test.fullTitle.indexOf(']') + 1);
     const viewportExt = isMobileDevice ? '--Mhouse' : '--Dhouse';
-    const fileUrl = `${fileName}${viewportExt}${getSessionToken}.json`;
+    const fileUrl = `${fileName}${viewportExt}${getSessionToken()}.json`;
     const dirUrl = `report//json//${fileUrl}`;
     if (!fs.existsSync(dirUrl)) {
       if (!fs.existsSync('report')) {
@@ -151,19 +151,19 @@ const config = {
             // Creates report only when there is difference in existing and previous performance score.
             if (compareReports(newFile, extFile, test.fullTitle)) {
               fs.writeFileSync(dirUrl, JSON.stringify(results.json));
-              fs.writeFileSync(`report//html//${fileName}${viewportExt}${getSessionToken}.html`, results.html);
+              fs.writeFileSync(`report//html//${fileName}${viewportExt}${getSessionToken()}.html`, results.html);
             }
           } else {
             // generates reports for test haviing performance score below average.
             if (validatePerfScore(jsonOutput)) {
-              fs.writeFileSync(`report//html//${fileName}${viewportExt}${getSessionToken}.html`, results.html);
+              fs.writeFileSync(`report//html//${fileName}${viewportExt}${getSessionToken()}.html`, results.html);
             }
             fs.writeFileSync(dirUrl, JSON.stringify(results.json));
           }
         });
       } else {
         if (validatePerfScore(jsonOutput)) {
-          fs.writeFileSync(`report//html//${fileName}${viewportExt}${getSessionToken}.html`, results.html);
+          fs.writeFileSync(`report//html//${fileName}${viewportExt}${getSessionToken()}.html`, results.html);
         }
         fs.writeFileSync(dirUrl, JSON.stringify(results.json));
       }
