@@ -6,8 +6,7 @@ const determineSeleniumConfig = require('./selenium.config').determineConfig;
 const { dynamicRequire } = require('../configUtils');
 const launchChromeAndRunLighthouse = require('../../lightHouse/lightHouse');
 const { generateSessionToken, getSessionToken } = require('../../lightHouse/testSessionToken');
-const Logger = require('../../scripts/utils/logger');
-const { validateSession, compareReports } = require('../../lightHouse/reportCompareHelper');
+const { validateSession, compareReports, validatePerfScore } = require('../../lightHouse/reportCompareHelper');
 
 const {
   SeleniumDocker: SeleniumDockerService, ServeStaticService, Terra: TerraService,
@@ -142,22 +141,30 @@ const config = {
       }
 
       const results = await launchChromeAndRunLighthouse(url, isMobileDevice);
+      const jsonOutput = JSON.parse(JSON.stringify(results.json));
       const fileNames = fs.readdirSync('report//json//');
       if (fileNames.length > 0) {
         fileNames.forEach((file) => {
           if (validateSession(file, fileUrl)) {
-            const newFile = JSON.parse(JSON.stringify(results.json));
+            const newFile = jsonOutput;
             const extFile = JSON.parse(fs.readFileSync(`report//json//${file}`));
             // Creates report only when there is difference in existing and previous performance score.
             if (compareReports(newFile, extFile, test.fullTitle)) {
               fs.writeFileSync(dirUrl, JSON.stringify(results.json));
-              fs.writeFileSync(`report//html//${test.fullTitle}.html`, results.html);
+              fs.writeFileSync(`report//html//${fileName}${viewportExt}${getSessionToken}.html`, results.html);
             }
           } else {
+            // generates reports for test haviing performance score below average.
+            if (validatePerfScore(jsonOutput)) {
+              fs.writeFileSync(`report//html//${fileName}${viewportExt}${getSessionToken}.html`, results.html);
+            }
             fs.writeFileSync(dirUrl, JSON.stringify(results.json));
           }
         });
       } else {
+        if (validatePerfScore(jsonOutput)) {
+          fs.writeFileSync(`report//html//${fileName}${viewportExt}${getSessionToken}.html`, results.html);
+        }
         fs.writeFileSync(dirUrl, JSON.stringify(results.json));
       }
     }

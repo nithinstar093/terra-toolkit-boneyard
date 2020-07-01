@@ -1,6 +1,7 @@
 const Logger = require('../scripts/utils/logger');
 
 const allowedVariance = 5;
+const averagePerfScore = 70;
 
 const validateSession = (extFileName, newFileName) => {
   const newSessionName = newFileName.substring(newFileName.lastIndexOf('(') + 1, newFileName.lastIndexOf(')'));
@@ -32,7 +33,11 @@ const compareReports = (newFile, extFile, testTitle) => {
   return false;
 };
 
+// Returns true if performance score is below average performance score (70).
+const validatePerfScore = (report) => report && (report.categories.performance.score * 100) < averagePerfScore;
+
 module.exports = {
   compareReports,
   validateSession,
+  validatePerfScore,
 };
