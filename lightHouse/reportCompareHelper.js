@@ -19,8 +19,8 @@ const compareReports = (newFile, extFile, testTitle) => {
     if (newPerfScore === extPerfScore) {
       return false;
     }
-    // Returns true if new performance score is greater than previous performance score
-    if (newPerfScore > extPerfScore) {
+    // Returns true if new performance score is greater than previous performance score OR if it is less than average score.
+    if (newPerfScore > extPerfScore || newPerfScore < averagePerfScore) {
       return true;
     }
     // Returns true if difference between new performance score and previous performance score is greater than the allowed varaince(5).

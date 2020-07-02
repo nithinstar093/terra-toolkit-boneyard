@@ -7,6 +7,7 @@ const { dynamicRequire } = require('../configUtils');
 const launchChromeAndRunLighthouse = require('../../lightHouse/lightHouse');
 const { generateSessionToken, getSessionToken } = require('../../lightHouse/testSessionToken');
 const { validateSession, compareReports, validatePerfScore } = require('../../lightHouse/reportCompareHelper');
+const { addReportData, generateReport } = require('../../lightHouse/reportGenerator');
 
 const {
   SeleniumDocker: SeleniumDockerService, ServeStaticService, Terra: TerraService,
@@ -127,9 +128,12 @@ const config = {
     const isMobileDevice = test.fullTitle.includes('tiny') || test.fullTitle.includes('small');
     const fileName = test.fullTitle.slice(test.fullTitle.indexOf(']') + 1);
     const viewportExt = isMobileDevice ? '--Mhouse' : '--Dhouse';
-    const fileUrl = `${fileName}${viewportExt}${getSessionToken()}.json`;
-    const dirUrl = `report//json//${fileUrl}`;
-    if (!fs.existsSync(dirUrl)) {
+    const jsonFileUrl = `${fileName}${viewportExt}${getSessionToken}.json`;
+    const htmlFileUrl = `${fileName}${viewportExt}${getSessionToken}.html`;
+    let isHtmlGenerated = false;
+    let extFileOutput;
+
+    if (!fs.existsSync(`report//json//${jsonFileUrl}`)) {
       if (!fs.existsSync('report')) {
         fs.mkdirSync('report');
       }
@@ -145,29 +149,32 @@ const config = {
       const fileNames = fs.readdirSync('report//json//');
       if (fileNames.length > 0) {
         fileNames.forEach((file) => {
-          if (validateSession(file, fileUrl)) {
-            const newFile = jsonOutput;
-            const extFile = JSON.parse(fs.readFileSync(`report//json//${file}`));
+          if (validateSession(file, jsonFileUrl)) {
+            extFileOutput = JSON.parse(fs.readFileSync(`report//json//${file}`));
             // Creates report only when there is difference in existing and previous performance score.
-            if (compareReports(newFile, extFile, test.fullTitle)) {
-              fs.writeFileSync(dirUrl, JSON.stringify(results.json));
-              fs.writeFileSync(`report//html//${fileName}${viewportExt}${getSessionToken()}.html`, results.html);
+            if (compareReports(jsonOutput, extFileOutput, test.fullTitle)) {
+              fs.writeFileSync(`report//html//${htmlFileUrl}`, results.html);
+              isHtmlGenerated = true;
             }
-          } else {
-            // generates reports for test haviing performance score below average.
-            if (validatePerfScore(jsonOutput)) {
-              fs.writeFileSync(`report//html//${fileName}${viewportExt}${getSessionToken()}.html`, results.html);
-            }
-            fs.writeFileSync(dirUrl, JSON.stringify(results.json));
+          } else if (validatePerfScore(jsonOutput)) {
+            // generates reports for test having performance score below average.
+            fs.writeFileSync(`report//html//${htmlFileUrl}`, results.html);
+            isHtmlGenerated = true;
           }
         });
-      } else {
-        if (validatePerfScore(jsonOutput)) {
-          fs.writeFileSync(`report//html//${fileName}${viewportExt}${getSessionToken()}.html`, results.html);
-        }
-        fs.writeFileSync(dirUrl, JSON.stringify(results.json));
+      } else if (validatePerfScore(jsonOutput)) {
+        fs.writeFileSync(`report//html//${htmlFileUrl}`, results.html);
+        isHtmlGenerated = true;
       }
+
+      const reportLink = (isHtmlGenerated) ? `${this.baseUrl}//report//html//${htmlFileUrl}` : undefined;
+      addReportData(jsonOutput, extFileOutput, reportLink, fileName, test.file);
+      fs.writeFileSync(`report//json//${jsonFileUrl}`, JSON.stringify(results.json));
     }
+  },
+
+  onComplete() {
+    generateReport();
   },
 
   ...theme && { theme },
