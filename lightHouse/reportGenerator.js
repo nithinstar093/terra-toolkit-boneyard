@@ -12,7 +12,7 @@ const addReportData = () => {
       const JsonOutput = JSON.parse(fs.readFileSync(`report//json//${file}`));
       const htmlURL = file.replace('.json', '.html');
       const result = {};
-      result.fileName = file;
+      result.fileName = file.includes('--Mhouse') ? file.replace('--Mhouse', 'Mobile') : file.replace('--Dhouse', 'Desktop');
       result.reportLink = (fs.existsSync(`report//html//${htmlURL}`)) ? `${process.cwd()}/report/html/${htmlURL}` : 'NA';
       result.perfScore = (JsonOutput) ? JsonOutput.categories.performance.score * 100 : 'NA';
       reportResults.push(result);
