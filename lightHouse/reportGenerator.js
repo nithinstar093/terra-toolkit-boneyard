@@ -74,7 +74,7 @@ const generateReport = () => {
           }
 
           tr:nth-child(even) {
-            background-color: #dddddd;
+            background-color: #f3f3f3;
           }
        </style>
       </head>
@@ -85,16 +85,14 @@ const generateReport = () => {
             <p> Number of tests passed performance score : ${numberOfTestsPassed} </p>
             <p> Number of tests failed performance score : ${numberOfTestsFailed} </p>
           </div>
-          <div class="table-container">
-            <table>
-              <tr>
-                <th>TestName</th>
-                <th>PerfScore</th>
-                <th>Link</th>
-              </tr>
-              ${tableRows}
-            </table>
-          <div>
+          <table>
+            <tr>
+              <th>TestName</th>
+              <th>PerfScore</th>
+              <th>Link</th>
+            </tr>
+            ${tableRows}
+          </table>
         </div>
       </body>
     </html>`;

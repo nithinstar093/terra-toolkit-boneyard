@@ -121,9 +121,8 @@ const config = {
   async afterTest(test) {
     const url = await global.browser.getUrl();
     const isMobileDevice = test.fullTitle.includes('tiny') || test.fullTitle.includes('small');
-    const jsonFileUrl = `${test.fullTitle}.json`;
-    const htmlFileUrl = `${test.fullTitle}.html`;
-    let extFileOutput;
+    const jsonFileUrl = `${test.fullTitle.replace(/ /g, '-')}.json`;
+    const htmlFileUrl = `${test.fullTitle.replace(/ /g, '-')}.html`;
 
     if (!fs.existsSync('report')) {
       fs.mkdirSync('report');
@@ -141,7 +140,7 @@ const config = {
     if (fileNames.length > 0) {
       fileNames.forEach((file) => {
         if (fs.existsSync(`report//json//${jsonFileUrl}`)) {
-          extFileOutput = JSON.parse(fs.readFileSync(`report//json//${file}`));
+          const extFileOutput = JSON.parse(fs.readFileSync(`report//json//${file}`));
           // Creates report only when there is difference in existing and previous performance score.
           if (compareReports(jsonOutput, extFileOutput, test.fullTitle)) {
             fs.writeFileSync(`report//html//${htmlFileUrl}`, results.html);
