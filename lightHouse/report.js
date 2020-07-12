@@ -17,15 +17,15 @@ const reportHtml = (numberOfTestsFailed, numberOfTestsPassed, averageScore, tabl
             width: 100%;
           }
 
-          .perf_score_pass  {
+          .perf_score_pass a {
             color: #0cce6b;
           }
 
-          .perf_score_fail  {
+          .perf_score_fail a {
             color: #ff4e42;
           }
 
-          .perf_score_avg  {
+          .perf_score_avg a {
             color: #ffa400;
           }
 
@@ -72,8 +72,8 @@ const reportHtml = (numberOfTestsFailed, numberOfTestsPassed, averageScore, tabl
           <table>
             <tr>
               <th>TestName</th>
-              <th>ExistingPerfScore</th>
-              <th>NewPerfScore</th>
+              <th>Existing/Avg PerfScore</th>
+              <th>New PerfScore</th>
               <th>TestStatus</th>
             </tr>
             ${tableRows}

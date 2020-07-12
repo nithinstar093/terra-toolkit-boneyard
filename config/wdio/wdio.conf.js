@@ -133,7 +133,7 @@ const config = {
     if (lightHouseFlag) {
       const url = await global.browser.getUrl();
       const isMobileDevice = test.fullTitle.includes('tiny') || test.fullTitle.includes('small');
-      const fileName = test.fullTitle.slice(test.fullTitle.indexOf(']') + 1);
+      const fileName = test.fullTitle.slice(test.fullTitle.indexOf(']') + 1).trim();
       const viewportExt = isMobileDevice ? '--Mhouse' : '--Dhouse';
       const fileUrl = `${fileName.replace(/ /g, '-')}${viewportExt}${getSessionToken()}.html`;
 
@@ -175,7 +175,7 @@ const config = {
   },
 
   onComplete() {
-    if (lightHouseFlag) generateReport();
+    if (lightHouseFlag) generateReport(averagePerfScore);
   },
 
   ...theme && { theme },
