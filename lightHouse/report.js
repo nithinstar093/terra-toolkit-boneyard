@@ -6,9 +6,9 @@ const reportHtml = (numberOfTestsFailed, numberOfTestsPassed, averageScore, tabl
         <title>Lighthouse Report</title>
         <style>
           .header {
-            border: 1px solid #BFBFBF;
             background-color: #014979;
-            box-shadow: 0px 0px 2px 1px #aaaaaa;
+            border: 1px solid #bfbfbf;
+            box-shadow: 0 0 2px 1px rgb(170, 170, 170);
             color: #fff;
             font-family: arial, sans-serif;
             font-weight: bold;    
@@ -45,8 +45,8 @@ const reportHtml = (numberOfTestsFailed, numberOfTestsPassed, averageScore, tabl
           th {
             background: #f1f1f2;
             border: 2px solid #bfbebe;
-            text-align: left;
             padding: 8px;
+            text-align: left;
           }
 
           td{

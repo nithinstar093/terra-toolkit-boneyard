@@ -8,7 +8,7 @@ let numberOfTestsFailed = 0;
 const addReportData = (averageScore, extFileOutput, newFileOutput, fileUrl) => {
   const fileName = fileUrl.slice(0, fileUrl.lastIndexOf('('));
   const reportResult = {
-    testName: fileName.includes('--Mhouse') ? fileName.replace('--Mhouse', 'Mobile') : fileName.replace('--Dhouse', 'Desktop'),
+    testName: fileName.includes('--Mhouse') ? fileName.replace('--Mhouse', '-Mobile') : fileName.replace('--Dhouse', '-Desktop'),
     newPerfScore: newFileOutput.categories.performance.score * 100,
     extPerfScore: (extFileOutput) ? extFileOutput.categories.performance.score * 100 : averageScore,
     reportLink: `${process.cwd()}/report/html/${fileUrl}`,
