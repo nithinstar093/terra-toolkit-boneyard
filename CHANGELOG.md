@@ -3,6 +3,9 @@ Changelog
 
 Unreleased
 ----------
+### Fixed
+* Fix Terra wdio Spec Reporter output location when only one spec file is ran.
+* Fix default out path for reports to match the default reports path included in default wdio configuration
 
 6.5.0 - (July 10, 2020)
 ----------
