@@ -52,7 +52,7 @@ const seleniumGridUrl = process.env.SELENIUM_GRID_URL;
 const browsers = process.env.BROWSERS;
 
 /* Use to enable running light house performance against each test. */
-const lightHouseFlag = process.env.LIGHT_HOUSE || false;
+const lightHouseFlag = process.env.LIGHT_HOUSE || true; // temp
 
 /* Use to set average performance score to validate light house reports. */
 const averagePerfScore = process.env.AVERAGE_PERFORMANCE_SCORE || 70;
