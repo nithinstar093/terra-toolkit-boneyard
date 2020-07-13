@@ -5,14 +5,13 @@ const Logger = require('../scripts/utils/logger');
 let numberOfTestsPassed = 0;
 let numberOfTestsFailed = 0;
 
-const addReportData = (averageScore, extFileOutput, newFileOutput, fileUrl, testStatus) => {
+const addReportData = (averageScore, extFileOutput, newFileOutput, fileUrl) => {
   const fileName = fileUrl.slice(0, fileUrl.lastIndexOf('('));
   const reportResult = {
     testName: fileName.includes('--Mhouse') ? fileName.replace('--Mhouse', 'Mobile') : fileName.replace('--Dhouse', 'Desktop'),
     newPerfScore: newFileOutput.categories.performance.score * 100,
     extPerfScore: (extFileOutput) ? extFileOutput.categories.performance.score * 100 : averageScore,
     reportLink: `${process.cwd()}/report/html/${fileUrl}`,
-    status: (testStatus) ? 'Pass' : 'Fail',
   };
 
   let jsonAray = [];
@@ -37,11 +36,12 @@ const generateReport = (averageScore) => {
       perfScoreClass = 'perf_score_fail';
       numberOfTestsFailed += 1;
     }
+    const status = (perfScoreClass === 'perf_score_fail') ? 'fail' : 'pass';
     const rows = `<tr>
       <td>${result.testName}</td>
       <td>${result.extPerfScore}</td>
       <td class=${perfScoreClass}><a target=${result.reportLink} href=${result.reportLink}>${result.newPerfScore}</a></td>
-      <td class=${(result.status) ? 'pass_status' : 'fail_status'}>${result.status}</td>
+      <td class=${(status === 'fail') ? 'fail_status' : 'pass_status'}>${status}</td>
     </tr>`;
     return [rows];
   });

@@ -159,7 +159,7 @@ const config = {
               extFileOutput = JSON.parse(JSON.stringify(fs.readFileSync(`report//html//${file}`)));
               if (compareReports(jsonOutput, extFileOutput, test.fullTitle)) {
                 fs.writeFileSync(`report//html//${fileUrl}`, results.html);
-                addReportData(averagePerfScore, extFileOutput, jsonOutput, fileUrl, test.passed);
+                addReportData(averagePerfScore, extFileOutput, jsonOutput, fileUrl);
                 isReportCreated = true;
               }
             }
@@ -168,7 +168,7 @@ const config = {
         // Prevents re-writing of existing report if there are no changes in performance score.
         if (extFileOutput === undefined && !isReportCreated) {
           fs.writeFileSync(`report//html//${fileUrl}`, results.html);
-          addReportData(averagePerfScore, extFileOutput, jsonOutput, fileUrl, test.passed);
+          addReportData(averagePerfScore, extFileOutput, jsonOutput, fileUrl);
         }
       }
     }
