@@ -52,10 +52,10 @@ const seleniumGridUrl = process.env.SELENIUM_GRID_URL;
 const browsers = process.env.BROWSERS;
 
 /* Use to enable running light house performance against each test. */
-const lightHouseFlag = process.env.LIGHT_HOUSE || true; // temp
+const runLightHouse = process.env.RUN_LIGHT_HOUSE; // temp
 
 /* Use to set average performance score to validate light house reports. */
-const averagePerfScore = process.env.AVERAGE_PERFORMANCE_SCORE || 70;
+const averagePerformanceScore = process.env.AVERAGE_PERFORMANCE_SCORE;
 
 /* Use to override default theme for theme visual regression tests. */
 const theme = process.env.THEME;
@@ -126,11 +126,11 @@ const config = {
   },
 
   before() {
-    if (lightHouseFlag) generateSessionToken();
+    if (runLightHouse) generateSessionToken();
   },
 
   async afterTest(test) {
-    if (lightHouseFlag) {
+    if (runLightHouse) {
       const url = await global.browser.getUrl();
       const isMobileDevice = test.fullTitle.includes('tiny') || test.fullTitle.includes('small');
       const fileName = test.fullTitle.slice(test.fullTitle.indexOf(']') + 1).trim();
@@ -159,7 +159,7 @@ const config = {
               extFileOutput = JSON.parse(JSON.stringify(fs.readFileSync(`report//html//${file}`)));
               if (compareReports(jsonOutput, extFileOutput, test.fullTitle)) {
                 fs.writeFileSync(`report//html//${fileUrl}`, results.html);
-                addReportData(averagePerfScore, extFileOutput, jsonOutput, fileUrl);
+                addReportData(averagePerformanceScore, extFileOutput, jsonOutput, fileUrl);
                 isReportCreated = true;
               }
             }
@@ -168,14 +168,14 @@ const config = {
         // Prevents re-writing of existing report if there are no changes in performance score.
         if (extFileOutput === undefined && !isReportCreated) {
           fs.writeFileSync(`report//html//${fileUrl}`, results.html);
-          addReportData(averagePerfScore, extFileOutput, jsonOutput, fileUrl);
+          addReportData(averagePerformanceScore, extFileOutput, jsonOutput, fileUrl);
         }
       }
     }
   },
 
   onComplete() {
-    if (lightHouseFlag) generateReport(averagePerfScore);
+    if (runLightHouse) generateReport(averagePerformanceScore);
   },
 
   ...theme && { theme },
