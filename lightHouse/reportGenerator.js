@@ -46,7 +46,7 @@ const generateReport = (averageScore) => {
     return [rows];
   });
   try {
-    fs.writeFileSync('report//performance-report.html', htmlReport(numberOfTestsFailed, numberOfTestsPassed, averageScore, tableRows));
+    fs.writeFileSync('report//performance-report.html', htmlReport(numberOfTestsFailed, numberOfTestsPassed, averageScore, tableRows.join('')));
   } catch (e) {
     Logger.error(e);
   }

@@ -52,10 +52,10 @@ const seleniumGridUrl = process.env.SELENIUM_GRID_URL;
 const browsers = process.env.BROWSERS;
 
 /* Use to enable running light house performance against each test. */
-const runLightHouse = process.env.RUN_LIGHT_HOUSE; // temp
+const runLightHouse = process.env.RUN_LIGHT_HOUSE || true; // temp
 
 /* Use to set average performance score to validate light house reports. */
-const averagePerformanceScore = process.env.AVERAGE_PERFORMANCE_SCORE;
+const averagePerformanceScore = process.env.AVERAGE_PERFORMANCE_SCORE || 70;
 
 /* Use to override default theme for theme visual regression tests. */
 const theme = process.env.THEME;

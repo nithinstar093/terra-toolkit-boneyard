@@ -68,7 +68,6 @@ const reportHtml = (numberOfTestsFailed, numberOfTestsPassed, averageScore, tabl
             <p> Number of tests equal / above average performance score : ${numberOfTestsPassed} </p>
             <p> Number of tests below average performance score : ${numberOfTestsFailed} </p>
           </div>
-          <br />
           <table>
             <tr>
               <th>TestName</th>
@@ -80,6 +79,7 @@ const reportHtml = (numberOfTestsFailed, numberOfTestsPassed, averageScore, tabl
           </table>
         </div>
       </body>
-    </html>`);
+    </html>`
+);
 
 module.exports = reportHtml;
