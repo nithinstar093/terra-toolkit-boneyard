@@ -47,6 +47,7 @@ const generateReport = (averageScore) => {
   });
   try {
     fs.writeFileSync('report//performance-report.html', htmlReport(numberOfTestsFailed, numberOfTestsPassed, averageScore, tableRows.join('')));
+    fs.rmdirSync('report//performance-report.json');
   } catch (e) {
     Logger.error(e);
   }
