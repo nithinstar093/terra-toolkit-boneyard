@@ -14,7 +14,7 @@ async function launchChromeAndRunLighthouse(url, isMobileDevice) {
   } finally {
     // eslint-disable-next-line no-unsafe-finally
     return {
-      json: lighthouseResults.lhr,
+      json: JSON.stringify(lighthouseResults.lhr, null, 2),
       html: lighthouseResults.report,
     };
   }

@@ -140,7 +140,8 @@ const config = {
       let fileName = test.fullTitle.trim();
       fileName = (isMobileDevice) ? fileName.replace(/tiny|small/gi, 'Mobile')
         : fileName.replace(/medium|large|huge|enormous/gi, 'Desktop');
-      const newFileUrl = `${fileName.replace(/ /g, '-')}${getSessionToken()}.html`;
+      const htmlFileUrl = `${fileName.replace(/ /g, '-')}${getSessionToken()}.html`;
+      const jsonFileUrl = `${fileName.replace(/ /g, '-')}${getSessionToken()}.json`;
 
       if (!fs.existsSync('report')) {
         fs.mkdirSync('report');
@@ -150,31 +151,39 @@ const config = {
         fs.mkdirSync('report/html');
       }
 
+
+      if (!fs.existsSync('report/json')) {
+        fs.mkdirSync('report/json');
+      }
+
       // Skips running tests for multiple viewports
-      if (!fs.existsSync(`report//html//${newFileUrl}`)) {
+      if (!fs.existsSync(`report//json//${jsonFileUrl}`)) {
         const results = await launchChromeAndRunLighthouse(url, isMobileDevice);
-        const newReportOutput = JSON.parse(JSON.stringify(results.json));
+        const newReportOutput = JSON.parse(results.json);
         let extReportOutput;
         let isReportCreated = false;
-        const fileNames = fs.readdirSync('report//html//');
+        const fileNames = fs.readdirSync('report//json//');
         if (fileNames.length > 0) {
           fileNames.forEach((extfileUrl) => {
           // check if previous report exist. if true creates report only when there is difference between current and previous report.
-            if (validateSession(extfileUrl, newFileUrl)) {
-              extReportOutput = JSON.parse(JSON.stringify(fs.readFileSync(`report//html//${extfileUrl}`)));
+            if (validateSession(extfileUrl, jsonFileUrl)) {
+              extReportOutput = JSON.parse(fs.readFileSync(`report//json//${extfileUrl}`));
               if (compareReports(newReportOutput, extReportOutput, test.fullTitle)) {
-                fs.writeFileSync(`report//html//${newFileUrl}`, results.html);
-                addReportData(averagePerformanceScore, extReportOutput, newReportOutput, newFileUrl);
+                fs.writeFileSync(`report//html//${htmlFileUrl}`, results.html);
+                fs.writeFileSync(`report//json//${jsonFileUrl}`, results.json);
+                addReportData(averagePerformanceScore, extReportOutput, newReportOutput, htmlFileUrl);
                 isReportCreated = true;
-                fs.rmdirSync(`report//html//${extfileUrl}`);
+                fs.unlinkSync(`report//json//${extfileUrl}`);
+                fs.unlinkSync(`report//html//${extfileUrl.replace('.json', '.html')}`);
               }
             }
           });
         }
         // Prevents re-writing of existing report if there are no changes in performance score.
         if (extReportOutput === undefined && !isReportCreated) {
-          fs.writeFileSync(`report//html//${newFileUrl}`, results.html);
-          addReportData(averagePerformanceScore, extReportOutput, newReportOutput, newFileUrl);
+          fs.writeFileSync(`report//html//${htmlFileUrl}`, results.html);
+          fs.writeFileSync(`report//json//${jsonFileUrl}`, results.json);
+          addReportData(averagePerformanceScore, extReportOutput, newReportOutput, htmlFileUrl);
         }
       }
     }
