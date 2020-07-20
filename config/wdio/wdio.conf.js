@@ -128,8 +128,8 @@ const config = {
   before() {
     if (runLightHouse) {
       generateSessionToken();
-      if (!fs.existsSync('report//performance-report.json')) fs.rmdirSync('report//performance-report.json');
-      if (!fs.existsSync('report//performance-report.html')) fs.rmdirSync('report//performance-report.html');
+      if (fs.existsSync('report//performance-report.json')) fs.rmdirSync('report//performance-report.json');
+      if (fs.existsSync('report//performance-report.html')) fs.rmdirSync('report//performance-report.html');
     }
   },
 
@@ -138,8 +138,8 @@ const config = {
       const url = await global.browser.getUrl();
       const isMobileDevice = test.fullTitle.includes('tiny') || test.fullTitle.includes('small');
       let fileName = test.fullTitle.trim();
-      fileName = (isMobileDevice) ? fileName.replace(/tiny|small/gi, '[Mobile] ')
-        : fileName.replace(/medium|large|huge|enormous/gi, '[Desktop] ');
+      fileName = (isMobileDevice) ? fileName.replace(/tiny|small/gi, 'Mobile')
+        : fileName.replace(/medium|large|huge|enormous/gi, 'Desktop');
       const newFileUrl = `${fileName.replace(/ /g, '-')}${getSessionToken()}.html`;
 
       if (!fs.existsSync('report')) {
