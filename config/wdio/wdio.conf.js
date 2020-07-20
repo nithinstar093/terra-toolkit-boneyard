@@ -181,7 +181,10 @@ const config = {
   },
 
   onComplete() {
-    if (runLightHouse) generateReport(averagePerformanceScore);
+    if (runLightHouse) {
+      generateReport(averagePerformanceScore);
+      if (fs.existsSync('report//performance-report.json')) fs.rmdirSync('report//performance-report.json');
+    }
   },
 
   ...theme && { theme },
