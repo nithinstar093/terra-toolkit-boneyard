@@ -128,8 +128,8 @@ const config = {
   before() {
     if (runLightHouse) {
       generateSessionToken();
-      if (fs.existsSync('report//performance-report.json')) fs.rmdirSync('report//performance-report.json');
-      if (fs.existsSync('report//performance-report.html')) fs.rmdirSync('report//performance-report.html');
+      if (fs.existsSync('report//performance-report.json')) fs.unlinkSync('report//performance-report.json');
+      if (fs.existsSync('report//performance-report.html')) fs.unlinkSync('report//performance-report.html');
     }
   },
 
