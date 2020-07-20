@@ -11,7 +11,7 @@ const addReportData = (averageScore, extFileOutput, newFileOutput, fileUrl) => {
     testName: fileName,
     newPerfScore: newFileOutput.categories.performance.score * 100,
     extPerfScore: (extFileOutput) ? extFileOutput.categories.performance.score * 100 : averageScore,
-    reportLink: `https://googlechrome.github.io/lighthouse/viewer/?jsonurl=${process.cwd()}/report/json/${fileUrl}`,
+    reportLink: `${process.cwd()}/report/html/${fileUrl}`,
   };
 
   let jsonAray = [];
