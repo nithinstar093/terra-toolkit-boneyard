@@ -42,6 +42,8 @@ const {
   suite,
   spec,
   updateReference,
+  runLightHouse,
+  averagePerformanceScore,
 } = commander;
 
 const configPath = getWdioConfigPath(config);
@@ -59,6 +61,8 @@ runner({
   gridUrl,
   browsers,
   themes,
+  runLightHouse,
+  averagePerformanceScore,
   // honored wdio cli options
   ...host && { host },
   ...port && { port },
