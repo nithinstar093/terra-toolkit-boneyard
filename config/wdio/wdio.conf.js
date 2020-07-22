@@ -52,10 +52,10 @@ const seleniumGridUrl = process.env.SELENIUM_GRID_URL;
 const browsers = process.env.BROWSERS;
 
 /* Use to enable running light house performance against each test. */
-const runLightHouse = process.env.RUN_LIGHT_HOUSE;
+const runLightHouse = process.env.RUN_LIGHT_HOUSE || true;
 
 /* Use to set average performance score to validate light house reports. */
-const averagePerformanceScore = process.env.AVERAGE_PERFORMANCE_SCORE;
+const averagePerformanceScore = process.env.AVERAGE_PERFORMANCE_SCORE || 75;
 
 /* Use to override default theme for theme visual regression tests. */
 const theme = process.env.THEME;
@@ -147,7 +147,6 @@ const config = {
         fs.mkdirSync('report/html');
       }
 
-
       if (!fs.existsSync('report/json')) {
         fs.mkdirSync('report/json');
       }
@@ -157,7 +156,6 @@ const config = {
         const results = await launchChromeAndRunLighthouse(url, isMobileDevice);
         const newReportOutput = JSON.parse(results.json);
         let extReportOutput;
-        let isReportCreated = false;
         const fileNames = fs.readdirSync('report//json//');
         if (fileNames.length > 0) {
           fileNames.forEach((extfileUrl) => {
@@ -168,7 +166,6 @@ const config = {
                 fs.writeFileSync(`report//html//${htmlFileUrl}`, results.html);
                 fs.writeFileSync(`report//json//${jsonFileUrl}`, results.json);
                 addReportData(averagePerformanceScore, extReportOutput, newReportOutput, htmlFileUrl);
-                isReportCreated = true;
                 fs.unlinkSync(`report//json//${extfileUrl}`);
                 fs.unlinkSync(`report//html//${extfileUrl.replace('.json', '.html')}`);
               }
@@ -176,7 +173,7 @@ const config = {
           });
         }
         // Prevents re-writing of existing report if there are no changes in performance score.
-        if (extReportOutput === undefined && !isReportCreated) {
+        if (extReportOutput === undefined) {
           fs.writeFileSync(`report//html//${htmlFileUrl}`, results.html);
           fs.writeFileSync(`report//json//${jsonFileUrl}`, results.json);
           addReportData(averagePerformanceScore, extReportOutput, newReportOutput, htmlFileUrl);
