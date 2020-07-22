@@ -52,10 +52,10 @@ const seleniumGridUrl = process.env.SELENIUM_GRID_URL;
 const browsers = process.env.BROWSERS;
 
 /* Use to enable running light house performance against each test. */
-const runLightHouse = process.env.RUN_LIGHT_HOUSE || true; // 'true' adding true for testing.
+const runLightHouse = process.env.RUN_LIGHT_HOUSE;
 
 /* Use to set average performance score to validate light house reports. */
-const averagePerformanceScore = process.env.AVERAGE_PERFORMANCE_SCORE || 75;
+const averagePerformanceScore = process.env.AVERAGE_PERFORMANCE_SCORE;
 
 /* Use to override default theme for theme visual regression tests. */
 const theme = process.env.THEME;
@@ -126,11 +126,7 @@ const config = {
   },
 
   before() {
-    if (runLightHouse) {
-      generateSessionToken();
-      if (fs.existsSync('report//performance-report.json')) fs.unlinkSync('report//performance-report.json');
-      if (fs.existsSync('report//performance-report.html')) fs.unlinkSync('report//performance-report.html');
-    }
+    if (runLightHouse) generateSessionToken();
   },
 
   async afterTest(test) {

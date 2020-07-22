@@ -25,7 +25,7 @@ commander
   .option('--suite [path]', '[wdio option] The suite to run', undefined)
   .option('--spec [path]', '[wdio option] The spec file to run', undefined)
   .option('--runLightHouse', 'pass to run lighthouse performance tests', false)
-  .option('--averagePerformanceScore [number]', 'Specifies the average performance score for lighthouse tests to pass', 70)
+  .option('--averagePerformanceScore [number]', 'Specifies the average performance score for lighthouse tests to pass', undefined)
   .parse(process.argv);
 
 const {
