@@ -133,7 +133,7 @@ const config = {
     if (runLightHouse) {
       const url = await global.browser.getUrl();
       const isMobileDevice = test.fullTitle.includes('tiny') || test.fullTitle.includes('small');
-      let fileName = test.fullTitle.trim();
+      let fileName = test.fullTitle.replace('-is-accessible-and-is-within-the-mismatch-tolerance', '').trim();
       fileName = (isMobileDevice) ? fileName.replace(/tiny|small/gi, 'Mobile')
         : fileName.replace(/medium|large|huge|enormous/gi, 'Desktop');
       const htmlFileUrl = `${fileName.replace(/ /g, '-')}${getSessionToken()}.html`;
