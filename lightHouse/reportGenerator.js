@@ -27,6 +27,7 @@ const generateReport = (averageScore) => {
     const reportResults = JSON.parse(fs.readFileSync('report//performance-report.json'));
     const tableRows = reportResults.map((result) => {
       let perfScoreClass;
+      console.log('$$$$$lighthouseResults$$$$$', `${process.cwd()}/report/html/${result.reportLink}`);
       if (result.newPerfScore === result.extPerfScore) {
         perfScoreClass = 'perf_score_avg';
         numberOfTestsPassed += 1;
