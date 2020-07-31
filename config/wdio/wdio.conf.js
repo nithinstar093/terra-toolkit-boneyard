@@ -1,18 +1,13 @@
 const localIP = require('ip');
 const glob = require('glob');
 const path = require('path');
-const fs = require('fs');
 const determineSeleniumConfig = require('./selenium.config').determineConfig;
 const { dynamicRequire } = require('../configUtils');
-const launchChromeAndRunLighthouse = require('../../lightHouse/lightHouse');
-const { generateSessionToken, getSessionToken, validateSession } = require('../../lightHouse/sessionHelper');
-const { compareReports } = require('../../lightHouse/reportCompareHelper');
-const { addReportData, generateReport } = require('../../lightHouse/reportGenerator');
-
 const {
   SeleniumDocker: SeleniumDockerService, ServeStaticService, Terra: TerraService,
 } = require('../../lib/wdio/services/index');
 const visualRegressionConfig = require('./visualRegressionConf');
+const lightHouseService = require('../../lightHouse/lightHouseService');
 
 /* Use to pass your host's IP when running wdio tests from a VM or behind a proxy. */
 const ip = process.env.WDIO_EXTERNAL_HOST || localIP.address();
@@ -51,12 +46,6 @@ const seleniumGridUrl = process.env.SELENIUM_GRID_URL;
  */
 const browsers = process.env.BROWSERS;
 
-/* Use to enable running light house performance against each test. */
-const runLightHouse = process.env.RUN_LIGHT_HOUSE || true;
-
-/* Use to set average performance score to validate light house reports. */
-const averagePerformanceScore = process.env.AVERAGE_PERFORMANCE_SCORE || 75;
-
 /* Use to override default theme for theme visual regression tests. */
 const theme = process.env.THEME;
 
@@ -87,7 +76,7 @@ const config = {
   waitforTimeout: 3000,
   connectionRetryTimeout: 1200000,
   connectionRetryCount: 1,
-  services: ['visual-regression', TerraService, SeleniumDockerService, ServeStaticService],
+  services: ['visual-regression', TerraService, SeleniumDockerService, ServeStaticService, lightHouseService],
 
   visualRegression: visualRegressionConfig,
 
@@ -123,67 +112,6 @@ const config = {
     ui: 'bdd',
     timeout: 1200000,
     bail,
-  },
-
-  before() {
-    if (runLightHouse) generateSessionToken();
-  },
-
-  async afterTest(test) {
-    if (runLightHouse) {
-      const url = await global.browser.getUrl();
-      const isMobileDevice = test.fullTitle.includes('tiny') || test.fullTitle.includes('small');
-      let fileName = test.fullTitle.replace('-is-accessible-and-is-within-the-mismatch-tolerance', '').trim();
-      fileName = (isMobileDevice) ? fileName.replace(/tiny|small/gi, 'Mobile')
-        : fileName.replace(/medium|large|huge|enormous/gi, 'Desktop');
-      const htmlFileUrl = `${fileName.replace(/ /g, '-')}${getSessionToken()}.html`;
-      const jsonFileUrl = `${fileName.replace(/ /g, '-')}${getSessionToken()}.json`;
-
-      if (!fs.existsSync('report')) {
-        fs.mkdirSync('report');
-      }
-
-      if (!fs.existsSync('report/html')) {
-        fs.mkdirSync('report/html');
-      }
-
-      if (!fs.existsSync('report/json')) {
-        fs.mkdirSync('report/json');
-      }
-
-      // Skips running tests for multiple viewports
-      if (!fs.existsSync(`report//json//${jsonFileUrl}`)) {
-        const results = await launchChromeAndRunLighthouse(url, isMobileDevice);
-        const newReportOutput = JSON.parse(results.json);
-        let extReportOutput;
-        const fileNames = fs.readdirSync('report//json//');
-        if (fileNames.length > 0) {
-          fileNames.forEach((extfileUrl) => {
-          // check if previous report exist. if true creates report only when there is difference between current and previous report.
-            if (validateSession(extfileUrl, jsonFileUrl)) {
-              extReportOutput = JSON.parse(fs.readFileSync(`report//json//${extfileUrl}`));
-              if (compareReports(newReportOutput, extReportOutput, test.fullTitle)) {
-                fs.writeFileSync(`report//html//${htmlFileUrl}`, results.html);
-                fs.writeFileSync(`report//json//${jsonFileUrl}`, results.json);
-                addReportData(averagePerformanceScore, extReportOutput, newReportOutput, htmlFileUrl);
-                fs.unlinkSync(`report//json//${extfileUrl}`);
-                fs.unlinkSync(`report//html//${extfileUrl.replace('.json', '.html')}`);
-              }
-            }
-          });
-        }
-        // Prevents re-writing of existing report if there are no changes in performance score.
-        if (extReportOutput === undefined) {
-          fs.writeFileSync(`report//html//${htmlFileUrl}`, results.html);
-          fs.writeFileSync(`report//json//${jsonFileUrl}`, results.json);
-          addReportData(averagePerformanceScore, extReportOutput, newReportOutput, htmlFileUrl);
-        }
-      }
-    }
-  },
-
-  onComplete() {
-    if (runLightHouse) generateReport(averagePerformanceScore);
   },
 
   ...theme && { theme },
