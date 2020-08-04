@@ -4,6 +4,11 @@ Changelog
 Unreleased
 ----------
 
+6.7.0 - (August 4, 2020)
+----------
+### Changed
+* Updated TerraWDIOSpecReporter documentation.
+
 6.6.0 - (July 14, 2020)
 ----------
 ### Fixed
