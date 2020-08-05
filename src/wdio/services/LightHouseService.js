@@ -3,6 +3,7 @@ const launchChromeAndRunLighthouse = require('../../../lightHouse/lightHouse');
 const { generateSessionToken, getSessionToken, validateSession } = require('../../../lightHouse/sessionHelper');
 const { compareReports } = require('../../../lightHouse/reportCompareHelper');
 const { addReportData, generateReport } = require('../../../lightHouse/reportGenerator');
+const Logger = require('../../../scripts/utils/logger');
 
 /* Use to enable running light house performance against each test. */
 const runLightHouse = process.env.RUN_LIGHT_HOUSE || true;
@@ -13,6 +14,7 @@ const averagePerformanceScore = process.env.AVERAGE_PERFORMANCE_SCORE || 75;
 export default class LightHouseService {
   before() {
     if (runLightHouse) generateSessionToken();
+    Logger.error(`Running Lighthouse ---------------------------------------\n`, runLightHouse);
   }
 
   async afterTest(test) {

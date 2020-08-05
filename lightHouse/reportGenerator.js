@@ -6,6 +6,7 @@ let numberOfTestsPassed = 0;
 let numberOfTestsFailed = 0;
 
 const addReportData = (averageScore, extFileOutput, newFileOutput, fileUrl) => {
+  Logger.error(`Adding Report to ---------------------------------------\n`, fileUrl);
   const fileName = fileUrl.slice(0, fileUrl.lastIndexOf('(')); // removes session-id from url
   const reportResult = {
     testName: fileName,
