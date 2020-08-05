@@ -8,7 +8,7 @@ const generateSessionToken = () => {
 
 const getSessionToken = () => `(sessionId-${sessionToken})`;
 
-const validateSession = (extFileName, newFileName) => {
+const compareFileName = (extFileName, newFileName) => {
   const newSessionName = newFileName.substring(newFileName.lastIndexOf('(') + 1, newFileName.lastIndexOf(')'));
   const extSessionName = extFileName.substring(extFileName.lastIndexOf('(') + 1, extFileName.lastIndexOf(')'));
   const newFname = newFileName.substring(0, newFileName.lastIndexOf('('));
@@ -19,5 +19,5 @@ const validateSession = (extFileName, newFileName) => {
 module.exports = {
   generateSessionToken,
   getSessionToken,
-  validateSession,
+  compareFileName,
 };

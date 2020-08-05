@@ -40,18 +40,18 @@ const generateReport = (averageScore) => {
       }
       const status = (perfScoreClass === 'perf_score_fail') ? 'fail' : 'pass';
       const rows = `<tr>
-      <td>${result.testName}</td>
-      <td>${result.extPerfScore}</td>
-      <td class=${perfScoreClass}><a target=${result.reportLink} href=${result.reportLink}>${result.newPerfScore}</a></td>
-      <td class=${(status === 'fail') ? 'fail_status' : 'pass_status'}>${status}</td>
-    </tr>`;
+        <td>${result.testName}</td>
+        <td>${result.extPerfScore}</td>
+        <td class=${perfScoreClass}><a target=${result.reportLink} href=${result.reportLink}>${result.newPerfScore}</a></td>
+        <td class=${(status === 'fail') ? 'fail_status' : 'pass_status'}>${status}</td>
+        </tr>`;
       return [rows];
     });
     try {
       fs.writeFileSync('report//performance-report.html', htmlReport(numberOfTestsFailed, numberOfTestsPassed, averageScore, tableRows.join('')));
       fs.unlinkSync('report//performance-report.json');
     } catch (e) {
-      Logger.error(e);
+      Logger.error('ERROR While generating Lighthouse Consolidate Report',e);
     }
   }
 };

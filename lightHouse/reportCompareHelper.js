@@ -1,6 +1,6 @@
 const allowedVariance = 5;
 
-const compareReports = (newFile, extFile, testTitle, averagePerfScore) => {
+const compareReports = (newFile, extFile, averagePerfScore) => {
   if (newFile && extFile) {
     const newPerfScore = (newFile.categories.performance.score) * 100;
     const extPerfScore = (extFile.categories.performance.score) * 100;

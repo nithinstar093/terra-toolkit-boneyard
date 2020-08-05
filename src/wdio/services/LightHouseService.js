@@ -1,6 +1,6 @@
 const fs = require('fs');
 const launchChromeAndRunLighthouse = require('../../../lightHouse/lightHouse');
-const { generateSessionToken, getSessionToken, validateSession } = require('../../../lightHouse/sessionHelper');
+const { generateSessionToken, getSessionToken, compareFileName } = require('../../../lightHouse/sessionHelper');
 const { compareReports } = require('../../../lightHouse/reportCompareHelper');
 const { addReportData, generateReport } = require('../../../lightHouse/reportGenerator');
 const Logger = require('../../../scripts/utils/logger');
@@ -47,10 +47,11 @@ export default class LightHouseService {
         const fileNames = fs.readdirSync('report//json//');
         if (fileNames.length > 0) {
           fileNames.forEach((extfileUrl) => {
-            // check if previous report exist. if true creates report only when there is difference between current and previous report.
-            if (validateSession(extfileUrl, jsonFileUrl)) {
+            // check if previous report exist.
+            if (compareFileName(extfileUrl, jsonFileUrl)) {
               extReportOutput = JSON.parse(fs.readFileSync(`report//json//${extfileUrl}`));
-              if (compareReports(newReportOutput, extReportOutput, test.fullTitle)) {
+              // create report only when current performance score is different from previous performance score.
+              if (compareReports(newReportOutput, extReportOutput, averagePerformanceScore)) {      
                 fs.writeFileSync(`report//html//${htmlFileUrl}`, results.html);
                 fs.writeFileSync(`report//json//${jsonFileUrl}`, results.json);
                 addReportData(averagePerformanceScore, extReportOutput, newReportOutput, htmlFileUrl);
