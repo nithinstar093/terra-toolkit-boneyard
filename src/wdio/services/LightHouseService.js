@@ -1,8 +1,8 @@
 const fs = require('fs');
-const launchChromeAndRunLighthouse = require('./lightHouse');
-const { generateSessionToken, getSessionToken, validateSession } = require('./sessionHelper');
-const { compareReports } = require('./reportCompareHelper');
-const { addReportData, generateReport } = require('./reportGenerator');
+const launchChromeAndRunLighthouse = require('../../../lightHouse/lightHouse');
+const { generateSessionToken, getSessionToken, validateSession } = require('../../../lightHouse/sessionHelper');
+const { compareReports } = require('../../../lightHouse/reportCompareHelper');
+const { addReportData, generateReport } = require('../../../lightHouse/reportGenerator');
 
 /* Use to enable running light house performance against each test. */
 const runLightHouse = process.env.RUN_LIGHT_HOUSE || true;
@@ -10,10 +10,10 @@ const runLightHouse = process.env.RUN_LIGHT_HOUSE || true;
 /* Use to set average performance score to validate light house reports. */
 const averagePerformanceScore = process.env.AVERAGE_PERFORMANCE_SCORE || 75;
 
-const lightHouseService = {
+export default class LightHouseService {
   before() {
     if (runLightHouse) generateSessionToken();
-  },
+  }
 
   async afterTest(test) {
     if (runLightHouse) {
@@ -66,11 +66,9 @@ const lightHouseService = {
         }
       }
     }
-  },
+  }
 
   onComplete() {
     if (runLightHouse) generateReport(averagePerformanceScore);
-  },
+  }
 };
-
-export default lightHouseService;

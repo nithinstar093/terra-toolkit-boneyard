@@ -4,10 +4,9 @@ const path = require('path');
 const determineSeleniumConfig = require('./selenium.config').determineConfig;
 const { dynamicRequire } = require('../configUtils');
 const {
-  SeleniumDocker: SeleniumDockerService, ServeStaticService, Terra: TerraService,
+  SeleniumDocker: SeleniumDockerService, ServeStaticService, Terra: TerraService, LightHouseService
 } = require('../../lib/wdio/services/index');
 const visualRegressionConfig = require('./visualRegressionConf');
-const lightHouseService = require('../../lightHouse/lightHouseService');
 const TerraWDIOSpecReporter = require('../../reporters/wdio/TerraWDIOSpecReporter');
 
 /* Use to pass your host's IP when running wdio tests from a VM or behind a proxy. */
@@ -77,7 +76,7 @@ const config = {
   waitforTimeout: 3000,
   connectionRetryTimeout: 1200000,
   connectionRetryCount: 1,
-  services: ['visual-regression', TerraService, SeleniumDockerService, ServeStaticService, lightHouseService],
+  services: ['visual-regression', TerraService, SeleniumDockerService, ServeStaticService, LightHouseService],
 
   visualRegression: visualRegressionConfig,
 
