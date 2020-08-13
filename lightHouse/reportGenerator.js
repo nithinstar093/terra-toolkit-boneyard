@@ -22,7 +22,7 @@ const addReportData = (averageScore, extFileOutput, newFileOutput, fileUrl) => {
     jsonArray = JSON.parse(fs.readFileSync(consolidateJsonReport));
   }
   jsonArray.push(reportResult);
-  fs.writeFileSync(consolidateJsonReport, JSON.stringify(jsonAray));
+  fs.writeFileSync(consolidateJsonReport, JSON.stringify(jsonArray));
 };
 
 const generateReport = (averageScore) => {
