@@ -5,27 +5,29 @@ const Logger = require('../scripts/utils/logger');
 let numberOfTestsPassed = 0;
 let numberOfTestsFailed = 0;
 
+const consolidateJsonReport = 'performance_reports//performance_report.json';
+const consolidateHtmlReport = 'performance_reports//performance_report.html';
+
 const addReportData = (averageScore, extFileOutput, newFileOutput, fileUrl) => {
-  Logger.error(`Adding Report to ---------------------------------------\n`, fileUrl);
   const fileName = fileUrl.slice(0, fileUrl.lastIndexOf('(')); // removes session-id from url
   const reportResult = {
     testName: fileName,
     newPerfScore: newFileOutput.categories.performance.score * 100,
     extPerfScore: (extFileOutput) ? extFileOutput.categories.performance.score * 100 : averageScore,
-    reportLink: `${process.cwd()}/report/html/${fileUrl}`,
+    reportLink: `${process.cwd()}/performance_reports/html/${fileUrl}`,
   };
 
-  let jsonAray = [];
-  if (fs.existsSync('report//performance-report.json')) {
-    jsonAray = JSON.parse(fs.readFileSync('report//performance-report.json'));
+  let jsonArray = [];
+  if (fs.existsSync(consolidateJsonReport)) {
+    jsonArray = JSON.parse(fs.readFileSync(consolidateJsonReport));
   }
-  jsonAray.push(reportResult);
-  fs.writeFileSync('report//performance-report.json', JSON.stringify(jsonAray));
+  jsonArray.push(reportResult);
+  fs.writeFileSync(consolidateJsonReport, JSON.stringify(jsonAray));
 };
 
 const generateReport = (averageScore) => {
-  if (fs.existsSync('report//performance-report.json')) {
-    const reportResults = JSON.parse(fs.readFileSync('report//performance-report.json'));
+  if (fs.existsSync(consolidateJsonReport)) {
+    const reportResults = JSON.parse(fs.readFileSync(consolidateJsonReport));
     const tableRows = reportResults.map((result) => {
       let perfScoreClass;
       if (result.newPerfScore === result.extPerfScore) {
@@ -48,10 +50,10 @@ const generateReport = (averageScore) => {
       return [rows];
     });
     try {
-      fs.writeFileSync('report//performance-report.html', htmlReport(numberOfTestsFailed, numberOfTestsPassed, averageScore, tableRows.join('')));
-      fs.unlinkSync('report//performance-report.json');
+      fs.writeFileSync(consolidateHtmlReport, htmlReport(numberOfTestsFailed, numberOfTestsPassed, averageScore, tableRows.join('')));
+      fs.unlinkSync(consolidateJsonReport);
     } catch (e) {
-      Logger.error('ERROR While generating Lighthouse Consolidate Report',e);
+      Logger.error('ERROR While generating Lighthouse Consolidate Report :',e);
     }
   }
 };
