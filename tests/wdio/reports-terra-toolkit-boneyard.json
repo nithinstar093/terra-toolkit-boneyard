@@ -1,0 +1,34 @@
+{
+  "startDate": "8/11/2020, 10:06:17 AM",
+  "locale": "",
+  "theme": "",
+  "formFactor": "",
+  "output": [
+    [
+      "------------------------------------------------------------------",
+      "[chrome #0-0] Session ID: e08dac9d5e1fdf9355c001aa3239bbaa",
+      "[chrome #0-0] Spec: /Users/sn081183/Desktop/terra-toolkit-boneyard/tests/wdio/i18n-spec.js",
+      "[chrome #0-0] Running: chrome",
+      "[chrome #0-0]",
+      "[chrome #0-0] I18n Locale",
+      "[chrome #0-0]   1) Express correctly sets the application locale",
+      "[chrome #0-0]   2) [default] to be within the mismatch tolerance",
+      "[chrome #0-0]",
+      "[chrome #0-0]",
+      "[chrome #0-0] 2 failing (2m, 14s)",
+      "[chrome #0-0]",
+      "[chrome #0-0] 1) I18n Locale Express correctly sets the application locale:",
+      "[chrome #0-0] An element could not be located on the page using the given search parameters (\"#input-wdio-defined\").",
+      "[chrome #0-0] Error: An element could not be located on the page using the given search parameters (\"#input-wdio-defined\").",
+      "[chrome #0-0]     at setValue(\"#input-wdio-defined\", \"en\") - at elements(\"#input-wdio-defined\") - setValue.js:29:17",
+      "[chrome #0-0]",
+      "[chrome #0-0] 2) I18n Locale [default] to be within the mismatch tolerance:",
+      "[chrome #0-0] unknown error: NoSuchElement",
+      "[chrome #0-0] Error: An unknown server-side error occurred while processing the command.",
+      "[chrome #0-0]     at execute(<Function>) - selectorExecute.js:58:65",
+      "[chrome #0-0]     at execute(\"return !!document.evaluate;\") - ensureClientSideSelectorSupport.js:23:17",
+      "[chrome #0-0]"
+    ]
+  ],
+  "endDate": "8/11/2020, 10:25:21 AM"
+}
