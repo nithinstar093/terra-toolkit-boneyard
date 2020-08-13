@@ -29,8 +29,8 @@ export default class LightHouseService {
       const htmlFileUrl = `${fileName.replace(/ /g, '_')}${getSessionToken()}.html`;
       const jsonFileUrl = `${fileName.replace(/ /g, '_')}${getSessionToken()}.json`;
 
-      if (!fs.existsSync(rootDirectory)) {
-        fs.mkdirSync(rootDirectory);
+      if (!fs.existsSync(rootDir)) {
+        fs.mkdirSync(rootDir);
       }
 
       if (!fs.existsSync(htmlRootDir)) {
