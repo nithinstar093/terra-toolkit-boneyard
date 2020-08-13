@@ -3,7 +3,6 @@ const launchChromeAndRunLighthouse = require('../../../lightHouse/lightHouse');
 const { generateSessionToken, getSessionToken, compareFileName } = require('../../../lightHouse/sessionHelper');
 const { compareReports } = require('../../../lightHouse/reportCompareHelper');
 const { addReportData, generateReport } = require('../../../lightHouse/reportGenerator');
-const Logger = require('../../../scripts/utils/logger');
 
 /* Use to enable running light house performance against each test. */
 const runLightHouse = process.env.RUN_LIGHT_HOUSE || true;
@@ -14,7 +13,6 @@ const averagePerformanceScore = process.env.AVERAGE_PERFORMANCE_SCORE || 75;
 export default class LightHouseService {
   before() {
     if (runLightHouse) generateSessionToken();
-    Logger.error(`Running Lighthouse ---------------------------------------\n`, runLightHouse);
   }
 
   async afterTest(test) {
@@ -24,8 +22,8 @@ export default class LightHouseService {
       let fileName = test.fullTitle.replace('-is-accessible-and-is-within-the-mismatch-tolerance', '').trim();
       fileName = (isMobileDevice) ? fileName.replace(/tiny|small/gi, 'Mobile')
         : fileName.replace(/medium|large|huge|enormous/gi, 'Desktop');
-      const htmlFileUrl = `${fileName.replace(/ /g, '-')}${getSessionToken()}.html`;
-      const jsonFileUrl = `${fileName.replace(/ /g, '-')}${getSessionToken()}.json`;
+      const htmlFileUrl = `${fileName.replace(/ /g, '_')}${getSessionToken()}.html`;
+      const jsonFileUrl = `${fileName.replace(/ /g, '_')}${getSessionToken()}.json`;
 
       if (!fs.existsSync('report')) {
         fs.mkdirSync('report');

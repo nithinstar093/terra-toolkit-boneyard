@@ -6,7 +6,7 @@ const generateSessionToken = () => {
   sessionToken = uuidv4();
 };
 
-const getSessionToken = () => `(sessionId-${sessionToken})`;
+const getSessionToken = () => `(sessionId_${sessionToken})`;
 
 const compareFileName = (extFileName, newFileName) => {
   const newSessionName = newFileName.substring(newFileName.lastIndexOf('(') + 1, newFileName.lastIndexOf(')'));
