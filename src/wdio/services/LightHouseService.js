@@ -9,7 +9,16 @@ let viewPortSize;
 
 export default class LightHouseService {
   before() {
-    if (fs.existsSync(rootDir)) fs.rmdirSync(rootDir);
+    if (fs.existsSync(rootDir)) {
+      const files = fs.readdirSync(htmlRootDir)
+      if (files.length > 0) {
+        files.forEach((filename) => {
+          fs.unlinkSync(`${htmlRootDir}//${filename}`);
+        });
+      }
+      fs.rmdirSync(htmlRootDir);
+      fs.rmdirSync(rootDir);
+    }
     viewPortSize =  global.browser.getViewportSize().width;
   }
 
