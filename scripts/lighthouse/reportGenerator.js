@@ -1,6 +1,6 @@
 const fs = require('fs');
 const htmlReport = require('./consolidateReport');
-const Logger = require('../scripts/utils/logger');
+const Logger = require('../utils/logger');
 
 const consolidateJsonReport = 'performance_reports//performance_report.json';
 const consolidateHtmlReport = 'performance_reports//performance_report.html';
