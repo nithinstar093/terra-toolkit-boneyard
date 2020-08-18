@@ -24,6 +24,7 @@ commander
   .option('--baseUrl [path]', '[wdio option] The base URL', undefined)
   .option('--suite [path]', '[wdio option] The suite to run', undefined)
   .option('--spec [path]', '[wdio option] The spec file to run', undefined)
+  .option('--disableLightHouseRun', 'Pass to disbale running lighthouse performance test', false)
   .parse(process.argv);
 
 const {
@@ -40,6 +41,7 @@ const {
   suite,
   spec,
   updateReference,
+  disableLightHouseRun,
 } = commander;
 
 const configPath = getWdioConfigPath(config);
@@ -57,6 +59,7 @@ runner({
   gridUrl,
   browsers,
   themes,
+  disableLightHouseRun,
   // honored wdio cli options
   ...host && { host },
   ...port && { port },
