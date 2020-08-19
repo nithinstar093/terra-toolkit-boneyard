@@ -3,7 +3,6 @@ const htmlReport = require('./consolidateReport');
 const Logger = require('../utils/logger');
 
 const consolidateJsonReport = 'performance_reports//performance_report.json';
-const consolidateHtmlReport = 'performance_reports//performance_report.html';
 
 const addReportData = (jsonOutput, fileUrl) => {
   const reportResult = {
@@ -20,7 +19,7 @@ const addReportData = (jsonOutput, fileUrl) => {
   fs.writeFileSync(consolidateJsonReport, JSON.stringify(jsonArray));
 };
 
-const generateReport = () => {
+const generateReport = (consolidateHtmlReport) => {
   if (fs.existsSync(consolidateJsonReport)) {
     const reportResults = JSON.parse(fs.readFileSync(consolidateJsonReport));
     const tableRows = reportResults.map((result) => {
