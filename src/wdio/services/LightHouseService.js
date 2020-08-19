@@ -4,7 +4,7 @@ const { addReportData, generateReport } = require('../../../scripts/lighthouse/r
 
 const rootDir = 'performance_reports';
 const htmlRootDir = 'performance_reports//html';
-const consolidateHtmlReport = `${rootDir}//performance_report.html}`;
+const consolidateHtmlReport = `${rootDir}//performance_report.html`;
 
 /* Use to override default theme for theme visual regression tests. */
 const theme = process.env.THEME;
