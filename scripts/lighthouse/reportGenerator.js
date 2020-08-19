@@ -2,7 +2,7 @@ const fs = require('fs');
 const htmlReport = require('./consolidateReport');
 const Logger = require('../utils/logger');
 
-const consolidateJsonReport = 'performance_reports//performance_report.json';
+const consolidateJsonReport = 'performance_reports/performance_report.json';
 
 const addReportData = (jsonOutput, fileUrl) => {
   const reportResult = {
