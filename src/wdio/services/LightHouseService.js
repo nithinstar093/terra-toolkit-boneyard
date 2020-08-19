@@ -12,7 +12,7 @@ const theme = process.env.THEME;
 export default class LightHouseService {
   before() {
     // clears the previous report only for default theme. To prevent performance test from running for multiple themes.
-    if (fs.existsSync(rootDir) && theme === undefined) {
+    if (fs.existsSync(htmlRootDir) && theme === undefined) {
       const files = fs.readdirSync(htmlRootDir);
       files.forEach((filename) => {
         fs.unlinkSync(`${htmlRootDir}/${filename}`);

@@ -1,4 +1,4 @@
-const reportHtml = (tableRows) => (
+const reportHtml = (metrics, tableRows) => (
     `<!doctype html>
       <html lang="en">
         <head>
@@ -55,6 +55,10 @@ const reportHtml = (tableRows) => (
           <div class="container">
             <div class="header">
               <h4> Light House Consolidate Report </h4>
+              <p> Total number of Tests : ${metrics.numberOfTestsAboveAvg + metrics.numberOfTestsBelowAvg + metrics.numberOfTestsEqualToAvg} </p>
+              <p> Number of tests equal / above 90 : ${metrics.numberOfTestsAboveAvg} </p>
+              <p> Number of tests equal / above 70 : ${metrics.numberOfTestsEqualToAvg} </p>
+              <p> Number of tests below 70 : ${metrics.numberOfTestsBelowAvg} </p>
             </div>
             <table>
               <tr>
