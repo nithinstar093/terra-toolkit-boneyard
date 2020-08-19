@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs-extra')
 const launchChromeAndRunLighthouse = require('../../../scripts/lighthouse/lighthouse');
 const { addReportData, generateReport } = require('../../../scripts/lighthouse/reportGenerator');
 
@@ -12,13 +12,8 @@ const theme = process.env.THEME;
 export default class LightHouseService {
   before() {
     // clears the previous report only for default theme. To prevent performance test from running for multiple themes.
-    if (fs.existsSync(htmlRootDir) && theme === undefined) {
-      const files = fs.readdirSync(htmlRootDir);
-      files.forEach((filename) => {
-        fs.unlinkSync(`${htmlRootDir}/${filename}`);
-      });
-      if (fs.existsSync(htmlRootDir)) fs.rmdirSync(htmlRootDir);
-      if (fs.existsSync(consolidateHtmlReport)) fs.unlinkSync(consolidateHtmlReport);
+    if (fs.existsSync(rootDir) && theme === undefined) {
+      fs.removeSync(rootDir);
     }
   }
 

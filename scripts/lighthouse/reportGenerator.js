@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 const htmlReport = require('./consolidateReport');
 const Logger = require('../utils/logger');
 
@@ -46,7 +46,7 @@ const generateReport = (consolidateHtmlReport) => {
     });
     try {
       fs.writeFileSync(consolidateHtmlReport, htmlReport({ numberOfTestsAboveAvg, numberOfTestsBelowAvg, numberOfTestsEqualToAvg }, tableRows.join('')));
-      fs.unlinkSync(consolidateJsonReport);
+      fs.removeSync(consolidateJsonReport);
     } catch (e) {
       Logger.error('ERROR While generating Lighthouse Consolidate Report :',e);
     }
