@@ -4,7 +4,28 @@ Changelog
 Unreleased
 ----------
 
-6.2.0 - (June 9, 2020)
+6.7.0 - (August 4, 2020)
+----------
+### Changed
+* Updated TerraWDIOSpecReporter documentation.
+
+6.6.0 - (July 14, 2020)
+----------
+### Fixed
+* Fix Terra wdio Spec Reporter output location when only one spec file is ran.
+* Fix default out path for reports to match the default reports path included in default wdio configuration
+
+6.5.0 - (July 10, 2020)
+----------
+### Changed
+* Limited the full result types of axe testing to just `violations`. This should improve performance.
+
+6.4.0 - (June 30, 2020)
+----------
+### Added
+* Terra wdio Spec Reporter that logs wdio test output to separate json files based on locale, theme and form-factor.
+
+6.3.0 - (June 9, 2020)
 ----------
 ### Added
 * Terra Verbose Reporter that logs jest test results to a json file.
@@ -546,7 +567,7 @@ Unreleased
 
 4.0.0 - (June 26, 2018)
 ----------
-### Major Version Bump. See https://github.com/cerner/terra-toolkit/blob/master/docs/guides/UpgradeGuide-v4.0.0.md.
+### Major Version Bump. See https://github.com/cerner/terra-toolkit/blob/main/docs/guides/UpgradeGuide-v4.0.0.md.
 
 ### Added
 * Added `locale`, `formFactor` and `baseScreenshotDir` wdio.config options for i18n support [#69](https://github.com/cerner/terra-toolkit/issues/69) and parallelization support [#70](https://github.com/cerner/terra-toolkit/issues/70)
@@ -652,7 +673,7 @@ Unreleased
 
 3.0.0 - (April 19, 2018)
 ----------
-### Major Version Bump. See https://github.com/cerner/terra-toolkit/blob/master/docs/guides/UpgradeGuide-v3.0.0.md.
+### Major Version Bump. See https://github.com/cerner/terra-toolkit/blob/main/docs/guides/UpgradeGuide-v3.0.0.md.
 
 ### Added
 * Added nl and nl-BE to supported locales
