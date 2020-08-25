@@ -41,8 +41,8 @@ const site = process.env.SITE;
 /* Use to set enable running test against a hosted selenium grid. Enables IE capabilities if the grid supports it. */
 const seleniumGridUrl = process.env.SELENIUM_GRID_URL;
 
-/* Use to disable running light house performance against each test. */
-const disableLightHouseRun = process.env.DISABLE_LIGHT_HOUSE_RUN;
+/* Use to enable running light house performance against each test. */
+const enableLightHouseRun = process.env.ENABLE_LIGHT_HOUSE_RUN;
 
 /**
  * Use to run tests against the various browsers. Headless Chrome and Headless Firefox browsers are available. IE is
@@ -80,7 +80,7 @@ const config = {
   waitforTimeout: 3000,
   connectionRetryTimeout: 1200000,
   connectionRetryCount: 1,
-  services: (disableLightHouseRun) ? ['visual-regression', TerraService, SeleniumDockerService, ServeStaticService] 
+  services: (enableLightHouseRun) ? ['visual-regression', TerraService, SeleniumDockerService, ServeStaticService] 
   : ['visual-regression', TerraService, SeleniumDockerService, ServeStaticService, LightHouseService],
 
   visualRegression: visualRegressionConfig,

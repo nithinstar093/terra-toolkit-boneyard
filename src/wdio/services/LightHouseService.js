@@ -17,7 +17,7 @@ export default class LightHouseService {
     }
   }
 
-  async afterTest(test) {
+  async beforeTest(test) {
     const url = await global.browser.getUrl();
     const isMobileDevice = test.fullTitle.includes('tiny') || test.fullTitle.includes('small');
     let fileName = test.fullTitle.replace('is accessible and is within the mismatch tolerance', '').trim();

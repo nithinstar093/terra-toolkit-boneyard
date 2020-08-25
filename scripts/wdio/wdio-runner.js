@@ -5,14 +5,14 @@ const context = '[Terra-Tookit:wdio-runner]';
 
 async function wdioRunner(options) {
   const {
-    configPath, locales, formFactors, gridUrl, browsers, themes, continueOnFail, disableLightHouseRun, ...testSetup
+    configPath, locales, formFactors, gridUrl, browsers, themes, continueOnFail, enableLightHouseRun, ...testSetup
   } = options;
 
   const testlocales = locales || ['en'];
   const testThemes = themes || [null];
   const factors = formFactors || [null];
 
-  process.env.DISABLE_LIGHT_HOUSE_RUN = disableLightHouseRun || false;
+  process.env.ENABLE_LIGHT_HOUSE_RUN = enableLightHouseRun || false;
 
   if (gridUrl) {
     process.env.SELENIUM_GRID_URL = gridUrl;
