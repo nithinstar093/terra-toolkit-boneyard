@@ -1,4 +1,5 @@
-const fs = require('fs-extra')
+const fs = require('fs-extra');
+const chromeLauncher = require('chrome-launcher');
 const launchChromeAndRunLighthouse = require('../../../scripts/lighthouse/lighthouse');
 const { addReportData, generateReport } = require('../../../scripts/lighthouse/reportGenerator');
 
@@ -8,13 +9,15 @@ const consolidateHtmlReport = `${rootDir}/performance_report.html`;
 
 /* Use to override default theme for theme visual regression tests. */
 const theme = process.env.THEME;
+let chrome;
 
 export default class LightHouseService {
-  before() {
+  async before() {
     // clears the previous report only for default theme. To prevent performance test from running for multiple themes.
     if (fs.existsSync(rootDir) && theme === undefined) {
       fs.removeSync(rootDir);
     }
+    chrome = await chromeLauncher.launch({ chromeFlags: ['--headless', '--disable-gpu'] });
   }
 
   async beforeTest(test) {
@@ -30,13 +33,14 @@ export default class LightHouseService {
 
     // Skips running tests for multiple viewports
     if (!fs.existsSync(`${htmlRootDir}/${htmlFileUrl}`)) {
-        const results = await launchChromeAndRunLighthouse(url, isMobileDevice);
+        const results = await launchChromeAndRunLighthouse(url, isMobileDevice, chrome);
         fs.writeFileSync(`${htmlRootDir}/${htmlFileUrl}`, results.html);
         addReportData(JSON.parse(results.json), htmlFileUrl);
     }
   }
 
-  onComplete() {
+  async onComplete() {
     generateReport(consolidateHtmlReport);
+    await chrome.kill();
   }
 };

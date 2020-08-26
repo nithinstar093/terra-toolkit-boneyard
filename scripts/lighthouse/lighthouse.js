@@ -1,14 +1,12 @@
 const lighthouse = require('lighthouse');
-const chromeLauncher = require('chrome-launcher');
 const lighthouseConfig = require('./lightHouseConfig');
 
-async function launchChromeAndRunLighthouse(url, isMobileDevice) {
-  const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless', '--disable-gpu'] });
+async function launchChromeAndRunLighthouse(url, isMobileDevice, chrome) {
   const options = { output: 'html', port: chrome.port };
 
   const lighthouseResults = await lighthouse(url, options, lighthouseConfig(isMobileDevice));
   try {
-    await chrome.kill();
+    // await chrome.kill();
   } catch (exception) {
     // continue regardless of error
   } finally {
