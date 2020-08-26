@@ -39,8 +39,11 @@ export default class LightHouseService {
     }
   }
 
-  async onComplete() {
-    generateReport(consolidateHtmlReport);
+  async after() {
     await chrome.kill();
+  }
+
+  onComplete() {
+    generateReport(consolidateHtmlReport);
   }
 };
