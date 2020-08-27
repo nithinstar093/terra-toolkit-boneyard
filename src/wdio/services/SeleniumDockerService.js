@@ -66,7 +66,7 @@ export default class SeleniumDockerService {
   */
   ensureSelenium() {
     return new Promise((resolve, reject) => {
-      Logger.log('Ensuring selenium status is readyed', { context });
+      Logger.log('Ensuring selenium status is ready', { context });
       retry(
         { times: this.config.retries, interval: this.config.retryInterval },
         this.getSeleniumStatus, (err, result) => {
@@ -97,10 +97,8 @@ export default class SeleniumDockerService {
   * @return {Promise} which resolves to a JSON object describing the docker environment.
   */
   getDockerInfo() {
-    const dockerInfo = this.execute('docker info --format "{{json .}}"')
+    return this.execute('docker info --format "{{json .}}"')
       .then(result => JSON.parse(result));
-      console.log('seleniumDockerService Docker Info', dockerInfo);
-      return dockerInfo;
   }
 
   /**
@@ -108,9 +106,7 @@ export default class SeleniumDockerService {
   * @return {Promise} which resolves to a string representing the network, or null if none exists.
   */
   getNetwork() {
-    const network = this.execute('docker network ls --filter name=wdio  --format "{{.ID}}: {{.Driver}}"');
-    console.log('selenium Docker Network', network);
-    return network;
+    return this.execute('docker network ls --filter name=wdio  --format "{{.ID}}: {{.Driver}}"');
   }
 
   /**
@@ -128,9 +124,7 @@ export default class SeleniumDockerService {
   */
   deployStack() {
     Logger.log('Deploying docker selenium stack', { context });
-    const deployedStack = this.execute(`docker stack deploy --compose-file ${this.config.composeFile} wdio`);
-    console.log('SeleniumDockerService depolyed Stack', deployedStack);
-    return deployedStack;
+    return this.execute(`docker stack deploy --compose-file ${this.config.composeFile} wdio`);
   }
 
   /**
