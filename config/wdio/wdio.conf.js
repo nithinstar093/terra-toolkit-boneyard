@@ -80,8 +80,8 @@ const config = {
   waitforTimeout: 3000,
   connectionRetryTimeout: 1200000,
   connectionRetryCount: 1,
-  services: (enableLightHouseRun) ? ['visual-regression', TerraService, SeleniumDockerService, ServeStaticService] 
-  : ['visual-regression', TerraService, SeleniumDockerService, ServeStaticService, LightHouseService],
+  services: (enableLightHouseRun) ? ['visual-regression', TerraService, SeleniumDockerService, ServeStaticService, LightHouseService] 
+  : ['visual-regression', TerraService, SeleniumDockerService, ServeStaticService],
 
   visualRegression: visualRegressionConfig,
 
