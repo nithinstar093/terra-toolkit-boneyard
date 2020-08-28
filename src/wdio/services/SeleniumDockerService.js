@@ -45,11 +45,9 @@ export default class SeleniumDockerService {
         await this.ensureNetworkRemoved();
       }
 
-      const network = await this.getNetwork();
-      console.log('networksese', network);
-      const nets = await this.execute('docker network ls --filter name=host');
-      console.log('port', nets);
       await this.deployStack();
+      const stack = await this.execute('docker stack ls');
+      console.log('stack', stack);
       await this.ensureSelenium();
     }
   }
