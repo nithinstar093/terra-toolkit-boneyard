@@ -1,8 +1,15 @@
 const lighthouse = require('lighthouse');
 const lighthouseConfig = require('./lightHouseConfig');
 
-async function launchChromeAndRunLighthouse(url, isMobileDevice, chrome) {
-  const options = { output: 'html', port: chrome.port };
+let selniumChromeHost;
+const selniumChromePort = 5555;
+
+const setPort = (host) => {
+  selniumChromeHost = host;
+};
+
+async function launchChromeAndRunLighthouse(url, isMobileDevice, chromePort) {
+  const options = (selniumChromeHost) ? { output: 'html', port: selniumChromePort, host: selniumChromeHost } : { output: 'html', port: chromePort };
 
   const lighthouseResults = await lighthouse(url, options, lighthouseConfig(isMobileDevice));
   try {
@@ -18,4 +25,9 @@ async function launchChromeAndRunLighthouse(url, isMobileDevice, chrome) {
   }
 }
 
-module.exports = launchChromeAndRunLighthouse;
+
+
+module.exports = {
+  launchChromeAndRunLighthouse,
+  setPort,
+};

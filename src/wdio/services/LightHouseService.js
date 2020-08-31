@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const chromeLauncher = require('chrome-launcher');
-const launchChromeAndRunLighthouse = require('../../../scripts/lighthouse/lighthouse');
+const { launchChromeAndRunLighthouse } = require('../../../scripts/lighthouse/lighthouse');
 const { addReportData, generateReport } = require('../../../scripts/lighthouse/reportGenerator');
 
 const rootDir = 'performance_reports';
@@ -33,7 +33,7 @@ export default class LightHouseService {
 
     // Skips running tests for multiple viewports
     if (!fs.existsSync(`${htmlRootDir}/${htmlFileUrl}`)) {
-        const results = await launchChromeAndRunLighthouse(url, isMobileDevice, chrome);
+        const results = await launchChromeAndRunLighthouse(url, isMobileDevice, chrome.port);
         fs.writeFileSync(`${htmlRootDir}/${htmlFileUrl}`, results.html);
         addReportData(JSON.parse(results.json), htmlFileUrl);
     }
