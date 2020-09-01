@@ -1,21 +1,14 @@
 const lighthouse = require('lighthouse');
 const lighthouseConfig = require('./lightHouseConfig');
-
-let selniumChromeHost;
-const selniumChromePort = 5555;
-
-const setPort = (host) => {
-  selniumChromeHost = host;
-};
+const Logger = require('../../scripts/utils/logger');
 
 async function launchChromeAndRunLighthouse(url, isMobileDevice, chromePort) {
-  const options = (selniumChromeHost) ? { output: 'html', port: selniumChromePort, host: selniumChromeHost } : { output: 'html', port: chromePort };
-
-  const lighthouseResults = await lighthouse(url, options, lighthouseConfig(isMobileDevice));
+  const options = { output: 'html', port: chromePort };
+  let lighthouseResults;
   try {
-    // await chrome.kill();
-  } catch (exception) {
-    // continue regardless of error
+    lighthouseResults = await lighthouse(url, options, lighthouseConfig(isMobileDevice));
+  } catch (e) {
+    Logger.error(`lighthouse failed: ${e.message}`)
   } finally {
     // eslint-disable-next-line no-unsafe-finally
     return {
@@ -25,9 +18,4 @@ async function launchChromeAndRunLighthouse(url, isMobileDevice, chromePort) {
   }
 }
 
-
-
-module.exports = {
-  launchChromeAndRunLighthouse,
-  setPort,
-};
+module.exports = launchChromeAndRunLighthouse;

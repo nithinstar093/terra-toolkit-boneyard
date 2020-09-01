@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const chromeLauncher = require('chrome-launcher');
-const { launchChromeAndRunLighthouse } = require('../../../scripts/lighthouse/lighthouse');
+const launchChromeAndRunLighthouse = require('../../../scripts/lighthouse/lighthouse');
 const { addReportData, generateReport } = require('../../../scripts/lighthouse/reportGenerator');
 
 const rootDir = 'performance_reports';

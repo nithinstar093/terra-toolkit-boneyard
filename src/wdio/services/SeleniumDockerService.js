@@ -5,7 +5,6 @@ import http from 'http';
 import path from 'path';
 import SERVICE_DEFAULTS from '../../../config/wdio/services.default-config';
 import Logger from '../../../scripts/utils/logger';
-const { setPort } = require('../../../scripts/lighthouse/lighthouse');
 
 const context = '[Terra-Toolkit:selenium-docker]';
 /**
@@ -48,9 +47,6 @@ export default class SeleniumDockerService {
 
       await this.deployStack();
       await this.ensureSelenium();
-
-      const chromeHost = await this.execute('docker ps --filter ancestor=selenium/node-chrome:3.14.0-helium');
-      setPort(chromeHost);
     }
   }
 
