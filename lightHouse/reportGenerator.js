@@ -5,8 +5,8 @@ const Logger = require('../scripts/utils/logger');
 let numberOfTestsPassed = 0;
 let numberOfTestsFailed = 0;
 
-const consolidateJsonReport = 'performance_reports//performance_report.json';
-const consolidateHtmlReport = 'performance_reports//performance_report.html';
+const consolidateJsonReport = `${process.cwd()}/performance_reports/performance_report.json`;
+const consolidateHtmlReport = `${process.cwd()}/performance_reports//performance_report.html`;
 
 const addReportData = (averageScore, extFileOutput, newFileOutput, fileUrl) => {
   const fileName = fileUrl.slice(0, fileUrl.lastIndexOf('(')); // removes session-id from url

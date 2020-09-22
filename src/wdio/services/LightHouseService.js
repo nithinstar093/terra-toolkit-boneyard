@@ -10,9 +10,9 @@ const runLightHouse = process.env.RUN_LIGHT_HOUSE || true;
 /* Use to set average performance score to validate light house reports. */
 const averagePerformanceScore = process.env.AVERAGE_PERFORMANCE_SCORE || 75;
 
-const rootDir = 'performance_reports';
-const htmlRootDir = 'performance_reports/html';
-const jsonRootDir = 'performance_reports/json';
+const rootDir = `${process.cwd()}/performance_reports`;
+const htmlRootDir = `${process.cwd()}/performance_reports/html`;
+const jsonRootDir = `${process.cwd()}/performance_reports/json`;
 
 export default class LightHouseService {
   before() {
