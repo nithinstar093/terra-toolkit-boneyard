@@ -3,6 +3,7 @@ const launchChromeAndRunLighthouse = require('../../../lightHouse/lightHouse');
 const { generateSessionToken, getSessionToken, compareFileName } = require('../../../lightHouse/sessionHelper');
 const { compareReports } = require('../../../lightHouse/reportCompareHelper');
 const { addReportData, generateReport } = require('../../../lightHouse/reportGenerator');
+const Logger = require('../../../scripts/utils/logger');
 
 /* Use to enable running light house performance against each test. */
 const runLightHouse = process.env.RUN_LIGHT_HOUSE || true;
@@ -47,12 +48,15 @@ export default class LightHouseService {
         const newReportOutput = JSON.parse(results.json);
         let extReportOutput;
         const fileNames = fs.readdirSync(`${jsonRootDir}//`);
+        Logger.warn(`filename Length : ${fileNames.length}`);
         if (fileNames.length > 0) {
           fileNames.forEach((extfileUrl) => {
+            Logger.warn(`Existing File URL : ${extfileUrl}`);
             // check if previous report exist.
             if (compareFileName(extfileUrl, jsonFileUrl)) {
               extReportOutput = JSON.parse(fs.readFileSync(`${jsonRootDir}//${extfileUrl}`));
               // create report only when current performance score is different from previous performance score.
+              Logger.warn(`Comparison for ${newReportOutput.categories.performance.score}`);
               if (compareReports(newReportOutput, extReportOutput, averagePerformanceScore)) {      
                 fs.writeFileSync(`${htmlRootDir}//${htmlFileUrl}`, results.html);
                 fs.writeFileSync(`${jsonRootDir}//${jsonFileUrl}`, results.json);
@@ -67,6 +71,7 @@ export default class LightHouseService {
         if (extReportOutput === undefined) {
           fs.writeFileSync(`${htmlRootDir}//${htmlFileUrl}`, results.html);
           fs.writeFileSync(`${jsonRootDir}//${jsonFileUrl}`, results.json);
+          Logger.warn(`report created for ${htmlRootDir}//${htmlFileUrl}`)
           addReportData(averagePerformanceScore, extReportOutput, newReportOutput, htmlFileUrl);
         }
       }
