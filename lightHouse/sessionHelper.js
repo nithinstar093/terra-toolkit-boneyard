@@ -14,8 +14,7 @@ const compareFileName = (extFileName, newFileName) => {
   const extSessionName = extFileName.substring(extFileName.lastIndexOf('(') + 1, extFileName.lastIndexOf(')'));
   const newFname = newFileName.substring(0, newFileName.lastIndexOf('('));
   const extFname = extFileName.substring(0, extFileName.lastIndexOf('('));
-  Logger.warn(`Existing File URL : ${extFname} ----- new file url : ${newFname}`);
-  Logger.warn(`Existing Session Name : ${extSessionName} ----- new session name : ${newSessionName}`);
+  Logger.warn(`validate Session : ${(newSessionName !== extSessionName && newFname === extFname)}`);
   return (newSessionName !== extSessionName && newFname === extFname);
 };
 
