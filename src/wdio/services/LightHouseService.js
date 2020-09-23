@@ -51,7 +51,6 @@ export default class LightHouseService {
         Logger.warn(`filename Length : ${fileNames.length}`);
         if (fileNames.length > 0) {
           fileNames.forEach((extfileUrl) => {
-            Logger.warn(`Existing File URL : ${extfileUrl}`);
             // check if previous report exist.
             if (compareFileName(extfileUrl, jsonFileUrl)) {
               extReportOutput = JSON.parse(fs.readFileSync(`${jsonRootDir}//${extfileUrl}`));
