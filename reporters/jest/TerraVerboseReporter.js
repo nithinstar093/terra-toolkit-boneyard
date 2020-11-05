@@ -25,6 +25,9 @@ class TerraVerboseReporter extends VerboseReporter {
     this.filePath = this.setTestDirPath();
     this.resultDir = this.setResultDir(globalConfig);
     this.ensureResultsDir();
+
+    this._out = () => {};
+    this._err = () => {};
   }
 
   // eslint-disable-next-line class-methods-use-this
