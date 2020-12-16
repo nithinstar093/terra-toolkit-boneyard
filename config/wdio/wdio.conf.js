@@ -14,8 +14,8 @@ const TerraWDIOSpecReporter = require('../../reporters/wdio/TerraWDIOSpecReporte
 /* Use to pass your host's IP when running wdio tests from a VM or behind a proxy. */
 let ip = localIP.address();
 if (process.env.WDIO_EXTERNAL_HOST === 'true') {
-  if (os.networkInterfaces() && os.networkInterfaces().gpd0[0]) {
-    ip = os.networkInterfaces().gpd0[0].address;
+  if (os.networkInterfaces() && os.networkInterfaces().utun2 && os.networkInterfaces().utun2[0]) {
+    ip = os.networkInterfaces().utun2[0].address;
   }
 }
 
