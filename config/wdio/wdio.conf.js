@@ -1,5 +1,6 @@
 const localIP = require('ip');
 const glob = require('glob');
+const os = require('os');
 const path = require('path');
 const determineSeleniumConfig = require('./selenium.config').determineConfig;
 const { dynamicRequire } = require('../configUtils');
@@ -11,7 +12,12 @@ const visualRegressionConfig = require('./visualRegressionConf');
 const TerraWDIOSpecReporter = require('../../reporters/wdio/TerraWDIOSpecReporter');
 
 /* Use to pass your host's IP when running wdio tests from a VM or behind a proxy. */
-const ip = process.env.WDIO_EXTERNAL_HOST || localIP.address();
+let ip = localIP.address();
+if (process.env.WDIO_EXTERNAL_HOST === 'true') {
+  if (os.networkInterfaces() && os.networkInterfaces().gpd0[0]) {
+    ip = os.networkInterfaces().gpd0[0].address;
+  }
+}
 
 /* Use to post the wdio run to a different docker port. */
 const externalPort = process.env.WDIO_EXTERNAL_PORT || 8080;
