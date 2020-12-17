@@ -52,7 +52,7 @@ exports.config = config;
 
   * `WDIO_INTERNAL_PORT` - This specifies the port for the ServeStaticService. This is the port that the server being tested against will actually run on.
   * `WDIO_EXTERNAL_PORT` - This specifies the external port that is mapped on the container to the WDIO_INTERNAL_PORT.
-  * `USE_WDIO_EXTERNAL_HOST` -  This is a boolean variable, when set to `true` allows IP to be updated dynamically to that of host on which the container is running.
+  * `USE_WDIO_EXTERNAL_HOST` - This is a boolean variable, when set to `true` allows IP to be updated dynamically to that of host on which the container is running.
 * In order to stop test runner as soon as a single test has failed, explicitly set the environment variable `WDIO_BAIL` to true. By default all the tests are run regardless of failures.
 * For a dry run of screenshot comparisons, disable assertions on the screenshot comparison results by setting the environment variable `WDIO_IGNORE_COMPARISON_RESULTS` to true.
 
