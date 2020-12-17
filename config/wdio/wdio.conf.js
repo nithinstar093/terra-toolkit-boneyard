@@ -13,11 +13,15 @@ const TerraWDIOSpecReporter = require('../../reporters/wdio/TerraWDIOSpecReporte
 
 /* Use to pass your host's IP when running wdio tests from a VM or behind a proxy. */
 let ip = localIP.address();
-if (process.env.WDIO_EXTERNAL_HOST === 'true') {
-  if (os.networkInterfaces() && os.networkInterfaces().utun2 && os.networkInterfaces().utun2[0]) {
-    ip = os.networkInterfaces().utun2[0].address;
+if (process.env.USE_WDIO_EXTERNAL_HOST === 'true') {
+  const networkInterfaces = os.networkInterfaces();
+  if (os.platform() === 'darwin' && networkInterfaces.utun2 && networkInterfaces.utun2[0]) {
+    ip = networkInterfaces.utun2[0].address;
   }
+  console.log('inside', ip);
 }
+
+console.log('outside', localIP.address());
 
 /* Use to post the wdio run to a different docker port. */
 const externalPort = process.env.WDIO_EXTERNAL_PORT || 8080;
