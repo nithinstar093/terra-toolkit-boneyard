@@ -3,6 +3,13 @@
 ## Unreleased
 
 * Changed
+  * Changed `WDIO_EXTERNAL_HOST` to `USE_WDIO_EXTERNAL_HOST`.
+
+* Updated
+  * Updated wdio.conf to dynamically update `IP`, when VPN is connected.
+  
+
+* Changed
   * Updated browserslist-config-terra to @cerner/browserslist-config-terra
 
 ## 6.12.0 - (November 3, 2020)

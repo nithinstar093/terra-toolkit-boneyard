@@ -15,13 +15,10 @@ const TerraWDIOSpecReporter = require('../../reporters/wdio/TerraWDIOSpecReporte
 let ip = localIP.address();
 if (process.env.USE_WDIO_EXTERNAL_HOST === 'true') {
   const networkInterfaces = os.networkInterfaces();
-  if (os.platform() === 'darwin' && networkInterfaces.utun2 && networkInterfaces.utun2[0]) {
+  if (networkInterfaces.utun2 && networkInterfaces.utun2[0]) {
     ip = networkInterfaces.utun2[0].address;
   }
-  console.log('inside', ip);
 }
-
-console.log('outside', localIP.address());
 
 /* Use to post the wdio run to a different docker port. */
 const externalPort = process.env.WDIO_EXTERNAL_PORT || 8080;
