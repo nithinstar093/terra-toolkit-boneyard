@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+* Fixed
+  * added back the TerraWDIOTestDetailsReporter
+  * fixed issue in terra-core regarding TerraWDIOTestDetailsReporter
+  * changed the result file names of TerraWDIOTestDetailsReporter form result-details to functional-test-details
 ## 6.14.1 - (March 3, 2021)
 
 * Fixed
