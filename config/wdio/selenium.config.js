@@ -77,7 +77,7 @@ const determineConfig = (envs) => {
   const useSeleniumGrid = seleniumGridUrl !== undefined;
 
   const config = {
-    seleniumVersion: '3.14',
+    seleniumVersion: '4',
     maxInstances: 1,
     seleniumDocker: {
       enabled: !(ci || useSeleniumGrid),
@@ -88,7 +88,7 @@ const determineConfig = (envs) => {
   if (useSeleniumGrid) {
     config.host = seleniumGridUrl;
     config.port = '80';
-    config.path = '/wd/hub';
+    config.path = '/';
     config.agent = new http.Agent({ keepAlive: true, timeout: 600000 });
   }
 

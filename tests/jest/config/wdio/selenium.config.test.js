@@ -16,7 +16,7 @@ describe('Wdio Selenium Configuration', () => {
   describe('returns default selenium configuration', () => {
     const seleniumConfig = determineConfig({});
 
-    expect(seleniumConfig).toHaveProperty('seleniumVersion', '3.14');
+    expect(seleniumConfig).toHaveProperty('seleniumVersion', '4');
     expect(seleniumConfig).toHaveProperty('maxInstances', 1);
     expect(seleniumConfig).toHaveProperty('seleniumDocker', { enabled: true });
     expect(seleniumConfig).toHaveProperty('capabilities');
@@ -25,7 +25,7 @@ describe('Wdio Selenium Configuration', () => {
   describe('returns selenium configuration when CI env', () => {
     const seleniumConfig = determineConfig({ ci: true });
 
-    expect(seleniumConfig).toHaveProperty('seleniumVersion', '3.14');
+    expect(seleniumConfig).toHaveProperty('seleniumVersion', '4');
     expect(seleniumConfig).toHaveProperty('maxInstances', 1);
     expect(seleniumConfig).toHaveProperty('seleniumDocker', { enabled: false });
     expect(seleniumConfig).toHaveProperty('capabilities');
@@ -35,13 +35,13 @@ describe('Wdio Selenium Configuration', () => {
   describe('returns selenium configuration when useSeleniumGrid env', () => {
     const seleniumConfig = determineConfig({ seleniumGridUrl: 'test.grid.com' });
 
-    expect(seleniumConfig).toHaveProperty('seleniumVersion', '3.14');
+    expect(seleniumConfig).toHaveProperty('seleniumVersion', '4');
     expect(seleniumConfig).toHaveProperty('maxInstances', 1);
     expect(seleniumConfig).toHaveProperty('seleniumDocker', { enabled: false });
     expect(seleniumConfig).toHaveProperty('capabilities');
     expect(seleniumConfig).toHaveProperty('host', 'test.grid.com');
     expect(seleniumConfig).toHaveProperty('port', '80');
-    expect(seleniumConfig).toHaveProperty('path', '/wd/hub');
+    expect(seleniumConfig).toHaveProperty('path', '/');
     expect(seleniumConfig).toHaveProperty('agent');
   });
 

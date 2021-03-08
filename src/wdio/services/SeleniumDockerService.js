@@ -183,7 +183,7 @@ export default class SeleniumDockerService {
     http.get({
       host: this.host,
       port: this.port,
-      path: path.posix.join(this.path || '/wd/hub', 'status'),
+      path: path.posix.join(this.path || '/', 'status'),
     }, (res) => {
       const { statusCode } = res;
       if (statusCode !== 200) {
