@@ -87,8 +87,8 @@ const determineConfig = (envs) => {
 
   if (useSeleniumGrid) {
     config.host = seleniumGridUrl;
-    config.port = '80';
-    config.path = '/';
+    config.port = '4444';
+    config.path = '/wd/hub';
     config.agent = new http.Agent({ keepAlive: true, timeout: 600000 });
   }
 
