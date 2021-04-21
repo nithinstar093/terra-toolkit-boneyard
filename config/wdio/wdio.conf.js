@@ -49,7 +49,7 @@ const formFactor = process.env.FORM_FACTOR;
 const site = process.env.SITE;
 
 /* Use to set enable running test against a hosted selenium grid. Enables IE capabilities if the grid supports it. */
-const seleniumGridUrl = process.env.SELENIUM_GRID_URL;
+const seleniumGridUrl = 'grid4.test.certificationapplications.integrationcerner.com';
 
 /**
  * Use to run tests against the various browsers. Headless Chrome and Headless Firefox browsers are available. IE is
